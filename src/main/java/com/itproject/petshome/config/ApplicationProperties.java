@@ -1,5 +1,6 @@
 package com.itproject.petshome.config;
 
+import com.itproject.petshome.filter.JwtTokenFilter;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -8,11 +9,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class ApplicationProperties {
     private String allowedOrigins;
 
-    private Integer defaultCurrency;
 
     private Integer accessTokenValiditySeconds;
 
     private String jwtSigningKey;
 
-    private Integer maxCandidatePendingApplication;
+
 }
