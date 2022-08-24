@@ -5,9 +5,9 @@ import com.itproject.petshome.dto.UserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Repository;
 
-@Repository
+
+
 @Data
 @AllArgsConstructor
 public class UserCodeRepositoryImpl implements UserCodeRepository{
@@ -30,7 +30,7 @@ public class UserCodeRepositoryImpl implements UserCodeRepository{
 
     @Override
     public UserCodeDTO findById(Long id) {
-        UserDTO user;
+
         return (UserCodeDTO)redisTemplate.opsForHash().get(KEY,Long.toString(id));
 
     }

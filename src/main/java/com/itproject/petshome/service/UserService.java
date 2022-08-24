@@ -13,6 +13,7 @@ import com.itproject.petshome.repository.UserCodeRepository;
 import com.itproject.petshome.repository.UserRepository;
 import lombok.AllArgsConstructor;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ public class UserService {
 
     private final ApplicationProperties properties;
     private final SessionService sessionService;
-
+    private ModelMapper mapper;
     private UserRepository userRepository;
 
     private EmailService emailService;
@@ -90,7 +91,7 @@ public class UserService {
 
 
 
-    public boolean verify(String verificationCode) throws UserCodeNotFoundException, UserNotFoundException, TimeOutException {
+    public boolean verify(String verificationCode) throws UserCodeNotFoundException, UserNotFoundException {
         if(userCodeRepository.findByCode(verificationCode) == null)
             return false;
         UserCodeDTO userCode = userCodeRepository
@@ -118,4 +119,4 @@ public class UserService {
 
 
 
-}
+

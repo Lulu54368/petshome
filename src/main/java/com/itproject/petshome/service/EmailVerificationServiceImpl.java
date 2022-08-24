@@ -35,7 +35,7 @@ public class EmailVerificationServiceImpl implements EmailService {
                 + "<br>Please click the link below to verify your registration:<br>"
                 + "<h3><a href=\"[[URL]]\" target=\"_self\">VERIFY</a></h3>"
                 + "Thank you,<br>"
-                + "dining together.co";
+                + "pet's home.co";
 
         MimeMessage message = sender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
