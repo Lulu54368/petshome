@@ -8,13 +8,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.data.redis.core.RedisTemplate;
 
 @SpringBootApplication
 @OpenAPIDefinition(info = @Info(title = "Pet's home API", version = "1.0"))
 @ConfigurationPropertiesScan("com.itproject.petshome.config")
 @EnableCaching
 public class PetshomeApplication {
-
+	private RedisTemplate redisTemplate;
 	public static void main(String[] args) {
 		SpringApplication.run(PetshomeApplication.class, args);
 	}
