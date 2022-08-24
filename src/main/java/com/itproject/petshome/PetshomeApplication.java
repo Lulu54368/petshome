@@ -1,5 +1,6 @@
 package com.itproject.petshome;
 
+import com.itproject.petshome.config.ApplicationProperties;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
 import org.modelmapper.ModelMapper;
@@ -11,6 +12,9 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -18,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @OpenAPIDefinition(info = @Info(title = "Pet's home API", version = "1.0"))
 @ConfigurationPropertiesScan("com.itproject.petshome.config")
 @EnableCaching
+@EnableConfigurationProperties(ApplicationProperties.class)
 public class PetshomeApplication {
 	private RedisTemplate redisTemplate;
 	public static void main(String[] args) {
@@ -35,3 +40,7 @@ public class PetshomeApplication {
 	}
 
 }
+
+
+
+

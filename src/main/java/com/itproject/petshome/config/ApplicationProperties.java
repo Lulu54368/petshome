@@ -6,12 +6,15 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
+import org.springframework.boot.context.properties.ConstructorBinding;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.PropertySource;
 
 @ConfigurationProperties(prefix = "application")
-@Getter
-@Setter
-@AllArgsConstructor
+@Data
 public class ApplicationProperties {
+
     private String allowedOrigins;
 
 

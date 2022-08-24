@@ -68,8 +68,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             // JWT not valid
         } catch (UsernameNotFoundException e) {
             // User deleted
-        } catch (EmailNotFoundException e) {
-            throw new RuntimeException(e);
         }
 
         chain.doFilter(request, response);
