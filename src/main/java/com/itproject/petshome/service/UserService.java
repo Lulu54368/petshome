@@ -2,6 +2,7 @@ package com.itproject.petshome.service;
 
 import com.itproject.petshome.config.ApplicationProperties;
 import com.itproject.petshome.dto.RegisterInput;
+import com.itproject.petshome.dto.UserCodeDTO;
 import com.itproject.petshome.dto.UserDTO;
 import com.itproject.petshome.exception.UserAlreadyExistException;
 import com.itproject.petshome.exception.UserCodeNotFoundException;
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.mail.MessagingException;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import static java.lang.String.format;
 @Service
@@ -57,32 +59,29 @@ public class UserService {
      */
     @Transactional
     public UserDTO registerUser(RegisterInput input, String siteURL) throws UserAlreadyExistException, MessagingException,
-            UserCodeNotFoundException, UserNotFoundException, UserAlreadyExistException.DuplicatePhoneNumber {
+            UserCodeNotFoundException, UserNotFoundException, UserAlreadyExistException{
         if (userRepository.findByEmail(input.getEmail()).isPresent()
                 || userRepository.findByEmail(input.getEmail()).isPresent()) {
             throw new UserAlreadyExistException();
         }
-        if(userRepository.findByPhoneNumber(input.getPhoneNumber()).isPresent())
-            throw new UserAlreadyExistException.DuplicatePhoneNumber();
 
 
 
         User user = mapper.map(input, User.class);
         user.setPassword(passwordEncoder.encode(input.getPassword()));
-        user.setCurrency(properties.getDefaultCurrency());
+
         String randomCode = UUID.randomUUID().toString();
         user.setVerified(false);
         userRepository.save(user);
 
         user = userRepository
-                .findByUsername(user.getUsername())
+                .findByEmail(user.getEmail())
                 .orElseThrow(UserNotFoundException::new);
         UserCodeDTO userRegistrationCodeDTO =
                 new UserCodeDTO();
         userRegistrationCodeDTO.setUserId(user.getId());
         userRegistrationCodeDTO.setVerificationCode(randomCode);
-        //expire after 5 minutes
-        //userRegistrationCodeDTO.setTokenExpires(Instant.now().plus(5, ChronoUnit.MINUTES));
+
         userCodeRepository.save(userRegistrationCodeDTO);
 
         emailService.sendEmail(user, siteURL);
@@ -96,10 +95,6 @@ public class UserService {
             return false;
         UserCodeDTO userCode = userCodeRepository
                 .findByCode(verificationCode);
-        /*if(userCode.isTokenExpired() == true){
-            userCodeRepository.delete(userCode.getUserId());
-            throw new TimeOutException();
-        }*/
 
         Optional<User> oUser = userRepository
                 .findById(userCode.getUserId());

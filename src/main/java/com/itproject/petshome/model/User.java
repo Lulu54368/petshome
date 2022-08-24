@@ -28,6 +28,8 @@ public class User {
     private String lastname;
     @Column(name = "bio")
     private String bio;
+    @Column(name = "verified")
+    private Boolean verified;
 
 
 }

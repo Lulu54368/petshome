@@ -3,17 +3,26 @@ package com.itproject.petshome.dto;
 import lombok.Data;
 
 import javax.persistence.Column;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-@Data
-public class RegisterInput {
+import javax.validation.constraints.Size;
 
-    @Email
-    String email;
-    @NotEmpty
-    private String password;
+@Data
+public class UpdateUserInput {
+
+
+
+
+
+    private String address;
+
+    private String dob;
     @NotEmpty
     private String firstname;
     @NotEmpty
     private String lastname;
+
+    private String bio;
+
+
+
 }
