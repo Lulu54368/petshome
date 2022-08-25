@@ -5,6 +5,7 @@ import com.itproject.petshome.model.enums.Category;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -26,10 +27,12 @@ public class Pet {
     @Column(name = "detail")
     private String detail;
     @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    Set<AdoptionApplication> adoptionApplications;
-    /*@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "applicants")
-    private Set<User> users;*/
+    Set<AdoptionApplication> adoptionApplications = new HashSet<>();
+
+    @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    Set<UserAdoptPet> userAdoptPets = new HashSet<>();
+
+
 
 
 

@@ -36,8 +36,17 @@ public class User {
     private Set<VolunteerApplication> volunteerApplications = new HashSet<>();
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<AdoptionApplication> adoptionApplications=  new HashSet<>();
-    //@ManyToMany(mappedBy ="user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    //private Set<Pet> pets = new HashSet<>();
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(
+            name = "track",
+            joinColumns = { @JoinColumn(name = "applicant_id") },
+            inverseJoinColumns = { @JoinColumn(name = "pet_id") })
+    private Set<Pet> pets = new HashSet<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Donation> donations = new HashSet<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<UserAdoptPet> userAdoptPets= new HashSet<>();
+
 
 
 }
