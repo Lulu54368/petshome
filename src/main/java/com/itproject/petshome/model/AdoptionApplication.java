@@ -1,6 +1,7 @@
 package com.itproject.petshome.model;
 
 import com.itproject.petshome.model.enums.ApplicationStatus;
+import com.itproject.petshome.model.enums.UserRole;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -27,4 +28,6 @@ public class AdoptionApplication {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pet_id")
     private Pet pet;
+    @Column(name = "role")
+    private UserRole userRole = UserRole.VISITOR;
 }

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -32,9 +33,11 @@ public class User {
     @Column(name = "verified")
     private Boolean verified;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<VolunteerApplication> volunteerApplications;
+    private Set<VolunteerApplication> volunteerApplications = new HashSet<>();
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<AdoptionApplication> adoptionApplications;
+    private Set<AdoptionApplication> adoptionApplications=  new HashSet<>();
+    //@ManyToMany(mappedBy ="user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    //private Set<Pet> pets = new HashSet<>();
 
 
 }

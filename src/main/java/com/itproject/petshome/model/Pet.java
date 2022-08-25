@@ -27,6 +27,9 @@ public class Pet {
     private String detail;
     @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     Set<AdoptionApplication> adoptionApplications;
+    /*@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "applicants")
+    private Set<User> users;*/
 
 
 

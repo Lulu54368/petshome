@@ -3,5 +3,6 @@ package com.itproject.petshome.model.enums;
 public enum UserRole {
     VISITOR,
     ADOPTER,
-    VOLUNTEER
+    VOLUNTEER,
+    ADOPTER_AND_VOLUNTEER
 }
