@@ -1,6 +1,7 @@
 package com.itproject.petshome;
 
 import com.itproject.petshome.config.ApplicationProperties;
+import de.codecentric.boot.admin.server.config.EnableAdminServer;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
 import org.modelmapper.ModelMapper;
@@ -23,6 +24,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @ConfigurationPropertiesScan("com.itproject.petshome.config")
 @EnableCaching
 @EnableConfigurationProperties(ApplicationProperties.class)
+@EnableAdminServer
 public class PetshomeApplication {
 	private RedisTemplate redisTemplate;
 	public static void main(String[] args) {
