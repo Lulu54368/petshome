@@ -59,7 +59,7 @@ public class UserService {
      * @throws UserAlreadyExistException User with the username or email exist
      */
     @Transactional
-    public UserDTO registerUser(RegisterInput input, String siteURL) throws UserAlreadyExistException, MessagingException,
+    public UserDTO registerUser(RegisterInput input, String siteURL) throws MessagingException,
             UserCodeNotFoundException, UserNotFoundException, UserAlreadyExistException{
         if (userRepository.findByEmail(input.getEmail()).isPresent()
                 || userRepository.findByEmail(input.getEmail()).isPresent()) {

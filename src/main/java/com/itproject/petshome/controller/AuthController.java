@@ -27,6 +27,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -43,7 +44,7 @@ public class AuthController {
     private final ApplicationProperties properties;
     private UserRepository userRepository;
     private UserCodeRepository userCodeRepository;
-    @PostMapping("login")
+    @PostMapping("/user/login")
     @ApiResponse(description = "Login successful", responseCode = "200")
     @ApiResponse(description = "Username or password incorrect", responseCode = "401")
     public AuthorizeOutput login(@RequestBody @Valid LoginInput request) {
@@ -58,7 +59,7 @@ public class AuthController {
         return buildAuthorizeOutput(user);
     }
 
-    @PostMapping("/register")
+    @PostMapping("/user/register")
     @ApiResponse(description = "User Created", responseCode = "201")
     @ApiResponse(description = "Failed, username or email already exist", responseCode = "409")
     @ResponseStatus(HttpStatus.CREATED)
