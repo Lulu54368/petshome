@@ -10,12 +10,12 @@ services:
       - "3307:3306"
     environment:
       MYSQL_DATABASE: 'pets_home'
-      MYSQL_USER: 'root'
-      MYSQL_PASSWORD: 'password'
-      MYSQL_ROOT_PASSWORD: 'password'
+      MYSQL_USER: root
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
       MYSQL_HOST: 'mysql'
     volumes:
-      - "./volumes/database:/var/lib/mysql"
+      - "./volumes/database:/var/lib/pets_home"
 
     expose:
       - '3306'
