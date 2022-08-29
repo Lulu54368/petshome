@@ -20,7 +20,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath>
-          <entry name="$MAVEN_REPOSITORY$/org/project-lombok/lombok/1.18.24/lombok-1.18.24.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/project-lombok/lombok/1.16.16/lombok-1.16.16.jar" />
           <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct-processor/1.5.2.Final/mapstruct-processor-1.5.2.Final.jar" />
           <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct/1.5.2.Final/mapstruct-1.5.2.Final.jar" />
           <entry name="$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-configuration-processor/2.4.2/spring-boot-configuration-processor-2.4.2.jar" />

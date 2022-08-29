@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.itproject.petshome.PetshomeApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.055 s - in com.itproject.petshome.PetshomeApplicationTests
