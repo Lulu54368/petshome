@@ -1,9 +1,11 @@
 package com.itproject.petshome.model;
 
+import com.itproject.petshome.model.enums.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -36,16 +38,14 @@ public class User {
     private Set<VolunteerApplication> volunteerApplications = new HashSet<>();
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<AdoptionApplication> adoptionApplications=  new HashSet<>();
-    @ManyToMany(cascade = { CascadeType.ALL })
-    @JoinTable(
-            name = "track",
-            joinColumns = { @JoinColumn(name = "applicant_id") },
-            inverseJoinColumns = { @JoinColumn(name = "pet_id") })
-    private Set<Pet> pets = new HashSet<>();
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Donation> donations = new HashSet<>();
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<UserAdoptPet> userAdoptPets= new HashSet<>();
+    @Column(name = "role", nullable = false)
+    private UserRole userRole = UserRole.VISITOR;
+
 
 
 

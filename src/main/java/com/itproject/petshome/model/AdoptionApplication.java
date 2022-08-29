@@ -28,6 +28,5 @@ public class AdoptionApplication {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pet_id")
     private Pet pet;
-    @Column(name = "role")
-    private UserRole userRole = UserRole.VISITOR;
 }
+
