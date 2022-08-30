@@ -1,10 +1,12 @@
 package com.itproject.petshome.dto;
 
-import java.sql.Timestamp;
+import lombok.Data;
 
+import java.sql.Timestamp;
+@Data
 public class UserAdoptPetDTO {
     private Long id;
     private Timestamp timestamp;
-    private Long userId;
-    private Long petId;
+    Long userId;
+    Long petId;
 }

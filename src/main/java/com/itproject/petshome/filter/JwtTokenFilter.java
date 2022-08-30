@@ -1,7 +1,5 @@
 package com.itproject.petshome.filter;
 
-
-import com.itproject.petshome.exception.EmailNotFoundException;
 import com.itproject.petshome.service.UserService;
 import com.itproject.petshome.utils.JwtTokenUtil;
 

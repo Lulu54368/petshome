@@ -3,7 +3,7 @@ package com.itproject.petshome.controller;
 
 import com.itproject.petshome.config.ApplicationProperties;
 import com.itproject.petshome.dto.*;
-import com.itproject.petshome.exception.TimeOutException;
+
 import com.itproject.petshome.exception.UserAlreadyExistException;
 import com.itproject.petshome.exception.UserCodeNotFoundException;
 import com.itproject.petshome.exception.UserNotFoundException;
@@ -89,7 +89,7 @@ public class AuthController {
     @ApiResponse(description = "User or usercode not exist", responseCode = "404")
     @ResponseStatus(HttpStatus.CREATED)
     public String verifyUser(@Param("code") String code, Model model)
-            throws UserCodeNotFoundException, UserNotFoundException, TimeOutException {
+            throws UserCodeNotFoundException, UserNotFoundException{
 
         UserCodeDTO userCode = userCodeRepository
                 .findByCode(code);
