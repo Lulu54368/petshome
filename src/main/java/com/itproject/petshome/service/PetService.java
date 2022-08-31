@@ -4,11 +4,16 @@ import com.itproject.petshome.dto.PetDTO;
 import com.itproject.petshome.dto.PetInput;
 import com.itproject.petshome.mapper.PetMapper;
 import com.itproject.petshome.model.Pet;
+import com.itproject.petshome.model.enums.Adopted;
 import com.itproject.petshome.repository.PetRepository;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
 @AllArgsConstructor
 @Data
 @Service
@@ -20,5 +25,14 @@ public class PetService {
         petRepository.save(pet);
         return petMapper.toDto(pet);
 
+    }
+
+    public List<PetDTO> viewLostPet(Adopted adopted) {
+        List<PetDTO> pets = petRepository.findAll()
+                .stream()
+                .filter((pet)->pet.getAdopted() == adopted)
+                .map(pet->petMapper.toDto(pet))
+                .collect(Collectors.toList());
+        return pets;
     }
 }

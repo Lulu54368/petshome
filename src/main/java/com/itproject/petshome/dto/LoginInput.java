@@ -7,7 +7,7 @@ import lombok.Data;
 import javax.validation.constraints.NotEmpty;
 
 @Data
-public class LoginInput {
+public class  LoginInput {
 
     @NotEmpty
     String email;
