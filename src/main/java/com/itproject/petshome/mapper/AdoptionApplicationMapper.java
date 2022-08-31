@@ -24,8 +24,11 @@ public abstract class AdoptionApplicationMapper {
     UserRepository userRepository;
     @Autowired
     PetRepository petRepository;
-    @Mapping(target = "user", expression = "java(userRepository.findById(adoptionApplication.getUserId()).get())")
-    @Mapping(target = "pet", expression = "java(petRepository.findById(adoptionApplication.getPetId()).get())")
-    public abstract AdoptionApplication toEntity(AdoptionApplicationDTO adoptionApplication);
+    @Mapping(target = "user", expression = "java(userRepository.findById(adoptionApplicationDTO.getUserId()).get())")
+    @Mapping(target = "pet", expression = "java(petRepository.findById(adoptionApplicationDTO.getPetId()).get())")
+    public abstract AdoptionApplication toEntity(AdoptionApplicationDTO adoptionApplicationDTO);
+    @Mapping(target = "userId", source = "user.id")
+    @Mapping(target = "petId", source = "pet.id")
+    public abstract AdoptionApplicationDTO toDto(AdoptionApplication adoptionApplication);
 
 }

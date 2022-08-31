@@ -20,5 +20,8 @@ public abstract class UserAdoptPetMapper  {
     @Mapping(target = "user", expression = "java(userRepository.findById(userAdoptPetDTO.getUserId()).get())")
     @Mapping(target = "pet", expression = "java(petRepository.findById(userAdoptPetDTO.getPetId()).get())")
     public abstract UserAdoptPet toEntity(UserAdoptPetDTO userAdoptPetDTO);
+    @Mapping(target = "userId", source = "user.id")
+    @Mapping(target = "petId", source = "pet.id")
+    public abstract UserAdoptPetDTO toDto(UserAdoptPet userAdoptPet);
 
 }

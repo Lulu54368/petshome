@@ -12,8 +12,8 @@ public class AdoptionApplicationDTO {
     private String reason;
     private String passport;
     private ApplicationStatus applicationStatus;
-    Long userId;
-    Long petId;
+    private Long userId;
+    private Long petId;
 
 
 }

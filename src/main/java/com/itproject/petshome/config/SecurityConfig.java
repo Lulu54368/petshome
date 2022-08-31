@@ -77,10 +77,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // Set permissions on endpoints
         http.authorizeRequests()
                 // Our public endpoints
-                .antMatchers("/api/v1/auth/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/v1/foods/").permitAll()
+                .antMatchers("/api/v1/**").permitAll();
+
                 // Our private endpoints
-                .antMatchers("/api/v1/**").authenticated();
+               // .antMatchers("/api/v1/user/**").authenticated();
         SavedRequestAwareAuthenticationSuccessHandler successHandler =
                 new SavedRequestAwareAuthenticationSuccessHandler();
         successHandler.setTargetUrlParameter("redirectTo");
