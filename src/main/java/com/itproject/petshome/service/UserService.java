@@ -8,6 +8,7 @@ import com.itproject.petshome.exception.UserNotFoundException;
 import com.itproject.petshome.model.User;
 import com.itproject.petshome.model.UserDetails;
 import com.itproject.petshome.model.enums.Adopted;
+import com.itproject.petshome.model.enums.ApplicationStatus;
 import com.itproject.petshome.repository.UserCodeRepository;
 import com.itproject.petshome.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -125,10 +126,21 @@ public class UserService {
             (AdoptionApplicationDTO adoptionApplicationDTO) {
         return null;
     }
-    public List<AdoptionApplicationDTO> viewAdoptionApplications(Adopted adopted) {
+    public List<AdoptionApplicationDTO> viewAdoptionApplications(ApplicationStatus status) {
         return null;
     }
 
+    public DonationDTO addDonation(DonationDTO donationDTO) {
+        return null;
+    }
+
+    public DonationDTO viewDonation(User currUser) {
+        return null;
+    }
+
+    public VolunteerApplicationDTO addVolunteerApplication(User currUser) {
+        return null;
+    }
 }
 
 

@@ -3,7 +3,9 @@ package com.itproject.petshome.controller;
 import com.itproject.petshome.dto.AdoptionApplicationDTO;
 import com.itproject.petshome.dto.PetDTO;
 import com.itproject.petshome.dto.PetInput;
+import com.itproject.petshome.dto.VolunteerApplicationDTO;
 import com.itproject.petshome.model.enums.Adopted;
+import com.itproject.petshome.model.enums.ApplicationStatus;
 import com.itproject.petshome.service.AdminService;
 import com.itproject.petshome.service.PetService;
 import com.itproject.petshome.service.UserService;
@@ -45,14 +47,23 @@ public class AdminController {
 
     @Operation(summary = "view adoption applications")
     @GetMapping("/adoptionApplication")
-    public List<AdoptionApplicationDTO> viewAdoptionApplications(@RequestParam Adopted adopted){
-        return this.userService.viewAdoptionApplications(adopted);
+    public List<AdoptionApplicationDTO> viewAdoptionApplications(@RequestParam ApplicationStatus status){
+        return this.userService.viewAdoptionApplications(status);
     }
 
     @Operation(summary = "approve or reject adoption application")
-    @PutMapping("/adoptionApplication")
-    public AdoptionApplicationDTO updateAdoptionApplication() {
-        return this.adminService.updateAdoptionApplication();
+    @PutMapping("/adoptionApplication/{id}")
+    public AdoptionApplicationDTO updateAdoptionApplication
+            (@RequestBody @Valid AdoptionApplicationDTO adoptionApplicationDTO,
+            @PathVariable("id") Long adoptionApplicationId) {
+        return this.adminService.updateAdoptionApplication
+                (adoptionApplicationDTO, adoptionApplicationId);
+    }
+
+    @Operation(summary = "view volunteer applications")
+    @GetMapping("/volunteerApplication/{id}")
+    public List<VolunteerApplicationDTO> viewVolunteerApplications(@RequestParam ApplicationStatus status) {
+        return this.adminService.viewVolunteerApplications(status);
     }
 
 }

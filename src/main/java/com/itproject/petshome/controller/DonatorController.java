@@ -3,8 +3,12 @@ package com.itproject.petshome.controller;
 import com.itproject.petshome.dto.DonationDTO;
 import com.itproject.petshome.dto.PetDTO;
 import com.itproject.petshome.dto.PetInput;
+import com.itproject.petshome.exception.UserNotFoundException;
+import com.itproject.petshome.model.Donation;
+import com.itproject.petshome.model.User;
 import com.itproject.petshome.model.enums.Adopted;
 import com.itproject.petshome.service.PetService;
+import com.itproject.petshome.service.SessionService;
 import com.itproject.petshome.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -19,15 +23,20 @@ import java.util.List;
 @AllArgsConstructor
 @RestController
 @Validated
-@RequestMapping("/api/v1/donator")
-
+@RequestMapping("/api/v1/user")
 public class DonatorController {
     UserService userService;
+    SessionService sessionService;
     @Operation(summary = "add donation")
-    @PostMapping("/")
-//    Require Front end finish the prototype and discuss what input to make
-//    and if we need any services created
-    public DonationDTO addDonation() {
-        return null;
+    @PostMapping("/donate")
+    public DonationDTO addDonation(@RequestBody DonationDTO donationDTO) {
+        return this.userService.addDonation(donationDTO);
+    }
+
+    @Operation(summary = "view donation")
+    @GetMapping("/viewDonation")
+    public DonationDTO viewDonation() throws UserNotFoundException {
+        User currUser = sessionService.getCurrentUser().orElseThrow(UserNotFoundException::new);
+        return this.userService.viewDonation(currUser);
     }
 }
