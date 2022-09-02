@@ -12,6 +12,8 @@ import lombok.Data;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -35,4 +37,16 @@ public class PetService {
                 .collect(Collectors.toList());
         return pets;
     }
+
+
+
+
+    public PetDTO updatePet(PetDTO petDTO) {
+        return petDTO;
+    }
+
+    public PetDTO deletePet(PetDTO petDTO) {
+        return petDTO;
+    }
+
 }

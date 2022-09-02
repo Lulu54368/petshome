@@ -2,6 +2,7 @@ package com.itproject.petshome.service;
 
 import com.itproject.petshome.config.ApplicationProperties;
 import com.itproject.petshome.dto.RegisterInput;
+import com.itproject.petshome.dto.UpdateUserInput;
 import com.itproject.petshome.dto.UserCodeDTO;
 import com.itproject.petshome.dto.UserDTO;
 import com.itproject.petshome.exception.UserAlreadyExistException;
@@ -115,6 +116,13 @@ public class UserService {
 
 
     }
+    public UserDTO viewUserInformation(User user) {
+        return null;
+    }
+    public UserDTO updateUserInformation(UpdateUserInput input) {
+        return null;
+    }
+
 
 }
 

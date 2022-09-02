@@ -26,4 +26,6 @@ public class SessionService {
     public User getCurrentUserOrThrow() {
         return getCurrentUser().orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED));
     }
+
+
 }

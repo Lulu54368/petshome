@@ -23,6 +23,10 @@ public class UpdateUserInput {
 
     private String bio;
 
+    private String identification;
 
+    private String city;
+
+    private String country;
 
 }
