@@ -16,6 +16,8 @@ public class VolunteerApplication {
     private Long id;
     @Column(name= "status")
     private ApplicationStatus applicationStatus = ApplicationStatus.PENDING;
+    @Column(name = "reason", length = 500)
+    private String reason;
     @Column(name = "time_applied")
     private Timestamp timeApplied;
     @Column(name = "time_reviewed")

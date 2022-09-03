@@ -21,7 +21,7 @@ import java.util.List;
 @AllArgsConstructor
 @RestController
 @Validated
-@RequestMapping("/api/v1/user")
+@RequestMapping("/api/v1/adopter")
 public class AdopterController {
     UserService userService;
 

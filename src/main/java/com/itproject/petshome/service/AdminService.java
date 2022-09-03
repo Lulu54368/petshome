@@ -1,6 +1,7 @@
 package com.itproject.petshome.service;
 
 import com.itproject.petshome.dto.AdoptionApplicationDTO;
+import com.itproject.petshome.dto.UpdateAdoptionApplicationInput;
 import com.itproject.petshome.dto.VolunteerApplicationDTO;
 import com.itproject.petshome.model.enums.ApplicationStatus;
 import com.itproject.petshome.repository.AdoptionApplicationRepository;
@@ -19,11 +20,13 @@ public class AdminService {
     private final VolunteerApplicationRepository volunteerApplicationRepository;
 
     public AdoptionApplicationDTO updateAdoptionApplication
-            (AdoptionApplicationDTO adoptionApplicationDTO, Long adoptionApplicationId) {
+            (UpdateAdoptionApplicationInput updateAdoptionApplicationInput) {
         return null;
     }
 
-    public List<VolunteerApplicationDTO> viewVolunteerApplications(ApplicationStatus status) {
+    public VolunteerApplicationDTO viewVolunteerApplication(ApplicationStatus status, Long id) {
         return null;
     }
+
+
 }

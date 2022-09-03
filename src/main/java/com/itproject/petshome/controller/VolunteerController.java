@@ -10,22 +10,25 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 @SecurityRequirement(name = "bearerAuth")
 @AllArgsConstructor
 @RestController
 @Validated
-@RequestMapping("/api/v1/user")
+@RequestMapping("/api/v1/volunteer")
 public class VolunteerController {
     private UserService userService;
     private SessionService sessionService;
 
     @Operation(summary = "apply to volunteer")
     @PostMapping("/applyToVolunteer")
-    public VolunteerApplicationDTO addVolunteerApplication()  throws UserNotFoundException {
-        User currUser = sessionService.getCurrentUser().orElseThrow(UserNotFoundException::new);
-        return this.userService.addVolunteerApplication(currUser);
+    public VolunteerApplicationDTO addVolunteerApplication
+            (@RequestBody @Valid VolunteerApplicationDTO volunteerApplicationDTO){
+        return this.userService.addVolunteerApplication(volunteerApplicationDTO);
     }
 }

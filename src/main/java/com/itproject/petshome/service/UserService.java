@@ -130,15 +130,17 @@ public class UserService {
         return null;
     }
 
-    public DonationDTO addDonation(DonationDTO donationDTO) {
-        return null;
-    }
+
 
     public DonationDTO viewDonation(User currUser) {
         return null;
     }
 
-    public VolunteerApplicationDTO addVolunteerApplication(User currUser) {
+    public VolunteerApplicationDTO addVolunteerApplication(VolunteerApplicationDTO volunteerApplicationDTO) {
+        return null;
+    }
+
+    public DonationDTO addDonation(Long userId, DonationInput donationInput) {
         return null;
     }
 }

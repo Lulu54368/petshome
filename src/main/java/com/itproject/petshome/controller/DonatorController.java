@@ -1,6 +1,7 @@
 package com.itproject.petshome.controller;
 
 import com.itproject.petshome.dto.DonationDTO;
+import com.itproject.petshome.dto.DonationInput;
 import com.itproject.petshome.dto.PetDTO;
 import com.itproject.petshome.dto.PetInput;
 import com.itproject.petshome.exception.UserNotFoundException;
@@ -29,8 +30,8 @@ public class DonatorController {
     SessionService sessionService;
     @Operation(summary = "add donation")
     @PostMapping("/donate")
-    public DonationDTO addDonation(@RequestBody DonationDTO donationDTO) {
-        return this.userService.addDonation(donationDTO);
+    public DonationDTO addDonation(@RequestBody @Valid Long userId, DonationInput donationInput) {
+        return this.userService.addDonation(userId, donationInput);
     }
 
     @Operation(summary = "view donation")
