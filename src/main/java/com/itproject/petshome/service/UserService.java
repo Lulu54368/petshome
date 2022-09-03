@@ -1,15 +1,14 @@
 package com.itproject.petshome.service;
 
 import com.itproject.petshome.config.ApplicationProperties;
-import com.itproject.petshome.dto.RegisterInput;
-import com.itproject.petshome.dto.UpdateUserInput;
-import com.itproject.petshome.dto.UserCodeDTO;
-import com.itproject.petshome.dto.UserDTO;
+import com.itproject.petshome.dto.*;
 import com.itproject.petshome.exception.UserAlreadyExistException;
 import com.itproject.petshome.exception.UserCodeNotFoundException;
 import com.itproject.petshome.exception.UserNotFoundException;
 import com.itproject.petshome.model.User;
 import com.itproject.petshome.model.UserDetails;
+import com.itproject.petshome.model.enums.Adopted;
+import com.itproject.petshome.model.enums.ApplicationStatus;
 import com.itproject.petshome.repository.UserCodeRepository;
 import com.itproject.petshome.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -24,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -122,8 +122,27 @@ public class UserService {
     public UserDTO updateUserInformation(UpdateUserInput input) {
         return null;
     }
+    public UserAdoptPetDTO addAdoptionApplication
+            (AdoptionApplicationDTO adoptionApplicationDTO) {
+        return null;
+    }
+    public List<AdoptionApplicationDTO> viewAdoptionApplications(ApplicationStatus status) {
+        return null;
+    }
 
 
+
+    public DonationDTO viewDonation(User currUser) {
+        return null;
+    }
+
+    public VolunteerApplicationDTO addVolunteerApplication(VolunteerApplicationDTO volunteerApplicationDTO) {
+        return null;
+    }
+
+    public DonationDTO addDonation(Long userId, DonationInput donationInput) {
+        return null;
+    }
 }
 
 

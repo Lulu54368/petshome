@@ -7,6 +7,7 @@ import com.itproject.petshome.dto.UserAdoptPetDTO;
 import com.itproject.petshome.model.AdoptionApplication;
 import com.itproject.petshome.model.enums.Adopted;
 import com.itproject.petshome.service.PetService;
+import com.itproject.petshome.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
@@ -22,6 +23,14 @@ import java.util.List;
 @Validated
 @RequestMapping("/api/v1/adopter")
 public class AdopterController {
+    UserService userService;
 
-    public UserAdoptPetDTO createAdoptionApplication(AdoptionApplicationDTO )
+    @Operation(summary = "upload adoption application")
+    @PostMapping("/applyToAdopt")
+    public UserAdoptPetDTO addAdoptionApplication
+            (@RequestBody @Valid AdoptionApplicationDTO adoptionApplicationDTO) {
+        return this.userService.addAdoptionApplication(adoptionApplicationDTO);
+    }
+
+
 }
