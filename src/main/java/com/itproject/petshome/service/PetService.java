@@ -2,6 +2,7 @@ package com.itproject.petshome.service;
 
 import com.itproject.petshome.dto.PetDTO;
 import com.itproject.petshome.dto.input.PetInput;
+import com.itproject.petshome.exception.PetNotFound;
 import com.itproject.petshome.mapper.PetMapper;
 import com.itproject.petshome.model.Pet;
 import com.itproject.petshome.model.enums.*;
@@ -40,6 +41,9 @@ public class PetService {
         Pet pet = petRepository.findById(id)
                 .orElseThrow(PetNotFound::new);
         pet.setAdopted(Adopted.YES);
+        petRepository.save(pet);
+        return petMapper.toDto(pet);
+
     }
 
     public PetDTO deletePet(PetDTO petDTO) {
