@@ -2,7 +2,9 @@ package com.itproject.petshome.controller;
 
 import com.itproject.petshome.dto.*;
 import com.itproject.petshome.dto.input.PetInput;
-import com.itproject.petshome.dto.input.UpdateAdoptionApplicationInput;
+
+import com.itproject.petshome.exception.AdoptionApplicationNotFound;
+
 import com.itproject.petshome.model.enums.ApplicationStatus;
 import com.itproject.petshome.service.AdminService;
 import com.itproject.petshome.service.AdoptionService;
@@ -33,11 +35,11 @@ public class AdminController {
         return this.petService.addPet(input);
     }
 
-    @Operation(summary = "update pets")
-    @PutMapping("/pets")
-    public PetDTO updatePet(PetDTO petDTO) {
-        return this.petService.updatePet(petDTO);
-    }
+   /* @Operation(summary = "update pets")
+    @PutMapping("/pet/{petId}")
+    public PetDTO updatePet(@PathVariable("petId") Long petId) throws PetNotFound {
+        return this.petService.updatePet(petId);
+    }*/
 
     @Operation(summary = "delete pets")
     @DeleteMapping("/pets")
@@ -54,8 +56,8 @@ public class AdminController {
     @Operation(summary = "approve or reject adoption application")
     @PutMapping("/adoptionApplication/{id}")
     public AdoptionApplicationDTO updateAdoptionApplication
-            (@RequestBody @Valid UpdateAdoptionApplicationInput updateAdoptionApplicationInput) {
-        return this.adminService.updateAdoptionApplication(updateAdoptionApplicationInput);
+            (@RequestBody @Valid ApplicationStatus applicationStatus, @PathVariable("id") Long applicationId) throws AdoptionApplicationNotFound {
+        return this.adminService.updateAdoptionApplication(applicationStatus, applicationId);
     }
 
     @Operation(summary = "view volunteer applications")
