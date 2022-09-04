@@ -9,6 +9,7 @@ import com.itproject.petshome.repository.PetRepository;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 @Service
 public class PetService {
     private PetRepository petRepository;
+
     private PetMapper petMapper;
     public PetDTO addPet(PetInput input) {
         Pet pet = petMapper.toEntity(input);

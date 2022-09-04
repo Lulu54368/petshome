@@ -2,6 +2,8 @@ package com.itproject.petshome.model;
 
 import com.itproject.petshome.model.enums.Adopted;
 import com.itproject.petshome.model.enums.Category;
+import com.itproject.petshome.model.enums.Immunization;
+import com.itproject.petshome.model.enums.Sex;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -26,11 +28,23 @@ public class Pet {
     private String nickname;
     @Column(name = "detail")
     private String detail;
+    @Column(name = "color")
+    private String color ;
+    @Column(name = "sex")
+    private Sex sex ;
+    @Column(name = "age", nullable = false)
+    private int age;
+    @Column(name = "personality")
+    private String character;
+    @Column(name = "immunization")
+    private Immunization immunization ;
     @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     Set<AdoptionApplication> adoptionApplications = new HashSet<>();
 
     @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     Set<UserAdoptPet> userAdoptPets = new HashSet<>();
+
+
 
 
 
