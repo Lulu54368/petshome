@@ -3,13 +3,15 @@ package com.itproject.petshome.config;
 import com.itproject.petshome.filter.JwtTokenFilter;
 import com.itproject.petshome.service.UserService;
 import de.codecentric.boot.admin.server.config.AdminServerProperties;
+import io.netty.handler.ssl.SslContextBuilder;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
+import org.springframework.core.annotation.Order;
+import org.springframework.http.client.reactive.ClientHttpConnector;
+import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -18,41 +20,52 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import reactor.netty.http.client.HttpClient;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 @Configuration
 @EnableWebSecurity
 @AllArgsConstructor
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+@Order(1)
+public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final UserService userService;
-    private final JwtTokenFilter jwtTokenFilter;
+
     private final ApplicationProperties properties;
     private final AdminServerProperties adminServer;
 
     private final SecurityProperties security;
 
-    private final PasswordEncoder passwordEncoder;
+    private MyBasicAuthenticationEntryPoint authenticationEntryPoint;
 
+    private final PasswordEncoder passwordEncoder;
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService::getUserDetailsByEmail);
         auth.inMemoryAuthentication().withUser("admin")
-                .password(passwordEncoder.encode("{noop}admin")).roles("ADMIN");
-
+                .password(passwordEncoder.encode("admin")).roles("ADMIN");
     }
+    @Bean
+    public ClientHttpConnector customHttpClient() {
+        SslContextBuilder sslContext = SslContextBuilder.forClient();
+        //Your sslContext customizations go here
+        HttpClient httpClient = HttpClient.create().secure(
+                ssl -> ssl.sslContext(sslContext)
+        );
+        return new ReactorClientHttpConnector(httpClient);
+    }
+
+
 
 
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // Enable CORS and disable CSRF
+
         http = http.cors().and().csrf().disable();
 
         // Set session management to stateless
@@ -76,21 +89,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         // Set permissions on endpoints
         http.authorizeRequests()
-                // Our public endpoints
-                .antMatchers("/api/v1/**").permitAll();
+                .antMatchers("/api/v1/admin/**").authenticated();
 
-                // Our private endpoints
-               // .antMatchers("/api/v1/user/**").authenticated();
-        SavedRequestAwareAuthenticationSuccessHandler successHandler =
+       SavedRequestAwareAuthenticationSuccessHandler successHandler =
                 new SavedRequestAwareAuthenticationSuccessHandler();
         successHandler.setTargetUrlParameter("redirectTo");
         successHandler.setDefaultTargetUrl(this.adminServer.getContextPath() + "/");
 
+        http.addFilterAfter(new CustomFilter(),
+                BasicAuthenticationFilter.class);
+
         http
                 .authorizeRequests()
+
+                .antMatchers("/swagger-ui/index.html").permitAll()
                 .antMatchers(this.adminServer.getContextPath() + "/assets/**").permitAll()
                 .antMatchers(this.adminServer.getContextPath() + "/login").permitAll()
-                .antMatchers("/swagger-ui/index.html").permitAll()
                 .and()
                 .formLogin()
                 .loginPage(this.adminServer.getContextPath() + "/login")
@@ -99,19 +113,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .logoutUrl(this.adminServer.getContextPath() + "/logout")
                 .and()
+
                 .httpBasic()
-                .and()
-                .rememberMe()
-                .key(UUID.randomUUID().toString())
-                .tokenValiditySeconds(1209600);
+                .authenticationEntryPoint(authenticationEntryPoint);
+
 
 
 
         // Add JWT token filter
-        http.addFilterBefore(
-                jwtTokenFilter,
-                UsernamePasswordAuthenticationFilter.class
-        );
+
+
+
     }
 
 

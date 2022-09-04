@@ -3,6 +3,7 @@ package com.itproject.petshome.controller;
 import com.itproject.petshome.dto.*;
 import com.itproject.petshome.dto.input.PetInput;
 import com.itproject.petshome.dto.input.UpdateAdoptionApplicationInput;
+import com.itproject.petshome.exception.PetNotFound;
 import com.itproject.petshome.model.enums.ApplicationStatus;
 import com.itproject.petshome.service.AdminService;
 import com.itproject.petshome.service.AdoptionService;
@@ -40,9 +41,9 @@ public class AdminController {
     }
 
     @Operation(summary = "delete pets")
-    @DeleteMapping("/pets")
-    public PetDTO deletePet(PetDTO petDTO) {
-        return this.petService.deletePet(petDTO);
+    @DeleteMapping("/pet/{pet_id}")
+    public PetDTO deletePet(@PathVariable("pet_id") Long petId) throws PetNotFound {
+        return this.petService.deletePet(petId);
     }
 
     @Operation(summary = "view adoption applications")

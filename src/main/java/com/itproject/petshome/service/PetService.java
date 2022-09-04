@@ -2,6 +2,7 @@ package com.itproject.petshome.service;
 
 import com.itproject.petshome.dto.PetDTO;
 import com.itproject.petshome.dto.input.PetInput;
+import com.itproject.petshome.exception.PetNotFound;
 import com.itproject.petshome.mapper.PetMapper;
 import com.itproject.petshome.model.Pet;
 import com.itproject.petshome.model.enums.*;
@@ -40,8 +41,12 @@ public class PetService {
         return petDTO;
     }
 
-    public PetDTO deletePet(PetDTO petDTO) {
-        return petDTO;
+    public PetDTO deletePet(Long petId) throws PetNotFound {
+        Pet pet = petRepository
+                .findById(petId)
+                .orElseThrow(PetNotFound::new);
+        petRepository.delete(pet);
+        return petMapper.toDto(pet);
     }
 
     public List<PetDTO> viewLostPet(Optional<Category> category,
