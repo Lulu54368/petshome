@@ -1,7 +1,7 @@
 package com.itproject.petshome.service;
 
 import com.itproject.petshome.dto.PetDTO;
-import com.itproject.petshome.dto.PetInput;
+import com.itproject.petshome.dto.input.PetInput;
 import com.itproject.petshome.mapper.PetMapper;
 import com.itproject.petshome.model.Pet;
 import com.itproject.petshome.model.enums.*;
@@ -10,12 +10,10 @@ import com.itproject.petshome.repository.PetRepositoryCustom;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor

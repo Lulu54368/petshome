@@ -1,4 +1,4 @@
-package com.itproject.petshome.dto;
+package com.itproject.petshome.dto.input;
 
 import com.itproject.petshome.model.enums.ApplicationStatus;
 import lombok.Data;

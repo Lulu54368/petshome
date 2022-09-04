@@ -1,9 +1,10 @@
 package com.itproject.petshome.controller;
 
 import com.itproject.petshome.dto.DonationDTO;
-import com.itproject.petshome.dto.DonationInput;
+
 import com.itproject.petshome.dto.PetDTO;
-import com.itproject.petshome.dto.PetInput;
+
+import com.itproject.petshome.dto.input.DonationInput;
 import com.itproject.petshome.exception.UserNotFoundException;
 import com.itproject.petshome.model.Donation;
 import com.itproject.petshome.model.User;

@@ -1,7 +1,7 @@
 package com.itproject.petshome.controller;
 
 import com.itproject.petshome.dto.PetDTO;
-import com.itproject.petshome.dto.PetInput;
+
 import com.itproject.petshome.model.enums.*;
 import com.itproject.petshome.service.PetService;
 import io.swagger.v3.oas.annotations.Operation;

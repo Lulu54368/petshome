@@ -1,4 +1,4 @@
-package com.itproject.petshome.dto;
+package com.itproject.petshome.dto.output;
 
 import lombok.Data;
 

@@ -1,9 +1,11 @@
 package com.itproject.petshome.controller;
 
 import com.itproject.petshome.dto.*;
-import com.itproject.petshome.model.enums.Adopted;
+import com.itproject.petshome.dto.input.PetInput;
+import com.itproject.petshome.dto.input.UpdateAdoptionApplicationInput;
 import com.itproject.petshome.model.enums.ApplicationStatus;
 import com.itproject.petshome.service.AdminService;
+import com.itproject.petshome.service.AdoptionService;
 import com.itproject.petshome.service.PetService;
 import com.itproject.petshome.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,6 +26,7 @@ public class AdminController {
     PetService petService;
     UserService userService;
     AdminService adminService;
+    AdoptionService adoptionService;
     @Operation(summary = "add pets")
     @PostMapping("/pets")
     public PetDTO addPet(@RequestBody @Valid PetInput input) {
@@ -45,7 +48,7 @@ public class AdminController {
     @Operation(summary = "view adoption applications")
     @GetMapping("/adoptionApplication")
     public List<AdoptionApplicationDTO> viewAdoptionApplications(@RequestParam ApplicationStatus status){
-        return this.userService.viewAdoptionApplications(status);
+        return this.adoptionService.viewAdoptionApplications(status);
     }
 
     @Operation(summary = "approve or reject adoption application")

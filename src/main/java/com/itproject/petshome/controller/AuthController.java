@@ -4,6 +4,9 @@ package com.itproject.petshome.controller;
 import com.itproject.petshome.config.ApplicationProperties;
 import com.itproject.petshome.dto.*;
 
+import com.itproject.petshome.dto.input.LoginInput;
+import com.itproject.petshome.dto.input.RegisterInput;
+import com.itproject.petshome.dto.output.AuthorizeOutput;
 import com.itproject.petshome.exception.UserAlreadyExistException;
 import com.itproject.petshome.exception.UserCodeNotFoundException;
 import com.itproject.petshome.exception.UserNotFoundException;
@@ -26,8 +29,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+
 import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 

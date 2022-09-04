@@ -1,13 +1,9 @@
 package com.itproject.petshome.controller;
 
-import com.itproject.petshome.dto.PetDTO;
-import com.itproject.petshome.dto.PetInput;
-import com.itproject.petshome.dto.UpdateUserInput;
+import com.itproject.petshome.dto.input.UpdateUserInput;
 import com.itproject.petshome.dto.UserDTO;
 import com.itproject.petshome.exception.UserNotFoundException;
 import com.itproject.petshome.model.User;
-import com.itproject.petshome.model.enums.Adopted;
-import com.itproject.petshome.service.PetService;
 import com.itproject.petshome.service.SessionService;
 import com.itproject.petshome.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,7 +13,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @SecurityRequirement(name = "bearerAuth")
 @AllArgsConstructor

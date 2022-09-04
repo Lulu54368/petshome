@@ -1,7 +1,7 @@
 package com.itproject.petshome.service;
 
 import com.itproject.petshome.dto.AdoptionApplicationDTO;
-import com.itproject.petshome.dto.UpdateAdoptionApplicationInput;
+import com.itproject.petshome.dto.input.UpdateAdoptionApplicationInput;
 import com.itproject.petshome.dto.VolunteerApplicationDTO;
 import com.itproject.petshome.model.enums.ApplicationStatus;
 import com.itproject.petshome.repository.AdoptionApplicationRepository;
@@ -9,8 +9,6 @@ import com.itproject.petshome.repository.VolunteerApplicationRepository;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Data
 @Service
