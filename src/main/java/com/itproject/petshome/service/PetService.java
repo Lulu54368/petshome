@@ -4,8 +4,9 @@ import com.itproject.petshome.dto.PetDTO;
 import com.itproject.petshome.dto.PetInput;
 import com.itproject.petshome.mapper.PetMapper;
 import com.itproject.petshome.model.Pet;
-import com.itproject.petshome.model.enums.Adopted;
+import com.itproject.petshome.model.enums.*;
 import com.itproject.petshome.repository.PetRepository;
+import com.itproject.petshome.repository.PetRepositoryCustom;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 @Service
 public class PetService {
     private PetRepository petRepository;
+    private PetRepositoryCustom petRepositoryCustom;
 
     private PetMapper petMapper;
     public PetDTO addPet(PetInput input) {
@@ -31,14 +33,7 @@ public class PetService {
 
     }
 
-    public List<PetDTO> viewLostPet(Adopted adopted) {
-        List<PetDTO> pets = petRepository.findAll()
-                .stream()
-                .filter((pet)->pet.getAdopted() == adopted)
-                .map(pet->petMapper.toDto(pet))
-                .collect(Collectors.toList());
-        return pets;
-    }
+
 
 
 
@@ -51,4 +46,16 @@ public class PetService {
         return petDTO;
     }
 
+    public List<PetDTO> viewLostPet(Optional<Category> category,
+                                    Optional<Adopted> adopted, Optional<Color> color,
+                                    Optional<Sex> sex,
+                                    Optional<Character> character,
+                                    Optional<Integer> age, Optional<Immunization> immunization) {
+        return petRepositoryCustom
+                .findByParameters(category, adopted, color, sex, character, age, immunization)
+                .stream()
+                .map(pet->petMapper.toDto(pet))
+                .collect(Collectors.toList());
+
+    }
 }

@@ -2,11 +2,13 @@ package com.itproject.petshome.model;
 
 import com.itproject.petshome.model.enums.Adopted;
 import com.itproject.petshome.model.enums.Category;
+import com.itproject.petshome.model.enums.Color;
 import com.itproject.petshome.model.enums.Immunization;
 import com.itproject.petshome.model.enums.Sex;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.awt.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -29,7 +31,7 @@ public class Pet {
     @Column(name = "detail")
     private String detail;
     @Column(name = "color")
-    private String color ;
+    private Color color;
     @Column(name = "sex")
     private Sex sex ;
     @Column(name = "age", nullable = false)

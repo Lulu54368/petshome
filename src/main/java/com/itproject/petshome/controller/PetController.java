@@ -2,7 +2,7 @@ package com.itproject.petshome.controller;
 
 import com.itproject.petshome.dto.PetDTO;
 import com.itproject.petshome.dto.PetInput;
-import com.itproject.petshome.model.enums.Adopted;
+import com.itproject.petshome.model.enums.*;
 import com.itproject.petshome.service.PetService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @SecurityRequirement(name = "bearerAuth")
 @AllArgsConstructor
@@ -24,8 +25,11 @@ public class PetController {
     PetService petService;
     @Operation(summary = "view lost pets")
     @GetMapping("/")
-    public List<PetDTO> viewPets( @RequestParam Adopted adopted) {
+    public List<PetDTO> viewPets(@RequestParam Optional<Category> category,
+                                 @RequestParam Optional<Adopted> adopted, @RequestParam Optional<Color> color,
+                                 @RequestParam Optional<Sex> sex, @RequestParam Optional<Character> character,
+                                 @RequestParam Optional<Integer> age, @RequestParam Optional<Immunization> immunization) {
 
-        return this.petService.viewLostPet(adopted);
+        return this.petService.viewLostPet(category, adopted, color, sex, character, age, immunization);
     }
 }
