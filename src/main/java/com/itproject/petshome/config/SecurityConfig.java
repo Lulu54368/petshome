@@ -42,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        //auth.userDetailsService(userService::getUserDetailsByEmail);
+        auth.userDetailsService(userService::getUserDetailsByEmail);
         auth.inMemoryAuthentication().withUser("admin")
                 .password(passwordEncoder.encode("{noop}admin")).roles("ADMIN");
 
