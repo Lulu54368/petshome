@@ -15,6 +15,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 @Service
 @AllArgsConstructor
@@ -30,6 +32,7 @@ public class AdoptionService {
         AdoptionApplication adoptionApplication = new AdoptionApplication();
         adoptionApplication.setReason(adoptionApplicationInput.getReason());
         adoptionApplication.setPassport(adoptionApplicationInput.getPassport());
+        adoptionApplication.setTimestamp(new Timestamp(new Date().getTime()));
         adoptionApplication.setPet(pet);
         adoptionApplication.setUser(user);
         adoptionApplicationRepository.save(adoptionApplication);
