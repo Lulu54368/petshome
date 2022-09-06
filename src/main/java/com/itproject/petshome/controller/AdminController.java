@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @SecurityRequirement(name = "bearerAuth")
 @AllArgsConstructor
@@ -50,8 +51,9 @@ public class AdminController {
 
     @Operation(summary = "view adoption applications")
     @GetMapping("/adoptionApplication")
-    public List<AdoptionApplicationDTO> viewAdoptionApplications(@RequestParam ApplicationStatus status){
-        return this.adoptionService.viewAdoptionApplications(status);
+    public List<AdoptionApplicationDTO> viewAdoptionApplications(@RequestParam Optional<ApplicationStatus> status,
+                                                                 @RequestParam Optional<Long> petId){
+        return this.adoptionService.viewAdoptionApplications(status, petId);
     }
 
     @Operation(summary = "approve or reject adoption application")

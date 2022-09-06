@@ -26,7 +26,7 @@ public class APITokenSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
 
-        auth.userDetailsService(userService::getUserDetailsByEmail);
+
 
     }
     @Override

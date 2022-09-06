@@ -39,7 +39,7 @@ public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
     private final AdminServerProperties adminServer;
 
     private final SecurityProperties security;
-
+    private UserService userService;
     private MyBasicAuthenticationEntryPoint authenticationEntryPoint;
 
     private final PasswordEncoder passwordEncoder;
@@ -47,6 +47,7 @@ public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication().withUser("admin")
                 .password(passwordEncoder.encode("admin")).roles("ADMIN");
+        auth.userDetailsService(userService::getUserDetailsByEmail);
     }
     @Bean
     public ClientHttpConnector customHttpClient() {
@@ -89,7 +90,7 @@ public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
 
         // Set permissions on endpoints
         http.authorizeRequests()
-                .antMatchers("/api/v1/admin/**").authenticated();
+                .antMatchers("/api/v1/admin/**").permitAll();
 
        SavedRequestAwareAuthenticationSuccessHandler successHandler =
                 new SavedRequestAwareAuthenticationSuccessHandler();

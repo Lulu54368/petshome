@@ -1,9 +1,12 @@
 package com.itproject.petshome.repository;
 
+import com.itproject.petshome.model.AdoptionApplication;
 import com.itproject.petshome.model.Pet;
+import com.itproject.petshome.model.UserAdoptPet;
 import com.itproject.petshome.model.enums.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.thymeleaf.util.MapUtils;
 
@@ -22,8 +25,9 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class PetRepositoryCustomImpl implements PetRepositoryCustom{
     final EntityManager em;
-
-
+    private PetRepository petRepository;
+    private UserAdoptPetRepository userAdoptPetRepository;
+    AdoptionApplicationRepository adoptionApplicationRepository;
 
 
     @Override
@@ -50,5 +54,18 @@ public class PetRepositoryCustomImpl implements PetRepositoryCustom{
 
         return result;
 
+    }
+
+    @Override
+    public void delete(Pet pet) {
+        for(AdoptionApplication adoptionApplication: pet.getAdoptionApplications()){
+            adoptionApplicationRepository.delete(adoptionApplication);
+
+        }
+        for(UserAdoptPet userAdoptPet: pet.getUserAdoptPets()){
+            userAdoptPetRepository.delete(userAdoptPet);
+        }
+        petRepository.delete(pet);
+        return;
     }
 }
