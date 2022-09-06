@@ -9,7 +9,6 @@ import javax.validation.constraints.NotEmpty;
 public class UpdateAdoptionApplicationInput {
     @NotEmpty
     private ApplicationStatus applicationStatus;
-    @NotEmpty
-    private Long volunteerApplicationId;
+
 
 }

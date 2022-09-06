@@ -37,8 +37,13 @@ public class PetService {
 
 
 
-    public PetDTO updatePet(PetDTO petDTO) {
-        return petDTO;
+    public PetDTO updatePet(Long id) throws PetNotFound {
+        Pet pet = petRepository.findById(id)
+                .orElseThrow(PetNotFound::new);
+        pet.setAdopted(Adopted.YES);
+        petRepository.save(pet);
+        return petMapper.toDto(pet);
+
     }
 
     public PetDTO deletePet(Long petId) throws PetNotFound {
