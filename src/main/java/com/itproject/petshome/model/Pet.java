@@ -40,11 +40,23 @@ public class Pet {
     private String character;
     @Column(name = "immunization")
     private Immunization immunization ;
-    @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     Set<AdoptionApplication> adoptionApplications = new HashSet<>();
 
-    @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     Set<UserAdoptPet> userAdoptPets = new HashSet<>();
+    public Pet addAdoptionApplication(AdoptionApplication adoptionApplication)
+    {
+        adoptionApplications.add(adoptionApplication);
+        adoptionApplication.setPet(this);
+        return this;
+    }
+    public Pet removeAddoptionApplication(AdoptionApplication adoptionApplication)
+    {
+        adoptionApplications.remove(adoptionApplication);
+        adoptionApplication.setPet(null);
+        return this;
+    }
 
 
 
