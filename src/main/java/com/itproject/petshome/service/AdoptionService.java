@@ -44,7 +44,11 @@ public class AdoptionService {
         adoptionApplication.setTimestamp(new Timestamp(new Date().getTime()));
         adoptionApplication.setPet(pet);
         adoptionApplication.setUser(user);
+        pet.addAdoptionApplication(adoptionApplication);
+        petRepository.save(pet);
         adoptionApplicationRepository.save(adoptionApplication);
+        user.addAdoptionApplication(adoptionApplication);
+        userRepository.save(user);
         return adoptionApplicationMapper.toDto(adoptionApplication);
 
     }

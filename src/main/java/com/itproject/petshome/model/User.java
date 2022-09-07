@@ -3,6 +3,8 @@ package com.itproject.petshome.model;
 import com.itproject.petshome.model.enums.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -11,7 +13,8 @@ import java.util.Set;
 
 @Entity
 @Table(name = "user")
-@Data
+@Getter
+@Setter
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -51,6 +54,18 @@ public class User {
     private Set<UserAdoptPet> userAdoptPets= new HashSet<>();
     @Column(name = "role", nullable = false)
     private UserRole userRole = UserRole.VISITOR;
+    public User addAdoptionApplication(AdoptionApplication adoptionApplication)
+    {
+        adoptionApplications.add(adoptionApplication);
+        //adoptionApplication.setPet(this);
+        return this;
+    }
+    public User removeAddoptionApplication(AdoptionApplication adoptionApplication)
+    {
+        adoptionApplications.remove(adoptionApplication);
+        adoptionApplication.setPet(null);
+        return this;
+    }
 
 
 

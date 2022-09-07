@@ -3,13 +3,16 @@ package com.itproject.petshome.model;
 import com.itproject.petshome.model.enums.ApplicationStatus;
 import com.itproject.petshome.model.enums.UserRole;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
 @Table(name = "adoption_application")
-@Data
+@Getter
+@Setter
 public class AdoptionApplication {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

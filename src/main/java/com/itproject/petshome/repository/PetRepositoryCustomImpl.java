@@ -60,8 +60,7 @@ public class PetRepositoryCustomImpl implements PetRepositoryCustom{
         List<Pet> result = em.createQuery(query).getResultList();
         int fromInd = (page.getPageNumber()-1)* page.getPageSize();
         int toInd = Math.min(result.size(), page.getPageNumber()* page.getPageSize()+1);
-        System.out.println(fromInd);
-        System.out.println(toInd);
+
         if(fromInd < toInd)
             return result.subList(fromInd, toInd);
         else return new ArrayList<>();

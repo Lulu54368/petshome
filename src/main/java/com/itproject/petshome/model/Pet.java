@@ -6,6 +6,8 @@ import com.itproject.petshome.model.enums.Color;
 import com.itproject.petshome.model.enums.Immunization;
 import com.itproject.petshome.model.enums.Sex;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.awt.*;
@@ -14,7 +16,8 @@ import java.util.Set;
 
 @Entity
 @Table(name = "pet")
-@Data
+@Getter
+@Setter
 public class Pet {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -48,7 +51,7 @@ public class Pet {
     public Pet addAdoptionApplication(AdoptionApplication adoptionApplication)
     {
         adoptionApplications.add(adoptionApplication);
-        adoptionApplication.setPet(this);
+        //adoptionApplication.setPet(this);
         return this;
     }
     public Pet removeAddoptionApplication(AdoptionApplication adoptionApplication)
