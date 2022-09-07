@@ -2,9 +2,7 @@ package com.itproject.petshome.service;
 
 import com.itproject.petshome.dto.AdoptionApplicationDTO;
 import com.itproject.petshome.dto.input.AdoptionApplicationInput;
-import com.itproject.petshome.exception.AdoptionApplicationNotFound;
-import com.itproject.petshome.exception.PetNotFound;
-import com.itproject.petshome.exception.UserNotFoundException;
+import com.itproject.petshome.exception.*;
 import com.itproject.petshome.mapper.AdoptionApplicationMapper;
 import com.itproject.petshome.model.AdoptionApplication;
 import com.itproject.petshome.model.Pet;
@@ -35,9 +33,16 @@ public class AdoptionService {
     AdoptionApplicationCustomRepository adoptionApplicationCustom;
 
     public AdoptionApplicationDTO addAdoptionApplication
-            (@Valid AdoptionApplicationInput adoptionApplicationInput, Long petId) throws UserNotFoundException, PetNotFound {
+            (@Valid AdoptionApplicationInput adoptionApplicationInput, Long petId) throws UserNotFoundException,
+            PetNotFound, AdoptionApplicationAlreadyExistException, AdoptionApplicationExceedLimitException {
         Pet pet = petRepository.findById(petId).orElseThrow(PetNotFound::new);
         User user = sessionService.getCurrentUser().orElseThrow(UserNotFoundException::new);
+        if(adoptionApplicationRepository.existsByUserAndPet(user, pet) == true)
+            throw new AdoptionApplicationAlreadyExistException();
+        if(user.getAdoptionApplications().size()>=3)
+            throw new AdoptionApplicationExceedLimitException();
+        if(user.getUserAdoptPets().size()>2)
+            throw new AdoptionApplicationExceedLimitException();
         AdoptionApplication adoptionApplication = new AdoptionApplication();
         adoptionApplication.setReason(adoptionApplicationInput.getReason());
         adoptionApplication.setPassport(adoptionApplicationInput.getPassport());

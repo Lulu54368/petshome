@@ -6,6 +6,7 @@ import com.itproject.petshome.model.User;
 import lombok.Data;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -15,4 +16,8 @@ public interface AdoptionApplicationRepository extends JpaRepository<AdoptionApp
 
 
     Optional<AdoptionApplication> findByUserAndPet(User user, Pet pet);
+
+    boolean existsByUserAndPet(@NonNull User user, @NonNull Pet pet);
+
+
 }

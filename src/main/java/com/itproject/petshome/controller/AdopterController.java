@@ -2,9 +2,7 @@ package com.itproject.petshome.controller;
 
 import com.itproject.petshome.dto.*;
 import com.itproject.petshome.dto.input.AdoptionApplicationInput;
-import com.itproject.petshome.exception.AdoptionApplicationNotFound;
-import com.itproject.petshome.exception.PetNotFound;
-import com.itproject.petshome.exception.UserNotFoundException;
+import com.itproject.petshome.exception.*;
 import com.itproject.petshome.model.AdoptionApplication;
 import com.itproject.petshome.service.AdoptionService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,7 +25,8 @@ public class AdopterController {
     @PostMapping("/application/{petId}")
     public AdoptionApplicationDTO addAdoptionApplication
             (@RequestBody @Valid AdoptionApplicationInput adoptionApplicationInput,
-             @PathVariable("petId") Long petId) throws UserNotFoundException, PetNotFound {
+             @PathVariable("petId") Long petId) throws UserNotFoundException, PetNotFound,
+            AdoptionApplicationAlreadyExistException, AdoptionApplicationExceedLimitException {
         return this.adoptionService.addAdoptionApplication(adoptionApplicationInput, petId);
     }
 
