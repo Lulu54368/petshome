@@ -10,11 +10,8 @@ import javax.validation.constraints.Size;
 public class UpdateUserInput {
 
 
-
-
-
     private String address;
-
+    @NotEmpty
     private String dob;
     @NotEmpty
     private String firstname;
@@ -22,11 +19,11 @@ public class UpdateUserInput {
     private String lastname;
 
     private String bio;
-
+    @NotEmpty
     private String identification;
-
+    @NotEmpty
     private String city;
-
+    @NotEmpty
     private String country;
 
 }

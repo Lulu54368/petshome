@@ -26,13 +26,13 @@ public class UserController {
     @Operation(summary = "View user information")
     @GetMapping("/information")
     public UserDTO viewUserInformation() throws  UserNotFoundException {
-        User currUser = sessionService.getCurrentUser().orElseThrow(UserNotFoundException::new);
-        return this.userService.viewUserInformation(currUser);
+
+        return this.userService.viewUserInformation();
     }
 
     @Operation(summary = "Update or add user information")
     @PutMapping("/information")
-    public UserDTO updateUserInformation(@RequestBody @Valid UpdateUserInput input) {
+    public UserDTO updateUserInformation(@RequestBody @Valid UpdateUserInput input) throws UserNotFoundException {
         return this.userService.updateUserInformation(input);
     }
 

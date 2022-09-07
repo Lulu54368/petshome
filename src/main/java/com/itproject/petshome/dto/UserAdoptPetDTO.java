@@ -6,7 +6,7 @@ import java.sql.Timestamp;
 @Data
 public class UserAdoptPetDTO {
     private Long id;
-    private Timestamp timestamp;
+    private Timestamp timeAdopted;
     Long userId;
     Long petId;
 }

@@ -8,6 +8,7 @@ import com.itproject.petshome.dto.input.UpdateUserInput;
 import com.itproject.petshome.exception.UserAlreadyExistException;
 import com.itproject.petshome.exception.UserCodeNotFoundException;
 import com.itproject.petshome.exception.UserNotFoundException;
+import com.itproject.petshome.mapper.UserMapper;
 import com.itproject.petshome.model.User;
 import com.itproject.petshome.model.UserDetails;
 import com.itproject.petshome.repository.UserCodeRepository;
@@ -41,7 +42,7 @@ public class UserService {
 
     private EmailService emailService;
     private UserCodeRepository userCodeRepository;
-
+    private UserMapper userMapper;
 
 
     public UserDetails getUserDetailsByEmail(String email) throws UsernameNotFoundException {
@@ -115,11 +116,16 @@ public class UserService {
 
 
     }
-    public UserDTO viewUserInformation(User user) {
-        return null;
+    public UserDTO viewUserInformation() throws UserNotFoundException {
+        User user = sessionService.getCurrentUser().orElseThrow(UserNotFoundException::new);
+        return userMapper.toDto(user);
+
     }
-    public UserDTO updateUserInformation(UpdateUserInput input) {
-        return null;
+    public UserDTO updateUserInformation(UpdateUserInput input) throws UserNotFoundException {
+        User user = sessionService.getCurrentUser().orElseThrow(UserNotFoundException::new);
+        userMapper.update(user, input);
+        userRepository.save(user);
+        return userMapper.toDto(user);
     }
 
 

@@ -16,9 +16,9 @@ public class UserDTO extends UpdateUserInput {
     @Email
     String email;
     private Boolean verified;
-    private Set<VolunteerApplicationDTO> volunteerApplicationDTOS;
-    private Set<AdoptionApplicationDTO> adoptionApplicationDTOS;
-    private Set<DonationDTO> donationDTOS;
-    private Set<UserAdoptPet> userAdoptPets;
+    private Set<VolunteerApplicationDTO> volunteerApplicationDTOs;
+    private Set<AdoptionApplicationDTO> adoptionApplicationDTOs;
+    private Set<DonationDTO> donationDTOs;
+    private Set<UserAdoptPetDTO> userAdoptPetDTOs;
     private UserRole userRole;
 }
