@@ -59,7 +59,8 @@ public class AdminController {
     @Operation(summary = "approve or reject adoption application")
     @PutMapping("/adoptionApplication/{id}")
     public AdoptionApplicationDTO updateAdoptionApplication
-            (@RequestBody @Valid ApplicationStatus applicationStatus, @PathVariable("id") Long applicationId) throws AdoptionApplicationNotFound {
+            (@RequestParam @Valid ApplicationStatus applicationStatus,
+             @PathVariable("id") Long applicationId) throws AdoptionApplicationNotFound {
         return this.adminService.updateAdoptionApplication(applicationStatus, applicationId);
     }
 

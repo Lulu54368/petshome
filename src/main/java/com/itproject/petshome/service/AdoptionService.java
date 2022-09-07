@@ -39,7 +39,13 @@ public class AdoptionService {
         User user = sessionService.getCurrentUser().orElseThrow(UserNotFoundException::new);
         if(adoptionApplicationRepository.existsByUserAndPet(user, pet) == true)
             throw new AdoptionApplicationAlreadyExistException();
-        if(user.getAdoptionApplications().size()>=3)
+        if(user.getAdoptionApplications()
+                .stream()
+                .filter(adoptionApplication ->
+                        adoptionApplication.getApplicationStatus()
+                                .equals(ApplicationStatus.PENDING))
+                .collect(Collectors.toList())
+                .size()>=3)
             throw new AdoptionApplicationExceedLimitException();
         if(user.getUserAdoptPets().size()>2)
             throw new AdoptionApplicationExceedLimitException();
@@ -49,11 +55,11 @@ public class AdoptionService {
         adoptionApplication.setTimestamp(new Timestamp(new Date().getTime()));
         adoptionApplication.setPet(pet);
         adoptionApplication.setUser(user);
-        pet.addAdoptionApplication(adoptionApplication);
+        /*pet.addAdoptionApplication(adoptionApplication);
         petRepository.save(pet);
         adoptionApplicationRepository.save(adoptionApplication);
         user.addAdoptionApplication(adoptionApplication);
-        userRepository.save(user);
+        userRepository.save(user);*/
         return adoptionApplicationMapper.toDto(adoptionApplication);
 
     }
