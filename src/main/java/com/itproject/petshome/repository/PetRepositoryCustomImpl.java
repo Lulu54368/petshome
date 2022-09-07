@@ -7,10 +7,15 @@ import com.itproject.petshome.model.enums.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 import org.thymeleaf.util.MapUtils;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -34,12 +39,14 @@ public class PetRepositoryCustomImpl implements PetRepositoryCustom{
     public List<Pet> findByParameters(Optional<Category> category,
                                       Optional<Adopted> adopted,
                                       Optional<Color> color, Optional<Sex> sex, Optional<Character> character,
-                                      Optional<Integer> age, Optional<Immunization> immunization) {
+                                      Optional<Integer> age, Optional<Immunization> immunization, Pageable page) {
         final CriteriaBuilder cb = em.getCriteriaBuilder();
         final CriteriaQuery<Pet> query = cb.createQuery(Pet.class);
 
         final Root<Pet> pet = query.from(Pet.class);
         final ArrayList<Predicate> predicates = new ArrayList<>();
+
+
 
         category.ifPresent(c -> predicates.add(cb.equal(pet.get("category"), c)));
         adopted.ifPresent(c -> predicates.add(cb.equal(pet.get("adopted"), c)));
@@ -51,10 +58,19 @@ public class PetRepositoryCustomImpl implements PetRepositoryCustom{
         Predicate[] predicatesArray = new Predicate[predicates.size()];
         query.where(predicates.toArray(predicatesArray));
         List<Pet> result = em.createQuery(query).getResultList();
+        int fromInd = (page.getPageNumber()-1)* page.getPageSize();
+        int toInd = Math.min(result.size(), page.getPageNumber()* page.getPageSize()+1);
+        System.out.println(fromInd);
+        System.out.println(toInd);
+        if(fromInd < toInd)
+            return result.subList(fromInd, toInd);
+        else return new ArrayList<>();
+        //return PageableExecutionUtils.getPage(result,page, () -> result.size()).toList();
 
-        return result;
 
     }
+
+
 
     @Override
     public void delete(Pet pet) {

@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,12 +25,12 @@ public class PetController {
 
     PetService petService;
     @Operation(summary = "view lost pets")
-    @GetMapping("/")
-    public List<PetDTO> viewPets(@RequestParam Optional<Category> category,
+    @GetMapping("/{pageNo}")
+    public List<PetDTO> viewPets(@PathVariable("pageNo") Integer page, @RequestParam Optional<Category> category,
                                  @RequestParam Optional<Adopted> adopted, @RequestParam Optional<Color> color,
                                  @RequestParam Optional<Sex> sex, @RequestParam Optional<Character> character,
                                  @RequestParam Optional<Integer> age, @RequestParam Optional<Immunization> immunization) {
 
-        return this.petService.viewLostPet(category, adopted, color, sex, character, age, immunization);
+        return this.petService.viewLostPet(category, adopted, color, sex, character, age, immunization, page);
     }
 }

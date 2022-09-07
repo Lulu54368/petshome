@@ -5,6 +5,8 @@ import com.itproject.petshome.model.enums.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -17,7 +19,7 @@ public interface PetRepositoryCustom {
                                       Optional<Adopted> adopted, Optional<Color> color,
                                       Optional<Sex> sex, Optional<Character> character,
                                       Optional<Integer> age,
-                                      Optional<Immunization> immunization);
+                                      Optional<Immunization> immunization, Pageable page);
 
    public void delete(Pet pet);
 }

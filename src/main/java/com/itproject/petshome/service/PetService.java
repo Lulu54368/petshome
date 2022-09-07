@@ -1,11 +1,9 @@
 package com.itproject.petshome.service;
 
-import com.itproject.petshome.dto.AdoptionApplicationDTO;
 import com.itproject.petshome.dto.PetDTO;
 import com.itproject.petshome.dto.input.PetInput;
 import com.itproject.petshome.exception.PetNotFound;
 import com.itproject.petshome.mapper.PetMapper;
-import com.itproject.petshome.model.AdoptionApplication;
 import com.itproject.petshome.model.Pet;
 import com.itproject.petshome.model.enums.*;
 import com.itproject.petshome.repository.PetRepository;
@@ -13,6 +11,9 @@ import com.itproject.petshome.repository.PetRepositoryCustom;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -62,9 +63,10 @@ public class PetService {
                                     Optional<Adopted> adopted, Optional<Color> color,
                                     Optional<Sex> sex,
                                     Optional<Character> character,
-                                    Optional<Integer> age, Optional<Immunization> immunization) {
+                                    Optional<Integer> age, Optional<Immunization> immunization, Integer pageNo) {
+        Pageable page = PageRequest.of(pageNo, 10);
         return petRepositoryCustom
-                .findByParameters(category, adopted, color, sex, character, age, immunization)
+                .findByParameters(category, adopted, color, sex, character, age, immunization, page)
                 .stream()
                 .map(pet->petMapper.toDto(pet))
                 .collect(Collectors.toList());
