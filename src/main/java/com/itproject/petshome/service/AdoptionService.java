@@ -34,7 +34,8 @@ public class AdoptionService {
 
     public AdoptionApplicationDTO addAdoptionApplication
             (@Valid AdoptionApplicationInput adoptionApplicationInput, Long petId) throws UserNotFoundException,
-            PetNotFound, AdoptionApplicationAlreadyExistException, AdoptionApplicationExceedLimitException {
+            PetNotFound, AdoptionApplicationAlreadyExistException, AdoptionApplicationExceedLimitException,
+            ProfileNotUpdated {
         Pet pet = petRepository.findById(petId).orElseThrow(PetNotFound::new);
         User user = sessionService.getCurrentUser().orElseThrow(UserNotFoundException::new);
         if(adoptionApplicationRepository.existsByUserAndPet(user, pet) == true)
@@ -49,6 +50,8 @@ public class AdoptionService {
             throw new AdoptionApplicationExceedLimitException();
         if(user.getUserAdoptPets().size()>2)
             throw new AdoptionApplicationExceedLimitException();
+        if(user.getIdentification() == null)
+            throw new ProfileNotUpdated();
         AdoptionApplication adoptionApplication = new AdoptionApplication();
         adoptionApplication.setReason(adoptionApplicationInput.getReason());
         adoptionApplication.setPassport(adoptionApplicationInput.getPassport());

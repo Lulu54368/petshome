@@ -26,7 +26,7 @@ public class AdopterController {
     public AdoptionApplicationDTO addAdoptionApplication
             (@RequestBody @Valid AdoptionApplicationInput adoptionApplicationInput,
              @PathVariable("petId") Long petId) throws UserNotFoundException, PetNotFound,
-            AdoptionApplicationAlreadyExistException, AdoptionApplicationExceedLimitException {
+            AdoptionApplicationAlreadyExistException, AdoptionApplicationExceedLimitException, ProfileNotUpdated {
         return this.adoptionService.addAdoptionApplication(adoptionApplicationInput, petId);
     }
 
