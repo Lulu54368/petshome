@@ -26,7 +26,7 @@ services:
     ports:
       - "8080:8080"
     environment:
-      EMAILPWD: ${EMAILPWD}
+      EMAILPWD: ${QQ_PWD}
 
       PORT: 8080
       MYSQL_HOST: 'mysql'
