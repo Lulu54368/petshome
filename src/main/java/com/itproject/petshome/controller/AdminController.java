@@ -50,22 +50,22 @@ public class AdminController {
     }
 
     @Operation(summary = "view adoption applications")
-    @GetMapping("/adoptionApplication")
+    @GetMapping("/adoption/application")
     public List<AdoptionApplicationDTO> viewAdoptionApplications(@RequestParam Optional<ApplicationStatus> status,
                                                                  @RequestParam Optional<Long> petId){
         return this.adoptionService.viewAdoptionApplications(status, petId);
     }
 
     @Operation(summary = "approve or reject adoption application")
-    @PutMapping("/adoptionApplication/{id}")
+    @PutMapping("/adoption/application/{id}")
     public AdoptionApplicationDTO updateAdoptionApplication
-            (@RequestParam @Valid ApplicationStatus applicationStatus,
+            (@RequestParam @Valid ApplicationStatus applicationstatus,
              @PathVariable("id") Long applicationId) throws AdoptionApplicationNotFound {
-        return this.adminService.updateAdoptionApplication(applicationStatus, applicationId);
+        return this.adminService.updateAdoptionApplication(applicationstatus, applicationId);
     }
 
     @Operation(summary = "view volunteer applications")
-    @GetMapping("/volunteerApplication/{id}")
+    @GetMapping("/volunteer/application/{id}")
     public VolunteerApplicationDTO viewVolunteerApplication
             (@RequestParam ApplicationStatus status,
             @PathVariable("id") Long id) {
