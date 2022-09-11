@@ -54,18 +54,6 @@ public class User {
     private Set<UserAdoptPet> userAdoptPets= new HashSet<>();
     @Column(name = "role", nullable = false)
     private UserRole userRole = UserRole.VISITOR;
-    public User addAdoptionApplication(AdoptionApplication adoptionApplication)
-    {
-        adoptionApplications.add(adoptionApplication);
-        //adoptionApplication.setPet(this);
-        return this;
-    }
-    public User removeAddoptionApplication(AdoptionApplication adoptionApplication)
-    {
-        adoptionApplications.remove(adoptionApplication);
-        adoptionApplication.setPet(null);
-        return this;
-    }
 
 
 

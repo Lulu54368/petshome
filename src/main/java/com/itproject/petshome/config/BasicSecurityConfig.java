@@ -136,6 +136,7 @@ public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
         config.addAllowedOrigin(properties.getAllowedOrigins());
+        System.out.println(properties.getAllowedOrigins());
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         source.registerCorsConfiguration("/**", config);

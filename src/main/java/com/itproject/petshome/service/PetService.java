@@ -72,4 +72,11 @@ public class PetService {
                 .collect(Collectors.toList());
 
     }
+
+    public PetDTO viewPet(Long petId) throws PetNotFound {
+        return petMapper
+                .toDto(petRepository
+                        .findById(petId)
+                        .orElseThrow(PetNotFound::new));
+    }
 }
