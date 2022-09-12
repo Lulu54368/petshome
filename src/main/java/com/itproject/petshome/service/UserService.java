@@ -90,7 +90,7 @@ public class UserService {
         userCodeRepository.save(userRegistrationCodeDTO);
 
         emailService.sendEmail(user, siteURL);
-        return mapper.map(user, UserDTO.class);
+        return userMapper.toDto(user);
     }
 
 
@@ -141,6 +141,11 @@ public class UserService {
 
     public DonationDTO addDonation(Long userId, DonationInput donationInput) {
         return null;
+    }
+
+    public Boolean checkUpdated() throws UserNotFoundException {
+        User user = sessionService.getCurrentUser().orElseThrow(UserNotFoundException::new);
+        return user.getIdentification()==null;
     }
 }
 
