@@ -31,7 +31,7 @@ public class UserController {
     }
 
     @Operation(summary = "Update or add user information")
-    @PutMapping("/")
+    @PostMapping("/")
     public UserDTO updateUserInformation(@RequestBody @Valid UpdateUserInput input) throws UserNotFoundException {
         return this.userService.updateUserInformation(input);
     }

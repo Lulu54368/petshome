@@ -21,7 +21,7 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
-@SecurityRequirement(name = "bearerAuth")
+@SecurityRequirement(name = "basicAuth")
 @AllArgsConstructor
 @RestController
 @Validated
@@ -37,11 +37,6 @@ public class AdminController {
         return this.petService.addPet(input);
     }
 
-   /* @Operation(summary = "update pets")
-    @PutMapping("/pet/{petId}")
-    public PetDTO updatePet(@PathVariable("petId") Long petId) throws PetNotFound {
-        return this.petService.updatePet(petId);
-    }*/
 
     @Operation(summary = "delete pets")
     @DeleteMapping("/pet/{pet_id}")

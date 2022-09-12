@@ -25,18 +25,18 @@ import java.util.List;
 @AllArgsConstructor
 @RestController
 @Validated
-@RequestMapping("/api/v1/user")
+@RequestMapping("/api/v1/donation")
 public class DonatorController {
     UserService userService;
     SessionService sessionService;
     @Operation(summary = "add donation")
-    @PostMapping("/donate")
+    @PostMapping("/")
     public DonationDTO addDonation(@RequestBody @Valid Long userId, DonationInput donationInput) {
         return this.userService.addDonation(userId, donationInput);
     }
 
     @Operation(summary = "view donation")
-    @GetMapping("/viewDonation")
+    @GetMapping("/")
     public DonationDTO viewDonation() throws UserNotFoundException {
         User currUser = sessionService.getCurrentUser().orElseThrow(UserNotFoundException::new);
         return this.userService.viewDonation(currUser);
