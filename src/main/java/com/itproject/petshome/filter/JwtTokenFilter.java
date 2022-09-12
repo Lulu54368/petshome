@@ -5,6 +5,7 @@ import com.itproject.petshome.utils.JwtTokenUtil;
 
 import io.jsonwebtoken.JwtException;
 import lombok.AllArgsConstructor;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import static org.apache.logging.log4j.util.Strings.isEmpty;
-
+@Order(2)
 @Component
 @AllArgsConstructor
 public class JwtTokenFilter extends OncePerRequestFilter {
