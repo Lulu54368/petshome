@@ -1,5 +1,6 @@
 package com.itproject.petshome.config;
 
+import com.itproject.petshome.filter.CustomFilter;
 import com.itproject.petshome.filter.JwtTokenFilter;
 import com.itproject.petshome.service.UserService;
 import de.codecentric.boot.admin.server.config.AdminServerProperties;
