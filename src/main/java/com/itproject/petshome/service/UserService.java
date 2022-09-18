@@ -2,6 +2,13 @@ package com.itproject.petshome.service;
 
 import com.itproject.petshome.config.ApplicationProperties;
 import com.itproject.petshome.dto.*;
+<<<<<<< Updated upstream
+=======
+import com.itproject.petshome.dto.input.DonationInput;
+import com.itproject.petshome.dto.input.RegisterInput;
+import com.itproject.petshome.dto.input.UpdateUserInput;
+import com.itproject.petshome.dto.input.VolunteerApplicationInput;
+>>>>>>> Stashed changes
 import com.itproject.petshome.exception.UserAlreadyExistException;
 import com.itproject.petshome.exception.UserCodeNotFoundException;
 import com.itproject.petshome.exception.UserNotFoundException;
@@ -136,9 +143,7 @@ public class UserService {
         return null;
     }
 
-    public VolunteerApplicationDTO addVolunteerApplication(VolunteerApplicationDTO volunteerApplicationDTO) {
-        return null;
-    }
+
 
     public DonationDTO addDonation(Long userId, DonationInput donationInput) {
         return null;
