@@ -231,7 +231,11 @@
 			<artifactId>maven-compiler-plugin</artifactId>
 			<version>3.10.1</version>
 		</dependency>
-
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk-ses</artifactId>
+			<version>1.12.305</version>
+		</dependency>
 
 
 
