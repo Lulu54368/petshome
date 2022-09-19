@@ -46,24 +46,35 @@ public class EmailVerificationServiceImpl implements EmailService {
         String TO = user.getEmail();
 
         // The email body for recipients with non-HTML email clients.
-        final String TEXTBODY = "Please verify your email"+siteURL;
+        String content = "Hi there,"
+                + "<br>Please click the link below to verify your registration:<br>"
+                + "<h3><a href=\"[[URL]]\" target=\"_self\">VERIFY</a></h3>"
+                + "Thank you,<br>"
+                + "pet's home.co";
+
 
 
 
         try {
-                AmazonSimpleEmailService client =
+            String userCode = userCodeRepository
+                    .findById(user.getId())
+                    .getVerificationCode();
+            String verifyURL = siteURL + "/api/v1/auth/verify?code=" + userCode;
+            AmazonSimpleEmailService client =
                         AmazonSimpleEmailServiceClientBuilder.standard()
                                 // Replace US_WEST_2 with the AWS Region you're using for
                                 // Amazon SES.
                                 .withRegion(Regions.AP_SOUTHEAST_2).build();
-                SendEmailRequest request = new SendEmailRequest()
+            content = content.replace("[[URL]]", verifyURL);
+            System.out.println(content);
+            SendEmailRequest request = new SendEmailRequest()
                         .withDestination(
                                 new Destination().withToAddresses(TO))
                         .withMessage(new Message()
                                 .withBody(new Body()
 
-                                        .withText(new Content()
-                                                .withCharset("UTF-8").withData(TEXTBODY)))
+                                        .withHtml(new Content()
+                                                .withCharset("UTF-8").withData(content)))
                                 .withSubject(new Content()
                                         .withCharset("UTF-8").withData(SUBJECT)))
                         .withSource(FROM);
