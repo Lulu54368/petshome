@@ -1,5 +1,8 @@
 package com.itproject.petshome.service;
 
+import com.amazonaws.auth.AWSCredentialsProvider;
+import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
+import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClientBuilder;
@@ -8,6 +11,7 @@ import com.itproject.petshome.exception.UserCodeNotFoundException;
 import com.itproject.petshome.model.User;
 import com.itproject.petshome.repository.UserCodeRepository;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -56,14 +60,16 @@ public class EmailVerificationServiceImpl implements EmailService {
 
 
         try {
+            DefaultAWSCredentialsProviderChain credentialsProvider = new DefaultAWSCredentialsProviderChain();
+
             String userCode = userCodeRepository
                     .findById(user.getId())
                     .getVerificationCode();
             String verifyURL = siteURL + "/api/v1/auth/verify?code=" + userCode;
             AmazonSimpleEmailService client =
                         AmazonSimpleEmailServiceClientBuilder.standard()
-                                // Replace US_WEST_2 with the AWS Region you're using for
-                                // Amazon SES.
+                                .withCredentials(credentialsProvider)
+
                                 .withRegion(Regions.AP_SOUTHEAST_2).build();
             content = content.replace("[[URL]]", verifyURL);
             System.out.println(content);
