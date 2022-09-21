@@ -135,9 +135,6 @@ public class UserService {
         return null;
     }
 
-    public VolunteerApplicationDTO addVolunteerApplication(VolunteerApplicationDTO volunteerApplicationDTO) {
-        return null;
-    }
 
     public DonationDTO addDonation(Long userId, DonationInput donationInput) {
         return null;
