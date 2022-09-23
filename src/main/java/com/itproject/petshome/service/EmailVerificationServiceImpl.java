@@ -43,7 +43,7 @@ public class EmailVerificationServiceImpl implements EmailService {
 
 
         try {
-            helper.setFrom("1245637623@qq.com");
+            helper.setFrom("petshome@cutelulu.me");
             helper.setTo(toAddress);
             helper.setSubject(subject);
             helper.setText(content);
