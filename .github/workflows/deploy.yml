@@ -11,7 +11,8 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-
+    env:
+      EMAILPWD: ${EMAILPWD}
     steps:
       - uses: actions/checkout@v2
 
@@ -28,4 +29,5 @@ jobs:
               cd IT-project-backend
               git pull
               git checkout
+              docker-compose down
               docker-compose up --build
