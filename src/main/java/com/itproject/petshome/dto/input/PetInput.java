@@ -21,10 +21,11 @@ public class PetInput {
     private String nickname;
     @NotNull
     private String detail;
+
     private Color color = Color.UNDEFINED;
 
     private Sex sex = Sex.UNDEFINED;
-
+    @NotEmpty
     private int age;
 
     private String character;

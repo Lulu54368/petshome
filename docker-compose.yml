@@ -32,7 +32,7 @@ services:
 
 
       EMAILPWD: ${EMAILPWD}
-    
+
       PORT: 8080
       MYSQL_HOST: 'mysql'
       MYSQL_PWD: 'password'
