@@ -29,7 +29,7 @@ jobs:
 
         run:
           sudo apt-get update -y && sudo apt-get install -y
-          sudo apt-get install docker-engine -y
+          sudo apt-get install docker -y
           sudo service docker start
           docker-compose
           docker tag petshome:app ${{secrets.DOCKER_HUB_USERNAME}}/petshome:app
