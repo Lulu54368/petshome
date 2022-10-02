@@ -23,9 +23,11 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
-      - run:
-          - name: build and push
-            command: |
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: build and push
+        with:
+          scripts: |
 
               docker-compose build 
               docker tag petshome:app "$secrets.DOCKER_HUB_USERNAME"/petshome:app
