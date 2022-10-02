@@ -38,7 +38,11 @@ jobs:
 
 
    
-
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      EMAILPWD: ${EMAILPWD}
+    steps:
       - name: Executing remote command
         uses: appleboy/ssh-action@v0.1.5
         with:
@@ -48,7 +52,7 @@ jobs:
           KEY: ${{ secrets.SSHKEY }}
           script: |
 
-            docker-compose down
+            
             cd IT-project-backend
             docker pull ${{secrets.DOCKER_HUB_USERNAME}}/petshome:latest
             docker run ${{secrets.DOCKER_HUB_USERNAME}}/petshome:latest
