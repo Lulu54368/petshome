@@ -28,7 +28,7 @@ jobs:
 
 
         run:
-          sudo apt-get update -y && sudo apt-get install -y linux-image-extra-$(uname -r)
+          sudo apt-get update -y && sudo apt-get install -y
           sudo apt-get install docker-engine -y
           sudo service docker start
           docker-compose
