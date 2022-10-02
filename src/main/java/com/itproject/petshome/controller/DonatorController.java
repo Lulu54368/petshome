@@ -32,7 +32,7 @@ public class DonatorController {
     DonatorService donatorService;
     @Operation(summary = "add donation")
     @PostMapping("/")
-    public DonationDTO addDonation(@RequestBody @Valid DonationInput donationInput) {
+    public DonationDTO addDonation(@RequestBody @Valid DonationInput donationInput) throws UserNotFoundException{
         return this.donatorService.addDonation(donationInput);
     }
 

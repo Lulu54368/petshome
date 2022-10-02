@@ -26,9 +26,9 @@ public class DonatorService {
     DonationRepository donationRepository;
 
     DonationMapper donationMapper;
-    public DonationDTO addDonation(@Valid DonationInput donationInput){
-        // Anonymous users are recorded as null
-        User user = this.sessionService.getCurrentUser().orElse(null);
+    public DonationDTO addDonation(@Valid DonationInput donationInput) throws UserNotFoundException{
+
+        User user = this.sessionService.getCurrentUser().orElseThrow(UserNotFoundException::new);
         Donation donation  = new Donation();
         donation.setAmount(donationInput.getDonationAmount());
         donation.setTimestamp(new Timestamp(new Date().getTime()));
