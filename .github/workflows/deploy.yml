@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-
+    env:EMAILPWD: ${EMAILPWD}
     runs-on: ubuntu-latest
 
     steps:
@@ -25,7 +25,7 @@ jobs:
         uses: docker/setup-buildx-action@v2
       - name: build
 
-        env:EMAILPWD: ${EMAILPWD}
+
         run:
           sudo apt-get update -y && sudo apt-get install -y linux-image-extra-$(uname -r)
           sudo apt-get install docker-engine -y
