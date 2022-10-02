@@ -48,6 +48,6 @@ jobs:
           PORT: ${{ secrets.PORT }}
           KEY: ${{ secrets.SSHKEY }}
           script: |
-            
+            cd IT-project-backend
             docker pull "$secrets.DOCKER_HUB_USERNAME"/petshome
             docker-compose up --build
