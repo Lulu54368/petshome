@@ -10,7 +10,7 @@ on:
 jobs:
   build:
 
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     env:
       EMAILPWD: ${EMAILPWD}
     steps:
@@ -48,6 +48,7 @@ jobs:
           PORT: ${{ secrets.PORT }}
           KEY: ${{ secrets.SSHKEY }}
           script: |
+            docker-compose down
             cd IT-project-backend
             docker pull "$secrets.DOCKER_HUB_USERNAME"/petshome
             docker-compose up --build
