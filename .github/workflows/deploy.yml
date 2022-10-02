@@ -28,16 +28,16 @@ jobs:
 
 
         run:
-          sudo apt-get update -y && sudo apt-get install -y
-          sudo apt-get install docker -y
-          sudo service docker start
-          docker-compose
-          docker tag petshome:app ${{secrets.DOCKER_HUB_USERNAME}}/petshome:app
-          docker tag petshome:mysql ${{secrets.DOCKER_HUB_USERNAME}}/petshome:mysql
-          docker tag petshome:redis ${{secrets.DOCKER_HUB_USERNAME}}/petshome:redis
-          docker push ${{secrets.DOCKER_HUB_USERNAME}}/petshome:app
-          docker push ${{secrets.DOCKER_HUB_USERNAME}}/petshome:mysql
-          docker push ${{secrets.DOCKER_HUB_USERNAME}}/petshome:redis
+          - sudo apt-get update -y && sudo apt-get install -y
+          - sudo apt-get install docker -y
+          - sudo service docker start
+          - docker-compose
+          - docker tag petshome:app ${{secrets.DOCKER_HUB_USERNAME}}/petshome:app
+          - docker tag petshome:mysql ${{secrets.DOCKER_HUB_USERNAME}}/petshome:mysql
+          - docker tag petshome:redis ${{secrets.DOCKER_HUB_USERNAME}}/petshome:redis
+          - docker push ${{secrets.DOCKER_HUB_USERNAME}}/petshome:app
+          - docker push ${{secrets.DOCKER_HUB_USERNAME}}/petshome:mysql
+          - docker push ${{secrets.DOCKER_HUB_USERNAME}}/petshome:redis
 
 
 
