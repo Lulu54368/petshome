@@ -24,8 +24,9 @@ jobs:
       - name: Build and push
         uses: docker/bake-action@master
         with:
-          
+          files: ["docker-compose.yml"]
           push: true
+          tag: "$secrets.DOCKER_HUB_USERNAME/petshome:latest"
 
 
   deploy:
