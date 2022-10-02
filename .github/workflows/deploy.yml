@@ -24,9 +24,10 @@ jobs:
 
       - name: Build and push
         uses: docker/bake-action@master
-        files: ["docker-compose.yml"]
+
         with:
           push: true
+          files: ["docker-compose.yml"]
 
   deploy:
     runs-on: ubuntu-latest
