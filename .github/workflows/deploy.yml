@@ -24,14 +24,18 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
       - name: build
+        needs: Set up Docker Buildx
+
+        env:EMAILPWD: ${EMAILPWD}
         run:
-          docker-compose build
-          docker tag petshome:app "$secrets.DOCKER_HUB_USERNAME"/petshome:app
-          docker tag petshome:mysql "$secrets.DOCKER_HUB_USERNAME"/petshome:mysql
-          docker tag petshome:redis "$secrets.DOCKER_HUB_USERNAME"/petshome:redis
-          docker push "$secrets.DOCKER_HUB_USERNAME"/petshome:app
-          docker push "$secrets.DOCKER_HUB_USERNAME"/petshome:mysql
-          docker push "$secrets.DOCKER_HUB_USERNAME"/petshome:redis
+
+          docker buildx bake
+          docker tag petshome:app ${{secrets.DOCKER_HUB_USERNAME}}/petshome:app
+          docker tag petshome:mysql ${{secrets.DOCKER_HUB_USERNAME}}/petshome:mysql
+          docker tag petshome:redis ${{secrets.DOCKER_HUB_USERNAME}}/petshome:redis
+          docker push ${{secrets.DOCKER_HUB_USERNAME}}/petshome:app
+          docker push ${{secrets.DOCKER_HUB_USERNAME}}/petshome:mysql
+          docker push ${{secrets.DOCKER_HUB_USERNAME}}/petshome:redis
 
 
 
@@ -50,5 +54,5 @@ jobs:
           script: |
             docker-compose down
             cd IT-project-backend
-            docker pull "$secrets.DOCKER_HUB_USERNAME"/petshome
-            docker run "$secrets.DOCKER_HUB_USERNAME"/petshome
+            docker pull ${{secrets.DOCKER_HUB_USERNAME}}/petshome
+            docker run ${{secrets.DOCKER_HUB_USERNAME}}/petshome
