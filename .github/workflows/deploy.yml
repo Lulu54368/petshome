@@ -46,11 +46,8 @@ jobs:
    
   deploy:
     runs-on: ubuntu-latest
-    env:
-      EMAILPWD: ${EMAILPWD}
-      MYSQL_HOST: 'mysql'
-      MYSQL_PWD: 'password'
-      Redis_Host: 'redis'
+
+
     steps:
       - name: Executing remote command
         uses: appleboy/ssh-action@v0.1.5
@@ -59,11 +56,16 @@ jobs:
           USERNAME: ${{ secrets.USERNAME }}
           PORT: ${{ secrets.PORT }}
           KEY: ${{ secrets.SSHKEY }}
+          EMAILPWD: ${EMAILPWD}
+          MYSQL_HOST: 'mysql'
+          MYSQL_PWD: 'password'
+          Redis_Host: 'redis'
 
           script: |
+            cd IT-project-backend
             docker stop ${{secrets.DOCKER_HUB_USERNAME}}/petshome:latest
             docker rmi ${{secrets.DOCKER_HUB_USERNAME}}/petshome:latest
-            cd IT-project-backend
+           
             docker pull ${{secrets.DOCKER_HUB_USERNAME}}/petshome:latest
             docker run ${{secrets.DOCKER_HUB_USERNAME}}/petshome:latest
       
