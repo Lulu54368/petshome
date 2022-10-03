@@ -1,4 +1,4 @@
-name: Deploy
+name: Pet's home
 
 
 # Controls when the workflow will run
@@ -7,6 +7,48 @@ on:
   push:
     branches: [ main ]
 
+runner-job:
+    # You must use a Linux environment when using service containers or container jobs
+    runs-on: ubuntu-latest
+
+    # Service containers to run with `runner-job`
+    services:
+      # Label used to access the service container
+      redis:
+        # Docker Hub image
+        image: redis
+        # Set health checks to wait until redis has started
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Maps port 6379 on service container to the host
+          - 6379:6379
+          # Label used to access the service container
+      mysql:
+            # Docker Hub image
+            image: mysql
+            # Provide the password for postgres
+            env:
+              MYSQL_DATABASE: 'pets_home'
+              MYSQL_USER: root
+              MYSQL_PASSWORD: password
+              MYSQL_ROOT_PASSWORD: password
+              MYSQL_HOST: 'mysql'
+            # Set health checks to wait until postgres has started
+            options: >-
+              --health-cmd pg_isready
+              --health-interval 10s
+              --health-timeout 5s
+              --health-retries 5
+            restart: always
+            command: --default-authentication-plugin=mysql_native_password
+            ports:
+              # Maps tcp port 5432 on service container to the host
+              - 3306:3306
+
 jobs:
 
   build:
@@ -14,6 +56,9 @@ jobs:
     runs-on: ubuntu-latest
     env:
       EMAILPWD: ${EMAILPWD}
+      MYSQL_HOST: 'mysql'
+      MYSQL_PWD: 'password'
+      Redis_Host: 'redis'
     steps:
       - uses: actions/checkout@v2
 
