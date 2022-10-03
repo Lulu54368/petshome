@@ -5,33 +5,12 @@ name: Pet's home
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ main ]
+    branches: [ container ]
 
 
 
 jobs:
-  mysql:
-    runs-on: ubuntu-latest
-    steps:
-      - name: setUpMySql
-        uses: mirromutth/mysql-action@v1.1
-        with:
-          host port: 3306 # Optional, default value is 3306. The port of host
-          container port: 3307 # Optional, default value is 3306. The port of container
-          character set server: 'utf8' # Optional, default value is 'utf8mb4'. The '--character-set-server' option for mysqld
-          collation server: 'utf8_general_ci' # Optional, default value is 'utf8mb4_general_ci'. The '--collation-server' option for mysqld
-          mysql version: '8.0' # Optional, default value is "latest". The version of the MySQL
-          mysql database: 'pets_home' # Optional, default value is "test". The specified database which will be create
-          mysql root password: password # Required if "mysql user" is empty, default is empty. The root superuser password
-          mysql user: root # Required if "mysql root password" is empty, default is empty. The superuser for the specified database. Can use secrets, too
-          mysql password: password # Required
-  redis:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: zhulik/redis-action@1.1.0
-        with:
-          redis version: '5'
-          number of databases: 100
+
 
   build:
 
@@ -69,6 +48,9 @@ jobs:
     runs-on: ubuntu-latest
     env:
       EMAILPWD: ${EMAILPWD}
+      MYSQL_HOST: 'mysql'
+      MYSQL_PWD: 'password'
+      Redis_Host: 'redis'
     steps:
       - name: Executing remote command
         uses: appleboy/ssh-action@v0.1.5
@@ -77,10 +59,12 @@ jobs:
           USERNAME: ${{ secrets.USERNAME }}
           PORT: ${{ secrets.PORT }}
           KEY: ${{ secrets.SSHKEY }}
-          script: |
 
-            
+          script: |
+            docker stop ${{secrets.DOCKER_HUB_USERNAME}}/petshome:latest
+            docker rmi ${{secrets.DOCKER_HUB_USERNAME}}/petshome:latest
             cd IT-project-backend
             docker pull ${{secrets.DOCKER_HUB_USERNAME}}/petshome:latest
             docker run ${{secrets.DOCKER_HUB_USERNAME}}/petshome:latest
+      
 
