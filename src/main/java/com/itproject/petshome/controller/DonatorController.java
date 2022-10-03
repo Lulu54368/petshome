@@ -9,6 +9,7 @@ import com.itproject.petshome.exception.UserNotFoundException;
 import com.itproject.petshome.model.Donation;
 import com.itproject.petshome.model.User;
 import com.itproject.petshome.model.enums.Adopted;
+import com.itproject.petshome.service.DonatorService;
 import com.itproject.petshome.service.PetService;
 import com.itproject.petshome.service.SessionService;
 import com.itproject.petshome.service.UserService;
@@ -27,18 +28,17 @@ import java.util.List;
 @Validated
 @RequestMapping("/api/v1/donation")
 public class DonatorController {
-    UserService userService;
-    SessionService sessionService;
+
+    DonatorService donatorService;
     @Operation(summary = "add donation")
     @PostMapping("/")
-    public DonationDTO addDonation(@RequestBody @Valid Long userId, DonationInput donationInput) {
-        return this.userService.addDonation(userId, donationInput);
+    public DonationDTO addDonation(@RequestBody @Valid DonationInput donationInput) throws UserNotFoundException{
+        return this.donatorService.addDonation(donationInput);
     }
 
     @Operation(summary = "view donation")
     @GetMapping("/")
-    public DonationDTO viewDonation() throws UserNotFoundException {
-        User currUser = sessionService.getCurrentUser().orElseThrow(UserNotFoundException::new);
-        return this.userService.viewDonation(currUser);
+    public List<DonationDTO> viewDonation() throws UserNotFoundException {
+        return this.donatorService.viewDonation();
     }
 }
