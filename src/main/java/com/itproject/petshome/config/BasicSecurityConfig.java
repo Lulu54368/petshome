@@ -2,6 +2,7 @@ package com.itproject.petshome.config;
 
 import com.itproject.petshome.filter.CustomFilter;
 import com.itproject.petshome.filter.JwtTokenFilter;
+import com.itproject.petshome.service.AdminService;
 import com.itproject.petshome.service.UserService;
 import de.codecentric.boot.admin.server.config.AdminServerProperties;
 import io.netty.handler.ssl.SslContextBuilder;
@@ -44,10 +45,12 @@ public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
     private MyBasicAuthenticationEntryPoint authenticationEntryPoint;
 
     private final PasswordEncoder passwordEncoder;
+    private final AdminService adminService;
+    private final JwtTokenFilter jwtTokenFilter;
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication().withUser("admin")
-                .password(passwordEncoder.encode("admin")).roles("ADMIN");
+
+        auth.userDetailsService(adminService::getAdminDetailsByUsername);
         auth.userDetailsService(userService::getUserDetailsByEmail);
     }
     @Bean
@@ -90,34 +93,27 @@ public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and();
 
         // Set permissions on endpoints
-        http.authorizeRequests()
-                .antMatchers("/api/v1/admin/**").permitAll();
+
 
        SavedRequestAwareAuthenticationSuccessHandler successHandler =
                 new SavedRequestAwareAuthenticationSuccessHandler();
         successHandler.setTargetUrlParameter("redirectTo");
         successHandler.setDefaultTargetUrl(this.adminServer.getContextPath() + "/");
 
-        http.addFilterAfter(new CustomFilter(),
-                BasicAuthenticationFilter.class);
+
 
         http
                 .authorizeRequests()
-
-                .antMatchers("/swagger-ui/index.html").permitAll()
-                .antMatchers(this.adminServer.getContextPath() + "/assets/**").permitAll()
-                .antMatchers(this.adminServer.getContextPath() + "/login").permitAll()
+                .antMatchers("/api/vi/admin/**").authenticated()
+                //.antMatchers("/api/vi/**").permitAll()
                 .and()
-                .formLogin()
-                .loginPage(this.adminServer.getContextPath() + "/login")
-                .successHandler(successHandler)
-                .and()
-                .logout()
-                .logoutUrl(this.adminServer.getContextPath() + "/logout")
-                .and()
-
-                .httpBasic()
-                .authenticationEntryPoint(authenticationEntryPoint);
+                .rememberMe()
+                .key(UUID.randomUUID().toString())
+                .tokenValiditySeconds(1209600);
+        http.addFilterBefore(
+                jwtTokenFilter,
+                UsernamePasswordAuthenticationFilter.class
+        );
 
 
 

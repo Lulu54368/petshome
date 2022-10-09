@@ -33,18 +33,6 @@ public class APITokenSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception{
 
 
-        http
-                .authorizeRequests()
-
-                .antMatchers("/api/vi/**").permitAll()
-                .and()
-                .rememberMe()
-                .key(UUID.randomUUID().toString())
-                .tokenValiditySeconds(1209600);
-        http.addFilterBefore(
-                jwtTokenFilter,
-                UsernamePasswordAuthenticationFilter.class
-        );
 
 
     }

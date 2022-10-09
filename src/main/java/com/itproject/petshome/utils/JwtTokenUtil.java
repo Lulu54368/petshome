@@ -2,6 +2,7 @@ package com.itproject.petshome.utils;
 
 import com.itproject.petshome.config.ApplicationProperties;
 
+import com.itproject.petshome.model.AdminDetail;
 import com.itproject.petshome.model.UserDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -31,6 +32,12 @@ public class JwtTokenUtil implements Serializable {
         return getClaimFromToken(token, Claims::getSubject);
     }
 
+    public String getUserNameFromToken(String token){
+        return getClaimFromToken(token, Claims::getSubject);
+    }
+
+
+
     public Date getExpirationDateFromToken(String token) {
         return getClaimFromToken(token, Claims::getExpiration);
     }
@@ -55,6 +62,9 @@ public class JwtTokenUtil implements Serializable {
 
     public String generateToken(com.itproject.petshome.model.UserDetails user) {
         return doGenerateToken(user.getUsername(), user.getId());
+    }
+    public String generateToke(AdminDetail adminDetail){
+        return doGenerateToken(adminDetail.getUsername(), adminDetail.getId());
     }
 
     private String doGenerateToken(String subject, Long userId) {
