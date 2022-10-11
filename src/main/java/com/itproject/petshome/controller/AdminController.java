@@ -59,44 +59,7 @@ public class AdminController {
 
     private final ApplicationProperties properties;
 
-    @PostMapping("/login")
-    @ApiResponse(description = "Login successful", responseCode = "200")
-    @ApiResponse(description = "Username or password incorrect", responseCode = "401")
-    public AdminLoginOutput login(@RequestBody @Valid AdminLogin request) {
-        Authentication authenticate = ((AdminAuthenticationProvider)
-                authenticationProvider)
-                .authenticate(
-                        new UsernamePasswordAuthenticationToken(
-                                request.getUsername(), request.getPassword()
-                        )
-                );
 
-        AdminDetail adminDetail = AdminDetail
-                .of(adminRepository.findByUsername((String) authenticate.getPrincipal()).get());
-        return buildAuthorizeOutput(adminDetail);
-    }
-
-    private AdminLoginOutput buildAuthorizeOutput(AdminDetail user) {
-        final AdminLoginOutput output = new AdminLoginOutput();
-        output.setUsername(user.getUsername());
-        output.setUserId(user.getId());
-
-        output.setToken(jwtTokenUtil.generateToke(user));
-        output.setExpiresIn(properties.getAccessTokenValiditySeconds());
-        return output;
-    }
-
-    @PostMapping("/register")
-    @ApiResponse(description = "User Created", responseCode = "201")
-    @ApiResponse(description = "Failed, username or email already exist", responseCode = "409")
-    @ResponseStatus(HttpStatus.CREATED)
-    public AdminDTO register(@RequestBody @Valid AdminLogin input,
-                            HttpServletRequest request)
-            throws UserAlreadyExistException, MessagingException, UserCodeNotFoundException, UserNotFoundException {
-
-        final AdminDTO userDTO = adminService.registerUser(input);
-        return userDTO;
-    }
 
 
     @Operation(summary = "add pets")

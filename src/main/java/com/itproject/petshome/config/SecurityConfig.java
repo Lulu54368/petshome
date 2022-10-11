@@ -59,17 +59,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http)  throws Exception {
 
 
-            http = http
-                    .exceptionHandling()
-                    .authenticationEntryPoint(
-                            (request, response, ex) -> {
-                                response.sendError(
-                                        HttpServletResponse.SC_UNAUTHORIZED,
-                                        ex.getMessage()
-                                );
-                            }
-                    )
-                    .and();
+
 
             http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                     .cors().configurationSource(new CorsConfigurationSource() {
@@ -90,7 +80,7 @@ public class SecurityConfig {
                     .authorizeHttpRequests((auth) -> {
                                 try {
                                     auth
-                                            .antMatchers("/api/v1/admin/*").authenticated()
+                                            //.antMatchers("/api/v1/admin/*").hasRole("ADMIN")
 
                                             .antMatchers("/api/vi/*").permitAll()
                                             .and()
@@ -101,8 +91,18 @@ public class SecurityConfig {
                                     throw new RuntimeException(e);
                                 }
                             }
-                    );
-
+                    )
+                    .httpBasic(Customizer.withDefaults());
+        http
+                .exceptionHandling()
+                .authenticationEntryPoint(
+                        (request, response, ex) -> {
+                            response.sendError(
+                                    HttpServletResponse.SC_UNAUTHORIZED,
+                                    ex.getMessage()
+                            );
+                        }
+                );
 
             return http.build();
 

@@ -1,20 +1,28 @@
 package com.itproject.petshome.controller;
 
 
+import com.itproject.petshome.config.AdminAuthenticationProvider;
 import com.itproject.petshome.config.ApplicationProperties;
 import com.itproject.petshome.config.UserAuthenticationProvider;
 import com.itproject.petshome.dto.*;
 
+import com.itproject.petshome.dto.input.AdminLogin;
 import com.itproject.petshome.dto.input.LoginInput;
 import com.itproject.petshome.dto.input.RegisterInput;
+import com.itproject.petshome.dto.output.AdminLoginOutput;
 import com.itproject.petshome.dto.output.AuthorizeOutput;
 import com.itproject.petshome.exception.UserAlreadyExistException;
 import com.itproject.petshome.exception.UserCodeNotFoundException;
 import com.itproject.petshome.exception.UserNotFoundException;
+import com.itproject.petshome.model.AdminDetail;
 import com.itproject.petshome.model.User;
 import com.itproject.petshome.model.UserDetails;
+import com.itproject.petshome.repository.AdminRepository;
 import com.itproject.petshome.repository.UserCodeRepository;
 import com.itproject.petshome.repository.UserRepository;
+import com.itproject.petshome.service.AdminService;
+import com.itproject.petshome.service.AdoptionService;
+import com.itproject.petshome.service.PetService;
 import com.itproject.petshome.service.UserService;
 import com.itproject.petshome.utils.JwtTokenUtil;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -32,6 +40,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
+import javax.annotation.Resource;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -49,6 +58,52 @@ public class AuthController {
     private final ApplicationProperties properties;
     private UserRepository userRepository;
     private UserCodeRepository userCodeRepository;
+
+    AdminService adminService;
+
+    AdminRepository adminRepository;
+    @Resource(name="adminAuthenticationProvider")
+    private final AuthenticationProvider adminAuthenticationProvider;
+
+
+    @PostMapping("/admin/login")
+    @ApiResponse(description = "Login successful", responseCode = "200")
+    @ApiResponse(description = "Username or password incorrect", responseCode = "401")
+    public AdminLoginOutput login(@RequestBody @Valid AdminLogin request) {
+        Authentication authenticate = ((AdminAuthenticationProvider)
+                adminAuthenticationProvider)
+                .authenticate(
+                        new UsernamePasswordAuthenticationToken(
+                                request.getUsername(), request.getPassword()
+                        )
+                );
+
+        AdminDetail adminDetail = AdminDetail
+                .of(adminRepository.findByUsername((String) authenticate.getPrincipal()).get());
+        return buildAuthorizeOutput(adminDetail);
+    }
+
+    private AdminLoginOutput buildAuthorizeOutput(AdminDetail user) {
+        final AdminLoginOutput output = new AdminLoginOutput();
+        output.setUsername(user.getUsername());
+        output.setUserId(user.getId());
+
+        output.setToken(jwtTokenUtil.generateToke(user));
+        output.setExpiresIn(properties.getAccessTokenValiditySeconds());
+        return output;
+    }
+
+    @PostMapping("/admin/register")
+    @ApiResponse(description = "User Created", responseCode = "201")
+    @ApiResponse(description = "Failed, username or email already exist", responseCode = "409")
+    @ResponseStatus(HttpStatus.CREATED)
+    public AdminDTO register(@RequestBody @Valid AdminLogin input,
+                             HttpServletRequest request)
+            throws UserAlreadyExistException, MessagingException, UserCodeNotFoundException, UserNotFoundException {
+
+        final AdminDTO userDTO = adminService.registerUser(input);
+        return userDTO;
+    }
     @PostMapping("/user/login")
     @ApiResponse(description = "Login successful", responseCode = "200")
     @ApiResponse(description = "Username or password incorrect", responseCode = "401")
