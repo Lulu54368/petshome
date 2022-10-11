@@ -1,5 +1,6 @@
 package com.itproject.petshome.config;
 
+import com.itproject.petshome.filter.AdminFilter;
 import com.itproject.petshome.filter.JwtTokenFilter;
 import com.itproject.petshome.service.AdminService;
 import com.itproject.petshome.service.UserService;
@@ -46,7 +47,7 @@ import java.util.UUID;
 public class SecurityConfig {
     private final ApplicationProperties properties;
     private final AdminServerProperties adminServer;
-
+    private final AdminFilter adminFilter;
     private final SecurityProperties security;
 
 
@@ -85,11 +86,11 @@ public class SecurityConfig {
                     }).and().csrf().disable()
                     .addFilterBefore(jwtTokenFilter,
                             UsernamePasswordAuthenticationFilter.class)
-
+                    .addFilterBefore(adminFilter, UsernamePasswordAuthenticationFilter.class)
                     .authorizeHttpRequests((auth) -> {
                                 try {
                                     auth
-                                            .antMatchers("/api/v1/admin").hasRole("ADMIN")
+                                            .antMatchers("/api/v1/admin/*").authenticated()
 
                                             .antMatchers("/api/vi/*").permitAll()
                                             .and()

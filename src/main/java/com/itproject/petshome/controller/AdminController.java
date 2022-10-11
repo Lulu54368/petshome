@@ -15,6 +15,7 @@ import com.itproject.petshome.exception.*;
 import com.itproject.petshome.model.AdminDetail;
 import com.itproject.petshome.model.UserDetails;
 import com.itproject.petshome.model.enums.ApplicationStatus;
+import com.itproject.petshome.repository.AdminRepository;
 import com.itproject.petshome.service.AdminService;
 import com.itproject.petshome.service.AdoptionService;
 import com.itproject.petshome.service.PetService;
@@ -32,6 +33,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
+import javax.annotation.Resources;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -48,6 +51,8 @@ public class AdminController {
     UserService userService;
     AdminService adminService;
     AdoptionService adoptionService;
+    AdminRepository adminRepository;
+    @Resource(name="adminAuthenticationProvider")
     private final AuthenticationProvider authenticationProvider;
 
     private final JwtTokenUtil jwtTokenUtil;
@@ -58,14 +63,16 @@ public class AdminController {
     @ApiResponse(description = "Login successful", responseCode = "200")
     @ApiResponse(description = "Username or password incorrect", responseCode = "401")
     public AdminLoginOutput login(@RequestBody @Valid AdminLogin request) {
-        Authentication authenticate = ((AdminAuthenticationProvider) authenticationProvider)
+        Authentication authenticate = ((AdminAuthenticationProvider)
+                authenticationProvider)
                 .authenticate(
                         new UsernamePasswordAuthenticationToken(
                                 request.getUsername(), request.getPassword()
                         )
                 );
 
-        AdminDetail adminDetail = (AdminDetail) authenticate.getPrincipal();
+        AdminDetail adminDetail = AdminDetail
+                .of(adminRepository.findByUsername((String) authenticate.getPrincipal()).get());
         return buildAuthorizeOutput(adminDetail);
     }
 
