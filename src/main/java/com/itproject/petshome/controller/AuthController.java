@@ -59,8 +59,9 @@ public class AuthController {
                                 request.getEmail(), request.getPassword()
                         )
                 );
+        System.out.println(authenticate.getPrincipal());
 
-        UserDetails user = (UserDetails) authenticate.getPrincipal();
+        UserDetails user = UserDetails.of(userRepository.findByEmail((String)authenticate.getPrincipal()).get());
         return buildAuthorizeOutput(user);
     }
 

@@ -6,6 +6,7 @@ import com.itproject.petshome.service.UserService;
 import de.codecentric.boot.admin.server.config.AdminServerProperties;
 import io.netty.handler.ssl.SslContextBuilder;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -39,7 +40,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
-@AllArgsConstructor
+@Data
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -47,8 +48,8 @@ public class SecurityConfig {
     private final AdminServerProperties adminServer;
 
     private final SecurityProperties security;
-    private UserService userService;
-    private MyBasicAuthenticationEntryPoint authenticationEntryPoint;
+
+
 
     private final PasswordEncoder passwordEncoder;
     private final AdminService adminService;
