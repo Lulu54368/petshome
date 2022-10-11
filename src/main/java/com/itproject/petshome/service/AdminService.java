@@ -44,7 +44,6 @@ public class AdminService {
         return null;
     }
 
-
     public AdoptionApplicationDTO updateAdoptionApplication
             (ApplicationStatus applicationStatus, Long applicationId) throws AdoptionApplicationNotFound {
         AdoptionApplication adoptionApplication =
@@ -82,5 +81,10 @@ public class AdminService {
         admin.setPassword(passwordEncoder.encode(input.getPassword()));
         adminRepository.save(admin);
         return adminMapper.toDto(admin);
+    }
+
+    public AdminDetail getUserDetailsByUsername(String username) throws UserNotFoundException {
+        Admin admin =  adminRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
+        return AdminDetail.of(admin);
     }
 }

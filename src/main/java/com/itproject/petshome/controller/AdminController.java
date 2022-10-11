@@ -1,5 +1,6 @@
 package com.itproject.petshome.controller;
 
+import com.itproject.petshome.config.AdminAuthenticationProvider;
 import com.itproject.petshome.config.ApplicationProperties;
 import com.itproject.petshome.dto.*;
 import com.itproject.petshome.dto.input.AdminLogin;
@@ -25,6 +26,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
@@ -46,7 +48,7 @@ public class AdminController {
     UserService userService;
     AdminService adminService;
     AdoptionService adoptionService;
-    private final AuthenticationManager authenticationManager;
+    private final AuthenticationProvider authenticationProvider;
 
     private final JwtTokenUtil jwtTokenUtil;
 
@@ -56,7 +58,7 @@ public class AdminController {
     @ApiResponse(description = "Login successful", responseCode = "200")
     @ApiResponse(description = "Username or password incorrect", responseCode = "401")
     public AdminLoginOutput login(@RequestBody @Valid AdminLogin request) {
-        Authentication authenticate = authenticationManager
+        Authentication authenticate = ((AdminAuthenticationProvider) authenticationProvider)
                 .authenticate(
                         new UsernamePasswordAuthenticationToken(
                                 request.getUsername(), request.getPassword()

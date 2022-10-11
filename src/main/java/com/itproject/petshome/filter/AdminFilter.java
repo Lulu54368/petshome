@@ -1,11 +1,13 @@
 package com.itproject.petshome.filter;
 
+import com.itproject.petshome.exception.UserNotFoundException;
+import com.itproject.petshome.model.AdminDetail;
+import com.itproject.petshome.service.AdminService;
 import com.itproject.petshome.service.UserService;
 import com.itproject.petshome.utils.JwtTokenUtil;
-
 import io.jsonwebtoken.JwtException;
 import lombok.AllArgsConstructor;
-import org.springframework.core.annotation.Order;
+import lombok.Data;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,13 +24,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import static org.apache.logging.log4j.util.Strings.isEmpty;
-
 @Component
 @AllArgsConstructor
-public class JwtTokenFilter extends OncePerRequestFilter {
-
+public class AdminFilter  extends OncePerRequestFilter {
     private final JwtTokenUtil jwtTokenUtil;
-    private final UserService userService;
+    private final AdminService adminService;
 
     @Override
     protected void doFilterInternal(
@@ -48,13 +48,13 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
         try {
             // Get user identity and set it on the spring security context
-            UserDetails userDetails = userService
-                    .getUserDetailsByEmail(jwtTokenUtil.getEmailFromToken(token));
+            AdminDetail adminDetail = adminService
+                    .getUserDetailsByUsername(jwtTokenUtil.getUserNameFromToken(token));
 
             UsernamePasswordAuthenticationToken
                     authentication = new UsernamePasswordAuthenticationToken(
-                    userDetails, null,
-                    userDetails.getAuthorities()
+                    adminDetail, null,
+                    adminDetail.getAuthorities()
             );
 
             authentication.setDetails(
@@ -65,11 +65,10 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
         } catch (JwtException e) {
             // JWT not valid
-        } catch (UsernameNotFoundException e) {
+        } catch (UsernameNotFoundException | UserNotFoundException e) {
             // User deleted
         }
 
         chain.doFilter(request, response);
     }
-
 }
