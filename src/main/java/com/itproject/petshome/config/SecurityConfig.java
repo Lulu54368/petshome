@@ -80,9 +80,10 @@ public class SecurityConfig {
                     .authorizeHttpRequests((auth) -> {
                                 try {
                                     auth
-                                            //.antMatchers("/api/v1/admin/*").hasRole("ADMIN")
+                                            .antMatchers("/api/vi/user/**").hasRole("ADMIN")
+                                            .antMatchers("/api/v1/admin/**").authenticated()
 
-                                            .antMatchers("/api/vi/*").permitAll()
+                                            .antMatchers("/api/vi/**").permitAll()
                                             .and()
                                             .rememberMe()
                                             .key(UUID.randomUUID().toString())

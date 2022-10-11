@@ -1,12 +1,17 @@
 package com.itproject.petshome.model;
 
+import com.itproject.petshome.model.enums.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Value;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+
 @Value
 @Data
 @AllArgsConstructor
@@ -22,7 +27,9 @@ public class AdminDetail implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(UserRole.ADMIN.toString()));
+        return authorities;
     }
 
     @Override
