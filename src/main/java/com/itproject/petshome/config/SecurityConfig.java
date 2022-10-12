@@ -80,8 +80,8 @@ public class SecurityConfig {
                     .authorizeHttpRequests((auth) -> {
                                 try {
                                     auth
-                                            .antMatchers("/api/vi/user/**").hasRole("ADMIN")
-                                            .antMatchers("/api/v1/admin/**").authenticated()
+                                            .antMatchers("/api/vi/user/**").authenticated()
+                                            .antMatchers("/api/v1/admin/**").permitAll()
 
                                             .antMatchers("/api/vi/**").permitAll()
                                             .and()
