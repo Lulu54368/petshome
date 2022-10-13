@@ -1,6 +1,7 @@
 package com.itproject.petshome.config;
 
 import com.itproject.petshome.filter.AdminFilter;
+import com.itproject.petshome.filter.AuthoritiesLoggingAfterFilter;
 import com.itproject.petshome.filter.JwtTokenFilter;
 import com.itproject.petshome.service.AdminService;
 import com.itproject.petshome.service.UserService;
@@ -51,7 +52,7 @@ public class SecurityConfig {
     private final SecurityProperties security;
 
 
-
+    private final AuthoritiesLoggingAfterFilter authoritiesLoggingAfterFilter;
     private final PasswordEncoder passwordEncoder;
     private final AdminService adminService;
     private final JwtTokenFilter jwtTokenFilter;
@@ -74,14 +75,15 @@ public class SecurityConfig {
                             return config;
                         }
                     }).and().csrf().disable()
-                    .addFilterBefore(jwtTokenFilter,
+                    .addFilterAfter(jwtTokenFilter,
                             UsernamePasswordAuthenticationFilter.class)
-                    .addFilterBefore(adminFilter, UsernamePasswordAuthenticationFilter.class)
+                    .addFilterAfter(adminFilter, UsernamePasswordAuthenticationFilter.class)
+                    .addFilterAfter(authoritiesLoggingAfterFilter, UsernamePasswordAuthenticationFilter.class)
                     .authorizeHttpRequests((auth) -> {
                                 try {
                                     auth
-                                            .antMatchers("/api/vi/user/**").authenticated()
-                                            .antMatchers("/api/v1/admin/**").permitAll()
+                                            .antMatchers("/api/vi/user/*").authenticated()
+                                            .antMatchers("/api/v1/admin/*").authenticated()
 
                                             .antMatchers("/api/vi/**").permitAll()
                                             .and()

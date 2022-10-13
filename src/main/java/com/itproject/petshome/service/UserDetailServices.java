@@ -1,4 +1,4 @@
-package com.itproject.petshome.config;
+package com.itproject.petshome.service;
 
 import com.itproject.petshome.exception.UserNotFoundException;
 import com.itproject.petshome.repository.UserRepository;

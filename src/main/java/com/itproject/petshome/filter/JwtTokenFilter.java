@@ -5,6 +5,8 @@ import com.itproject.petshome.utils.JwtTokenUtil;
 
 import io.jsonwebtoken.JwtException;
 import lombok.AllArgsConstructor;
+import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,18 +19,26 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import static org.apache.logging.log4j.util.Strings.isEmpty;
-
+@WebFilter(urlPatterns = "/api/v1/auth/user/**")
 @Component
+@Data
 @AllArgsConstructor
 public class JwtTokenFilter extends OncePerRequestFilter {
 
     private final JwtTokenUtil jwtTokenUtil;
+
     private final UserService userService;
+    private final Logger LOG =
+            Logger.getLogger(JwtTokenFilter.class.getName());
+
+
 
     @Override
     protected void doFilterInternal(
@@ -37,6 +47,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             FilterChain chain)
             throws ServletException, IOException {
         // Get authorization header and validate
+
         final String header = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (isEmpty(header) || !header.startsWith("Bearer ")) {
             chain.doFilter(request, response);
@@ -47,6 +58,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         final String token = header.split(" ")[1].trim();
 
         try {
+            LOG.info("JWT generator");
             // Get user identity and set it on the spring security context
             UserDetails userDetails = userService
                     .getUserDetailsByEmail(jwtTokenUtil.getEmailFromToken(token));
@@ -62,6 +74,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             );
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
+            LOG.info("set "+authentication.getPrincipal().toString());
 
         } catch (JwtException e) {
             // JWT not valid

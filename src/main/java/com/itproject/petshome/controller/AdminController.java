@@ -41,7 +41,7 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
-@SecurityRequirement(name = "basicAuth")
+@SecurityRequirement(name = "bearerAuth")
 @AllArgsConstructor
 @RestController
 @Validated
