@@ -109,6 +109,9 @@ public class PetService {
                             .orElseThrow(PetNotFound::new)
                             .getImageCollection();
         ImageCollection imageCollectionToSave = imageCollection.addImage(imageInput, imageCollectionRepository);
+        if(setToCover==SetToCover.Yes){
+            imageCollectionToSave.setFirst(Long.valueOf(imageCollectionToSave.getImageList().size()-1));
+        }
         imageCollectionRepository.save(imageCollectionToSave);
         return imageCollectionMapper.toDto(imageCollection);
     }
