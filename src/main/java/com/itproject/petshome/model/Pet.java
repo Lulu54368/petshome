@@ -1,16 +1,15 @@
 package com.itproject.petshome.model;
 
+
 import com.itproject.petshome.model.enums.Adopted;
 import com.itproject.petshome.model.enums.Category;
 import com.itproject.petshome.model.enums.Color;
 import com.itproject.petshome.model.enums.Immunization;
 import com.itproject.petshome.model.enums.Sex;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.awt.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,8 +26,8 @@ public class Pet {
     private Adopted adopted = Adopted.NO;
     @Column(name = "category", nullable = false)
     private Category category;
-    @Column(name = "picture")
-    private byte[] picture;
+    @OneToOne(mappedBy = "pet", cascade = CascadeType.ALL)
+    private ImageCollection imageCollection=new ImageCollection();
     @Column(name = "nickname")
     private String nickname;
     @Column(name = "detail")
@@ -48,20 +47,6 @@ public class Pet {
 
     @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     Set<UserAdoptPet> userAdoptPets = new HashSet<>();
-    public Pet addAdoptionApplication(AdoptionApplication adoptionApplication)
-    {
-        adoptionApplications.add(adoptionApplication);
-        //adoptionApplication.setPet(this);
-        return this;
-    }
-    public Pet removeAddoptionApplication(AdoptionApplication adoptionApplication)
-    {
-        adoptionApplications.remove(adoptionApplication);
-        adoptionApplication.setPet(null);
-        return this;
-    }
-
-
 
 
 

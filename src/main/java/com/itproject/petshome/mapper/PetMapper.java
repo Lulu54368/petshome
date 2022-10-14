@@ -12,6 +12,7 @@ public interface PetMapper {
 
     @Mapping(target = "adoptionApplications", source = "adoptionApplicationDTOs")
     @Mapping(target = "userAdoptPets", source = "userAdoptPetDTOS")
+    @Mapping(target = "imageCollection", ignore = true)
     Pet toEntity(PetDTO pet);
 
     Pet toEntity(PetInput pet);

@@ -4,8 +4,10 @@ import com.itproject.petshome.dto.PetDTO;
 import com.itproject.petshome.dto.input.PetInput;
 import com.itproject.petshome.exception.PetNotFound;
 import com.itproject.petshome.mapper.PetMapper;
+import com.itproject.petshome.model.ImageCollection;
 import com.itproject.petshome.model.Pet;
 import com.itproject.petshome.model.enums.*;
+import com.itproject.petshome.repository.ImageCollectionRepository;
 import com.itproject.petshome.repository.PetRepository;
 import com.itproject.petshome.repository.PetRepositoryCustom;
 import lombok.AllArgsConstructor;
@@ -15,7 +17,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -26,11 +31,12 @@ import java.util.stream.Collectors;
 public class PetService {
     private PetRepository petRepository;
     private PetRepositoryCustom petRepositoryCustom;
-
+    private ImageCollectionRepository imageCollectionRepository;
     private PetMapper petMapper;
-
+    @Transactional
     public PetDTO addPet(PetInput input) {
         Pet pet = petMapper.toEntity(input);
+
         petRepository.save(pet);
         return petMapper.toDto(pet);
 

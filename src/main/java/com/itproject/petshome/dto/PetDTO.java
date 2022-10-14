@@ -1,5 +1,6 @@
 package com.itproject.petshome.dto;
 
+import com.itproject.petshome.model.ImageCollection;
 import com.itproject.petshome.model.enums.Adopted;
 import com.itproject.petshome.model.enums.Category;
 import com.itproject.petshome.model.enums.Color;
@@ -22,8 +23,8 @@ public class PetDTO {
     private Adopted adopted;
     @NotNull
     private Category category;
-    @Nullable
-    private byte[] picture;
+    @NotNull
+    private ImageCollection imageCollection;
     @Nullable
     private  String nickname;
     private String detail;

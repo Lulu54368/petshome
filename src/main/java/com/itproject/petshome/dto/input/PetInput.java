@@ -15,8 +15,7 @@ import com.itproject.petshome.model.enums.Color;
 public class PetInput {
     @NotEmpty
     private Category category;
-    @Schema(nullable = true, description = "The base64 of the picture, can be null")
-    private byte[] picture;
+
     @NotEmpty
     private String nickname;
     @NotNull
