@@ -7,6 +7,7 @@ import com.itproject.petshome.model.UserAdoptPet;
 import com.itproject.petshome.service.AdoptionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,7 @@ import java.util.List;
 @RestController
 @Validated
 @RequestMapping("/api/v1/adoption")
+@Tag(name = "adoption")
 public class AdopterController {
     AdoptionService adoptionService;
 

@@ -1,8 +1,11 @@
 package com.itproject.petshome.service;
 
+import com.itproject.petshome.dto.ImageCollectionDTO;
 import com.itproject.petshome.dto.PetDTO;
+import com.itproject.petshome.dto.input.ImageInput;
 import com.itproject.petshome.dto.input.PetInput;
 import com.itproject.petshome.exception.PetNotFound;
+import com.itproject.petshome.mapper.ImageCollectionMapper;
 import com.itproject.petshome.mapper.PetMapper;
 import com.itproject.petshome.model.ImageCollection;
 import com.itproject.petshome.model.Pet;
@@ -33,10 +36,13 @@ public class PetService {
     private PetRepositoryCustom petRepositoryCustom;
     private ImageCollectionRepository imageCollectionRepository;
     private PetMapper petMapper;
+    private ImageCollectionMapper imageCollectionMapper;
     @Transactional
     public PetDTO addPet(PetInput input) {
         Pet pet = petMapper.toEntity(input);
 
+        pet = petRepository.save(pet);
+        pet.getImageCollection().setPet(pet);
         petRepository.save(pet);
         return petMapper.toDto(pet);
 
@@ -84,5 +90,26 @@ public class PetService {
                 .toDto(petRepository
                         .findById(petId)
                         .orElseThrow(PetNotFound::new));
+    }
+
+    public ImageCollectionDTO getImageCollectionByPet(Long petId) throws PetNotFound {
+        return imageCollectionMapper.toDto(
+                petRepository
+                        .findById(petId)
+                        .orElseThrow(PetNotFound::new)
+                        .getImageCollection()
+        );
+    }
+
+
+
+    public ImageCollectionDTO postImage(Long petId, ImageInput imageInput, SetToCover setToCover) throws PetNotFound {
+        ImageCollection imageCollection= petRepository
+                            .findById(petId)
+                            .orElseThrow(PetNotFound::new)
+                            .getImageCollection();
+        ImageCollection imageCollectionToSave = imageCollection.addImage(imageInput, imageCollectionRepository);
+        imageCollectionRepository.save(imageCollectionToSave);
+        return imageCollectionMapper.toDto(imageCollection);
     }
 }

@@ -45,7 +45,7 @@ import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-@Tag(name = "Authentication")
+@Tag(name = "authentication")
 @RestController
 @RequestMapping(path = "/api/v1/auth")
 @Validated

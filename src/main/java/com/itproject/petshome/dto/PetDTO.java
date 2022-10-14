@@ -24,7 +24,7 @@ public class PetDTO {
     @NotNull
     private Category category;
     @NotNull
-    private ImageCollection imageCollection;
+    private ImageCollectionDTO imageCollectionDTO;
     @Nullable
     private  String nickname;
     private String detail;

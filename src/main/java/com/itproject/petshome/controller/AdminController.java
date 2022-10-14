@@ -24,6 +24,7 @@ import com.itproject.petshome.utils.JwtTokenUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -46,6 +47,7 @@ import java.util.Optional;
 @RestController
 @Validated
 @RequestMapping("/api/v1/admin")
+@Tag(name="admin")
 public class AdminController {
     PetService petService;
     UserService userService;
