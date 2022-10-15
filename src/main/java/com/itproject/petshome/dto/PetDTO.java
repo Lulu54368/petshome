@@ -1,11 +1,8 @@
 package com.itproject.petshome.dto;
 
 import com.itproject.petshome.model.ImageCollection;
-import com.itproject.petshome.model.enums.Adopted;
-import com.itproject.petshome.model.enums.Category;
+import com.itproject.petshome.model.enums.*;
 import com.itproject.petshome.model.enums.Color;
-import com.itproject.petshome.model.enums.Immunization;
-import com.itproject.petshome.model.enums.Sex;
 import io.micrometer.core.lang.Nullable;
 import lombok.Data;
 
@@ -28,6 +25,8 @@ public class PetDTO {
     @Nullable
     private  String nickname;
     private String detail;
+    private City city;
+    private Country country;
     @NotNull
     Set<AdoptionApplicationDTO> adoptionApplicationDTOs;
     @NotNull

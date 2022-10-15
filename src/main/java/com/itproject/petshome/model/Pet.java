@@ -1,11 +1,7 @@
 package com.itproject.petshome.model;
 
 
-import com.itproject.petshome.model.enums.Adopted;
-import com.itproject.petshome.model.enums.Category;
-import com.itproject.petshome.model.enums.Color;
-import com.itproject.petshome.model.enums.Immunization;
-import com.itproject.petshome.model.enums.Sex;
+import com.itproject.petshome.model.enums.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -42,6 +38,10 @@ public class Pet {
     private String character;
     @Column(name = "immunization")
     private Immunization immunization ;
+    @Column(name="city")
+    private City city;
+    @Column(name = "country")
+    private Country country;
     @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     Set<AdoptionApplication> adoptionApplications = new HashSet<>();
 
