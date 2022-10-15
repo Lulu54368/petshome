@@ -41,7 +41,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
-
+@CrossOrigin("localhost:3000")
 @SecurityRequirement(name = "bearerAuth")
 @AllArgsConstructor
 @RestController

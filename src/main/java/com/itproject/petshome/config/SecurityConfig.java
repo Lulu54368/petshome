@@ -2,6 +2,7 @@ package com.itproject.petshome.config;
 
 import com.itproject.petshome.filter.AdminFilter;
 import com.itproject.petshome.filter.AuthoritiesLoggingAfterFilter;
+import com.itproject.petshome.filter.CorsFilter;
 import com.itproject.petshome.filter.JwtTokenFilter;
 import com.itproject.petshome.service.AdminService;
 import com.itproject.petshome.service.UserService;
@@ -32,7 +33,6 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
 import reactor.netty.http.client.HttpClient;
 
 import javax.servlet.Filter;
@@ -56,6 +56,7 @@ public class SecurityConfig {
     private final PasswordEncoder passwordEncoder;
     private final AdminService adminService;
     private final JwtTokenFilter jwtTokenFilter;
+    private final CorsFilter corsFilter;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http)  throws Exception {
 
@@ -63,22 +64,21 @@ public class SecurityConfig {
 
 
             http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                    .cors().configurationSource(new CorsConfigurationSource() {
-                        @Override
-                        public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
-                            CorsConfiguration config = new CorsConfiguration();
-                            config.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
-                            config.setAllowCredentials(true);
-                            config.setAllowedHeaders(Collections.singletonList("*"));
-                            config.setExposedHeaders(Arrays.asList("Authorization"));
-                            config.setMaxAge(3600L);
-                            return config;
-                        }
+                    .cors().configurationSource(request -> {
+                        CorsConfiguration configuration = new CorsConfiguration();
+                        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+                        configuration.setAllowedMethods(Arrays.asList("*"));
+                        configuration.setAllowCredentials(true);
+                        configuration.setAllowedHeaders(Collections.singletonList("*"));
+
+                        return configuration;
+
                     }).and().csrf().disable()
                     .addFilterAfter(jwtTokenFilter,
                             UsernamePasswordAuthenticationFilter.class)
                     .addFilterAfter(adminFilter, UsernamePasswordAuthenticationFilter.class)
                     .addFilterAfter(authoritiesLoggingAfterFilter, UsernamePasswordAuthenticationFilter.class)
+                    .addFilterAfter(corsFilter, UsernamePasswordAuthenticationFilter.class)
                     .authorizeHttpRequests((auth) -> {
                                 try {
                                     auth

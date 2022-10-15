@@ -11,7 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
+@CrossOrigin("localhost:3000")
 @SecurityRequirement(name="bearerAuth")
 @Controller
 @Data

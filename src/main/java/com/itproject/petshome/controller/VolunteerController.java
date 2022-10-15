@@ -16,7 +16,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-
+@CrossOrigin("localhost:3000")
 @SecurityRequirement(name = "bearerAuth")
 @AllArgsConstructor
 @RestController

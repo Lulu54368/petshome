@@ -26,7 +26,7 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 import static org.apache.logging.log4j.util.Strings.isEmpty;
-@WebFilter(urlPatterns = "/api/v1/auth/user/**")
+
 @Component
 @Data
 @AllArgsConstructor

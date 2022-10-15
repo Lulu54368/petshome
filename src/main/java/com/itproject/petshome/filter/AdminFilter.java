@@ -27,7 +27,7 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 import static org.apache.logging.log4j.util.Strings.isEmpty;
-@WebFilter(urlPatterns = "/api/v1/auth/admin/**")
+
 @Component
 @AllArgsConstructor
 public class AdminFilter  extends OncePerRequestFilter {
