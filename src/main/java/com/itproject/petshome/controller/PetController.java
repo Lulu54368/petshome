@@ -2,6 +2,7 @@ package com.itproject.petshome.controller;
 
 import com.itproject.petshome.dto.PetDTO;
 
+import com.itproject.petshome.dto.output.PetOutput;
 import com.itproject.petshome.exception.PetNotFound;
 import com.itproject.petshome.model.Pet;
 import com.itproject.petshome.model.enums.*;
@@ -26,7 +27,7 @@ public class PetController {
 
     @Operation(summary = "view lost pet")
     @GetMapping("/{petId}")
-    public PetDTO viewPet(@PathVariable("petId") Long petId) throws PetNotFound {
+    public PetOutput viewPet(@PathVariable("petId") Long petId) throws PetNotFound {
 
         return this.petService.viewPet(petId);
     }

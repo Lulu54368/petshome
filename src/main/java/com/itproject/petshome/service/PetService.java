@@ -4,8 +4,10 @@ import com.itproject.petshome.dto.ImageCollectionDTO;
 import com.itproject.petshome.dto.PetDTO;
 import com.itproject.petshome.dto.input.ImageInput;
 import com.itproject.petshome.dto.input.PetInput;
+import com.itproject.petshome.dto.output.PetOutput;
 import com.itproject.petshome.exception.PetNotFound;
 import com.itproject.petshome.mapper.ImageCollectionMapper;
+import com.itproject.petshome.mapper.ImageMappper;
 import com.itproject.petshome.mapper.PetMapper;
 import com.itproject.petshome.model.ImageCollection;
 import com.itproject.petshome.model.Pet;
@@ -37,6 +39,7 @@ public class PetService {
     private ImageCollectionRepository imageCollectionRepository;
     private PetMapper petMapper;
     private ImageCollectionMapper imageCollectionMapper;
+    private ImageMappper imageMappper;
     @Transactional
     public PetDTO addPet(PetInput input) {
         Pet pet = petMapper.toEntity(input);
@@ -85,11 +88,17 @@ public class PetService {
 
     }
 
-    public PetDTO viewPet(Long petId) throws PetNotFound {
-        return petMapper
-                .toDto(petRepository
-                        .findById(petId)
-                        .orElseThrow(PetNotFound::new));
+    public PetOutput viewPet(Long petId) throws PetNotFound {
+        Pet pet = petRepository
+                .findById(petId)
+                .orElseThrow(PetNotFound::new);
+        PetOutput res =  petMapper.toOutput(pet);
+        if(pet.getImageCollection().getFirst() < pet.getImageCollection().getImageList().size())
+        res.setCover(imageMappper.toDto(pet
+                .getImageCollection()
+                .getImageList()
+                .get(Integer.valueOf(Math.toIntExact(pet.getImageCollection().getFirst()))-1)));
+        return res;
     }
 
     public ImageCollectionDTO getImageCollectionByPet(Long petId) throws PetNotFound {
