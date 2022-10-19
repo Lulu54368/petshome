@@ -79,7 +79,7 @@ public class PetService {
                                     Optional<Sex> sex,
                                     Optional<Character> character,
                                     Optional<Integer> age, Optional<Immunization> immunization, Integer pageNo) {
-        Pageable page = PageRequest.of(pageNo, 10);
+        Pageable page = PageRequest.of(pageNo, 9);
         return petRepositoryCustom
                 .findByParameters(category, adopted, color, sex, character, age, immunization, page)
                 .stream()
