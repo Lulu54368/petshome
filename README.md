@@ -7,6 +7,23 @@ can guarantee the transparency of the currency
 - People can apply to adopt the pets and the admin can review it 
 - People can manage the adopted pet in the website 
 - People can apply to become a volunteer
+## Technical Notes: Installation
+Install and process the following before running 'PetshomeApplication'
+### Establish dependencies
+run pom.xml file
+### Download MySQL
+Change the following in application.properties file accordingly:
+
+spring.datasource.username=${MYSQL_USER:your_nominated_server's_name}
+spring.datasource.password=${MYSQL_PWD:your_nominated_server's_password}
+
+Create a database named "petshome" under the nominated server
+Keep the server open before running 'PetshomeApplication'
+
+### Download Redis
+https://redis.io/docs/getting-started/
+
+run redis-server
 ## Tech stack for backend
 We used the following technology for the development of our backend
 
