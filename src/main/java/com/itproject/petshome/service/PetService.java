@@ -4,11 +4,13 @@ import com.itproject.petshome.dto.ImageCollectionDTO;
 import com.itproject.petshome.dto.PetDTO;
 import com.itproject.petshome.dto.input.ImageInput;
 import com.itproject.petshome.dto.input.PetInput;
+import com.itproject.petshome.dto.output.ImageOutputDTO;
 import com.itproject.petshome.dto.output.PetOutput;
 import com.itproject.petshome.exception.PetNotFound;
 import com.itproject.petshome.mapper.ImageCollectionMapper;
 import com.itproject.petshome.mapper.ImageMappper;
 import com.itproject.petshome.mapper.PetMapper;
+import com.itproject.petshome.model.Image;
 import com.itproject.petshome.model.ImageCollection;
 import com.itproject.petshome.model.Pet;
 import com.itproject.petshome.model.enums.*;
@@ -93,35 +95,27 @@ public class PetService {
                 .findById(petId)
                 .orElseThrow(PetNotFound::new);
         PetOutput res =  petMapper.toOutput(pet);
-        if(pet.getImageCollection().getFirst() < pet.getImageCollection().getImageList().size())
-        res.setCover(imageMappper.toDto(pet
-                .getImageCollection()
-                .getImageList()
-                .get(Integer.valueOf(Math.toIntExact(pet.getImageCollection().getFirst()))-1)));
         return res;
     }
 
-    public ImageCollectionDTO getImageCollectionByPet(Long petId) throws PetNotFound {
+    public List<ImageOutputDTO> getImageCollectionByPet(Long petId) throws PetNotFound {
         return imageCollectionMapper.toDto(
                 petRepository
                         .findById(petId)
                         .orElseThrow(PetNotFound::new)
                         .getImageCollection()
-        );
+        ).getImageList();
     }
 
 
 
-    public ImageCollectionDTO postImage(Long petId, ImageInput imageInput, SetToCover setToCover) throws PetNotFound {
+    public List<ImageOutputDTO> postImage(Long petId, ImageInput imageInput) throws PetNotFound {
         ImageCollection imageCollection= petRepository
                             .findById(petId)
                             .orElseThrow(PetNotFound::new)
                             .getImageCollection();
         ImageCollection imageCollectionToSave = imageCollection.addImage(imageInput, imageCollectionRepository);
-        if(setToCover==SetToCover.Yes){
-            imageCollectionToSave.setFirst(Long.valueOf(imageCollectionToSave.getImageList().size()-1));
-        }
         imageCollectionRepository.save(imageCollectionToSave);
-        return imageCollectionMapper.toDto(imageCollection);
+        return imageCollectionMapper.toDto(imageCollection).getImageList();
     }
 }
