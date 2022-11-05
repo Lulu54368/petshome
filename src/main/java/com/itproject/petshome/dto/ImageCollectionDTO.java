@@ -16,4 +16,6 @@ public class ImageCollectionDTO {
     private List<ImageOutputDTO> imageList;
 
     private Long petId;
+
+    private Long first;
 }

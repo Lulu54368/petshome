@@ -9,7 +9,6 @@ import io.micrometer.core.lang.Nullable;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
-import java.util.List;
 import java.util.Set;
 
 @Data
@@ -20,7 +19,7 @@ public class PetOutput {
     private Adopted adopted;
     @NotNull
     private Category category;
-    private List<ImageOutputDTO> images;
+    private ImageOutputDTO cover;
     @Nullable
     private  String nickname;
     private String detail;
