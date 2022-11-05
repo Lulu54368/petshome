@@ -10,7 +10,7 @@ public class AdoptionApplicationDTO {
     private Long id;
     private Timestamp timestamp;
     private String reason;
-    private String passport;
+
     private ApplicationStatus applicationStatus;
     private Long userId;
     private Long petId;

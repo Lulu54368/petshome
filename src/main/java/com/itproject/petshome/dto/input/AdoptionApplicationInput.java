@@ -8,6 +8,5 @@ import javax.validation.constraints.NotNull;
 public class AdoptionApplicationInput {
     @NotNull
     String reason;
-    @NotEmpty
-    String passport;
+
 }

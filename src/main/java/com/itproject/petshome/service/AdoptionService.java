@@ -58,7 +58,7 @@ public class AdoptionService {
             throw new ProfileNotUpdated();
         AdoptionApplication adoptionApplication = new AdoptionApplication();
         adoptionApplication.setReason(adoptionApplicationInput.getReason());
-        adoptionApplication.setPassport(adoptionApplicationInput.getPassport());
+
         adoptionApplication.setTimestamp(new Timestamp(new Date().getTime()));
         adoptionApplication.setPet(pet);
         adoptionApplication.setUser(user);

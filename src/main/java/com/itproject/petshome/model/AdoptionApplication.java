@@ -21,8 +21,7 @@ public class AdoptionApplication {
     private Timestamp timestamp;
     @Column(name = "reason", length = 500)
     private String reason;
-    @Column(name = "passport_number", length = 45, nullable = false)
-    private String passport;
+
     @Column(name = "status", nullable = false)
     private ApplicationStatus applicationStatus = ApplicationStatus.PENDING;
     @ManyToOne(fetch = FetchType.LAZY)
