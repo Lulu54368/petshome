@@ -19,9 +19,6 @@ public class Image {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "name")
-    private String name;
-
     @Column(name = "image", unique = false, nullable = false, length = 100000)
     private byte[] image;
 

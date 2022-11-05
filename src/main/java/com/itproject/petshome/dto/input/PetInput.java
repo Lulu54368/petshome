@@ -1,5 +1,6 @@
 package com.itproject.petshome.dto.input;
 
+import com.itproject.petshome.dto.output.ImageOutputDTO;
 import com.itproject.petshome.model.enums.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -7,6 +8,7 @@ import lombok.Data;
 import javax.print.attribute.standard.ColorSupported;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Data
 public class PetInput {
@@ -17,6 +19,7 @@ public class PetInput {
     private String nickname;
     @NotNull
     private String detail;
+    private List<ImageInput> images;
     private Color color = Color.UNDEFINED;
 
     private Sex sex = Sex.UNDEFINED;

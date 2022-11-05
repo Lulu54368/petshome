@@ -26,8 +26,8 @@ public class ImageController {
         return petService.getImageCollectionByPet(petId);
     }
     @PostMapping("/")
-    public ImageCollectionDTO postImage(@RequestParam Long petId, @RequestBody ImageInput imageInput,
-                                        @RequestParam SetToCover setToCover) throws PetNotFound {
-        return petService.postImage(petId, imageInput, setToCover);
+    public ImageCollectionDTO postImage(@RequestParam Long petId,
+                                        @RequestBody ImageInput imageInput) throws PetNotFound {
+        return petService.postImage(petId, imageInput);
     }
 }

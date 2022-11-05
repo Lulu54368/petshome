@@ -23,7 +23,6 @@ public interface PetMapper {
     PetDTO toDto(Pet pet);
     @Mapping(source = "adoptionApplications", target = "adoptionApplicationDTOs")
     @Mapping(source = "userAdoptPets", target = "userAdoptPetDTOS")
-    @Mapping( target = "cover", ignore = true)
     PetOutput toOutput(Pet pet);
 
 }
