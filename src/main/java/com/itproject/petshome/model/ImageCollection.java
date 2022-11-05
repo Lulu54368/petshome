@@ -29,14 +29,24 @@ public class ImageCollection {
     @OneToOne()
     @JoinColumn(name="pet",referencedColumnName = "id")
     private Pet pet;
+    @Column(name="cover", nullable = false)
+    private Long first = Long.valueOf(1);
 
     public ImageCollection addImage(ImageInput imageInput, ImageCollectionRepository imageCollectionRepository){
         Image image = new Image();
         image.setImage(imageInput.getImage());
+        image.setName(imageInput.getName());
         this.imageList.add(image);
+        System.out.println(imageList.size());
+
+        //ImageCollection imageCollection = imageCollectionRepository.save(this);
 
         imageList.get(imageList.size()-1).setImageCollection(this);
         return this;
 
     }
+
+
+
+
 }
