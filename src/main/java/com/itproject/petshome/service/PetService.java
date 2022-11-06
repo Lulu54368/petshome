@@ -46,6 +46,14 @@ public class PetService {
 
         pet = petRepository.save(pet);
         pet.getImageCollection().setPet(pet);
+        ImageCollection imageCollection = pet.getImageCollection();
+        List<ImageInput> images = input.getImages();
+        for (int i = 0; i < images.size(); i++) {
+            ImageCollection imageCollectionToSave = imageCollection.addImage(images.get(i), imageCollectionRepository);
+            imageCollectionRepository.save(imageCollectionToSave);
+        }
+
+        //input.getImages().stream().map(image -> imageCollection.addImage(image, imageCollectionRepository));
         petRepository.save(pet);
         return petMapper.toDto(pet);
 
@@ -93,11 +101,6 @@ public class PetService {
                 .findById(petId)
                 .orElseThrow(PetNotFound::new);
         PetOutput res =  petMapper.toOutput(pet);
-        if(pet.getImageCollection().getFirst() < pet.getImageCollection().getImageList().size())
-        res.setCover(imageMappper.toDto(pet
-                .getImageCollection()
-                .getImageList()
-                .get(Integer.valueOf(Math.toIntExact(pet.getImageCollection().getFirst()))-1)));
         return res;
     }
 
@@ -112,15 +115,12 @@ public class PetService {
 
 
 
-    public ImageCollectionDTO postImage(Long petId, ImageInput imageInput, SetToCover setToCover) throws PetNotFound {
+    public ImageCollectionDTO postImage(Long petId, ImageInput imageInput) throws PetNotFound {
         ImageCollection imageCollection= petRepository
                             .findById(petId)
                             .orElseThrow(PetNotFound::new)
                             .getImageCollection();
         ImageCollection imageCollectionToSave = imageCollection.addImage(imageInput, imageCollectionRepository);
-        if(setToCover==SetToCover.Yes){
-            imageCollectionToSave.setFirst(Long.valueOf(imageCollectionToSave.getImageList().size()-1));
-        }
         imageCollectionRepository.save(imageCollectionToSave);
         return imageCollectionMapper.toDto(imageCollection);
     }
