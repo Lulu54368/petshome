@@ -92,10 +92,12 @@ public class PetService {
                 .stream()
                 .map(pet -> petMapper.toOutput(pet))
                 .collect(Collectors.toList());
+        // Set cover for PetOutput object
         for (int i = 0; i < petOutputs.size(); i++) {
-            List<ImageOutputDTO> images = petOutputs.get(i).getImages();
-            if (images != null && images.get(0) != null) {
-                petOutputs.get(i).setCover(images.get(0));
+            ImageCollectionDTO imageCollectionDTO = petOutputs.get(i).getImageCollectionDTO();
+            if (imageCollectionDTO != null) {
+                petOutputs.get(i).setCover(imageCollectionDTO.getImageList().get(0));
+
             }
         }
         return  petOutputs;
