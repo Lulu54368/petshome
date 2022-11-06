@@ -20,6 +20,7 @@ public class PetOutput {
     private Adopted adopted;
     @NotNull
     private Category category;
+    private ImageOutputDTO cover;
     private List<ImageOutputDTO> images;
     @Nullable
     private  String nickname;

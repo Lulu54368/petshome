@@ -4,6 +4,7 @@ import com.itproject.petshome.dto.ImageCollectionDTO;
 import com.itproject.petshome.dto.PetDTO;
 import com.itproject.petshome.dto.input.ImageInput;
 import com.itproject.petshome.dto.input.PetInput;
+import com.itproject.petshome.dto.output.ImageOutputDTO;
 import com.itproject.petshome.dto.output.PetOutput;
 import com.itproject.petshome.exception.PetNotFound;
 import com.itproject.petshome.mapper.ImageCollectionMapper;
@@ -18,14 +19,11 @@ import com.itproject.petshome.repository.PetRepositoryCustom;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -82,17 +80,25 @@ public class PetService {
         return petMapper.toDto(pet);
     }
 
-    public List<PetDTO> viewLostPet(Optional<Category> category,
-                                    Optional<Adopted> adopted, Optional<Color> color,
-                                    Optional<Sex> sex,
-                                    Optional<Character> character,
-                                    Optional<Integer> age, Optional<Immunization> immunization, Integer pageNo) {
+    public List<PetOutput> viewLostPet(Optional<Category> category,
+                                            Optional<Adopted> adopted, Optional<Color> color,
+                                            Optional<Sex> sex,
+                                            Optional<Character> character,
+                                            Optional<Integer> age, Optional<Immunization> immunization, Integer pageNo) {
         Pageable page = PageRequest.of(pageNo, 9);
-        return petRepositoryCustom
+        List<PetOutput> petOutputs =
+                petRepositoryCustom
                 .findByParameters(category, adopted, color, sex, character, age, immunization, page)
                 .stream()
-                .map(pet->petMapper.toDto(pet))
+                .map(pet -> petMapper.toOutput(pet))
                 .collect(Collectors.toList());
+        for (int i = 0; i < petOutputs.size(); i++) {
+            List<ImageOutputDTO> images = petOutputs.get(i).getImages();
+            if (images != null && images.get(0) != null) {
+                petOutputs.get(i).setCover(images.get(0));
+            }
+        }
+        return  petOutputs;
 
     }
 
