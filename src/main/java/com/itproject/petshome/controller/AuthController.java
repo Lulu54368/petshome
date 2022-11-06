@@ -44,7 +44,7 @@ import javax.annotation.Resource;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-@CrossOrigin("localhost:3000") //should be deleted later
+
 @Tag(name = "authentication")
 @RestController
 @RequestMapping(path = "/api/v1/auth")
