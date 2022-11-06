@@ -10,6 +10,6 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface ImageMappper {
-    @Mapping(target = "imageCollectionId", expression = "java(image.getImageCollection().getId())")
+
     public abstract ImageOutputDTO toDto(Image image);
 }
