@@ -7,5 +7,8 @@ public class ImageOutputDTO {
 
     private Long id;
 
+
     private byte[] image;
+
+    private Long imageCollectionId;
 }
