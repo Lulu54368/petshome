@@ -2,7 +2,6 @@ package com.itproject.petshome.config;
 
 import com.itproject.petshome.filter.AdminFilter;
 import com.itproject.petshome.filter.AuthoritiesLoggingAfterFilter;
-import com.itproject.petshome.filter.CORSFilter;
 import com.itproject.petshome.filter.JwtTokenFilter;
 import com.itproject.petshome.service.AdminService;
 import de.codecentric.boot.admin.server.config.AdminServerProperties;
@@ -28,7 +27,7 @@ public class SecurityConfig {
     private final AdminServerProperties adminServer;
     private final AdminFilter adminFilter;
     private final SecurityProperties security;
-    private final CORSFilter corsFilter;
+
 
     private final AuthoritiesLoggingAfterFilter authoritiesLoggingAfterFilter;
     private final PasswordEncoder passwordEncoder;
@@ -47,7 +46,7 @@ public class SecurityConfig {
                             UsernamePasswordAuthenticationFilter.class)
                     .addFilterAfter(adminFilter, UsernamePasswordAuthenticationFilter.class)
                     .addFilterAfter(authoritiesLoggingAfterFilter, UsernamePasswordAuthenticationFilter.class)
-                    .addFilterAfter(corsFilter, UsernamePasswordAuthenticationFilter.class)
+                    //.addFilterAfter(corsFilter, UsernamePasswordAuthenticationFilter.class)
                     .authorizeHttpRequests((auth) -> {
                                 try {
                                     auth
