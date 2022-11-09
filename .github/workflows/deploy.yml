@@ -14,6 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       EMAILPWD: ${EMAILPWD}
+      ALLOWED_ORIGINS: ${SERVER_ORIGINS}
     steps:
       - name: Executing remote command
         uses: appleboy/ssh-action@v0.1.5

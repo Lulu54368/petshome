@@ -33,9 +33,10 @@ public class EmailVerificationServiceImpl implements EmailService {
 
         String subject = "Please verify your registration";
         String content = "Hi there,"
-                + "<br>Please click the link below to verify your registration:<br>"
-                + "<h3><a href=\"[[URL]]\" target=\"_self\">VERIFY</a></h3>"
-                + "Thank you,<br>"
+                + "Please click the link below to verify your registration:  \n"
+                + " \"[[URL]]\" \n"
+                + "After clicking the link, please go back to the home page to login"
+                + "Thank you\n"
                 + "pet's home.co";
 
         MimeMessage message = sender.createMimeMessage();
