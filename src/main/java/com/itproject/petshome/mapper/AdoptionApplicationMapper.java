@@ -2,6 +2,7 @@ package com.itproject.petshome.mapper;
 
 import com.itproject.petshome.dto.AdoptionApplicationDTO;
 import com.itproject.petshome.dto.input.AdoptionApplicationInput;
+import com.itproject.petshome.dto.output.AdoptionApplicationOutput;
 import com.itproject.petshome.model.AdoptionApplication;
 import com.itproject.petshome.repository.PetRepository;
 import com.itproject.petshome.repository.UserRepository;
@@ -27,6 +28,13 @@ public abstract class AdoptionApplicationMapper {
     @Mapping(target = "userId", source = "user.id")
     @Mapping(target = "petId", source = "pet.id")
     public abstract AdoptionApplicationDTO toDto(AdoptionApplication adoptionApplication);
+    @Mapping(target = "userId", source = "user.id")
+    @Mapping(target = "petId", source = "pet.id")
+    @Mapping(target="lastname", source= "user.lastname")
+    @Mapping(target="firstname", source="user.firstname")
+    @Mapping(target="city", source="user.city")
+    @Mapping(target="email", source="user.email")
+    public abstract AdoptionApplicationOutput toOutput(AdoptionApplication adoptionApplication);
 
 
 

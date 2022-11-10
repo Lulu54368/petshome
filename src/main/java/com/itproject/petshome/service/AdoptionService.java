@@ -3,6 +3,7 @@ package com.itproject.petshome.service;
 import com.itproject.petshome.dto.AdoptionApplicationDTO;
 import com.itproject.petshome.dto.UserAdoptPetDTO;
 import com.itproject.petshome.dto.input.AdoptionApplicationInput;
+import com.itproject.petshome.dto.output.AdoptionApplicationOutput;
 import com.itproject.petshome.exception.*;
 import com.itproject.petshome.mapper.AdoptionApplicationMapper;
 import com.itproject.petshome.mapper.UserAdoptPetMapper;
@@ -78,15 +79,15 @@ public class AdoptionService {
         adoptionApplicationRepository.delete(adoptionApplication);
         return adoptionApplicationMapper.toDto(adoptionApplication);
     }
-    public List<AdoptionApplicationDTO> viewAdoptionApplications(Optional<ApplicationStatus> status,
-                                                                 Optional<Long> petId) {
+    public List<AdoptionApplicationOutput> viewAdoptionApplications(Optional<ApplicationStatus> status,
+                                                                    Optional<Long> petId) {
         Optional<Pet> pet;
         if(petId.isPresent() == false)
             pet = Optional.ofNullable(null);
         else pet = petRepository.findById(petId.get());
         return adoptionApplicationCustom.findAll(status, pet)
                 .stream()
-                .map(adoptionApplication -> adoptionApplicationMapper.toDto(adoptionApplication))
+                .map(adoptionApplication -> adoptionApplicationMapper.toOutput(adoptionApplication))
                 .collect(Collectors.toList());
 
 
