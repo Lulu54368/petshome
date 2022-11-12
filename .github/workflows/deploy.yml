@@ -13,8 +13,8 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     env:
-      EMAILPWD: ${EMAILPWD}
-      ALLOWED_ORIGINS: ${SERVER_ORIGINS}
+
+      Setup_Timeout_Minutes: 2000
     steps:
       - name: Executing remote command
         uses: appleboy/ssh-action@v0.1.5
@@ -30,4 +30,4 @@ jobs:
             git pull
             docker-compose down
             docker-compose up --build
-
+        
