@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
 
-      Setup_Timeout_Minutes: 2000
+      Setup_Timeout_Minutes: 10
     steps:
       - name: Executing remote command
         uses: appleboy/ssh-action@v0.1.5
