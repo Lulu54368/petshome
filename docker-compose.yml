@@ -16,7 +16,7 @@ services:
       MYSQL_HOST: 'mysql'
 
     volumes:
-      - "./volumes/database:/var/lib/pets_home"
+      - data:/volumes/database
 
     expose:
       - '3306'
@@ -51,3 +51,6 @@ services:
 
     ports:
       - 6379:6379
+volumes:
+  data:
+    external: true
