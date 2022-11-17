@@ -76,10 +76,10 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(input.getPassword()));
 
         String randomCode = UUID.randomUUID().toString();
-        user.setVerified(false);
+        user.setVerified(true); //should be false here
         userRepository.save(user);
 
-        user = userRepository
+        /*user = userRepository
                 .findByEmail(user.getEmail())
                 .orElseThrow(UserNotFoundException::new);
         UserCodeDTO userRegistrationCodeDTO =
@@ -89,7 +89,7 @@ public class UserService {
 
         userCodeRepository.save(userRegistrationCodeDTO);
 
-        emailService.sendEmail(user, siteURL);
+        emailService.sendEmail(user, siteURL);*/
         return userMapper.toDto(user);
     }
 
