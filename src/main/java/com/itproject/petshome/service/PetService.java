@@ -6,6 +6,7 @@ import com.itproject.petshome.dto.input.ImageInput;
 import com.itproject.petshome.dto.input.PetInput;
 import com.itproject.petshome.dto.output.ImageOutputDTO;
 import com.itproject.petshome.dto.output.PetOutput;
+import com.itproject.petshome.exception.DataNotValidException;
 import com.itproject.petshome.exception.PetNotFound;
 import com.itproject.petshome.mapper.ImageCollectionMapper;
 import com.itproject.petshome.mapper.ImageMappper;
@@ -39,13 +40,14 @@ public class PetService {
     private ImageCollectionMapper imageCollectionMapper;
     private ImageMappper imageMappper;
     @Transactional
-    public PetDTO addPet(PetInput input) {
+    public PetDTO addPet(PetInput input) throws DataNotValidException {
         Pet pet = petMapper.toEntity(input);
 
         pet = petRepository.save(pet);
         pet.getImageCollection().setPet(pet);
         ImageCollection imageCollection = pet.getImageCollection();
         List<ImageInput> images = input.getImages();
+        if(images.size()==0) throw new DataNotValidException();
         for (int i = 0; i < images.size(); i++) {
             ImageCollection imageCollectionToSave = imageCollection.addImage(images.get(i), imageCollectionRepository);
             imageCollectionRepository.save(imageCollectionToSave);
