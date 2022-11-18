@@ -97,7 +97,7 @@ public class PetService {
         // Set cover for PetOutput object
         for (int i = 0; i < petOutputs.size(); i++) {
             ImageCollectionDTO imageCollectionDTO = petOutputs.get(i).getImageCollectionDTO();
-            if (imageCollectionDTO != null) {
+            if (imageCollectionDTO != null && !imageCollectionDTO.getImageList().isEmpty()) {
                 petOutputs.get(i).setCover(imageCollectionDTO.getImageList().get(0));
 
             }
