@@ -26,7 +26,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - ${PORT:8080}:${PORT:8080}
+      - "${PORT-8080}:${PORT-8080}"
 
     environment:
 
@@ -34,7 +34,7 @@ services:
       ALLOWED_ORIGINS: ${ALLOWED_ORIGINS}
       EMAILPWD: ${EMAILPWD}
     
-      PORT: ${PORT:8080}
+      PORT: ${PORT-8080}
       MYSQL_HOST: 'mysql'
       MYSQL_PWD: 'password'
       Redis_Host: 'redis'
