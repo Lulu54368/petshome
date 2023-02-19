@@ -23,8 +23,8 @@ services:
   backend:
     container_name: pets_home_backend
     build:
-      context: .
-      dockerfile: ./backend/Dockerfile
+      context: ./backend
+      dockerfile: ./Dockerfile
     ports:
       - "${PORT-8080}:${PORT-8080}"
 
@@ -56,7 +56,7 @@ services:
     container_name: pets_home_frontend
     image: react
     build: 
-      context: .
+      context: ./frontend
     ports:
       - 3000:3000
 volumes:
