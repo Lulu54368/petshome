@@ -1,6 +1,6 @@
 FROM openjdk:17
 LABEL maintainer="pet's home"
-WORKDIR /
+WORKDIR /backend
 
 COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
