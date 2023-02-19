@@ -24,8 +24,6 @@ jobs:
           PORT: ${{ secrets.PORT }}
           KEY: ${{ secrets.SSHKEY }}
           script: |
-
-            
             cd IT-project-backend
             git pull
             docker-compose down --rmi all
