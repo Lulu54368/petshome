@@ -36,9 +36,7 @@ services:
     depends_on:
       - mysql
       - redis
-    volumes:
-      data:
-        external: true
+  
   proxy:
     image: nginx:1.17
     restart: unless-stopped
@@ -67,3 +65,6 @@ services:
       - ./certbot/conf:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
     command: certonly --webroot -w /var/www/certbot --force-renewal --email petshome876@gmail.com -d petshome.cute-lulu.com --agree-tos
+volumes:
+    data:
+      external: true
