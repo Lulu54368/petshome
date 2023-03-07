@@ -51,7 +51,7 @@ public class AdminController {
 
     @Operation(summary = "add pets")
     @PostMapping("/pets")
-    public PetDTO addPet(@RequestBody @Valid PetInput input) throws DataNotValidException {
+    public PetDTO addPet(@RequestBody @Valid PetInput input) throws DataNotValidException, PetCreationFailure {
         return this.petService.addPet(input);
     }
 

@@ -1,5 +1,6 @@
 package com.itproject.petshome;
 
+import com.itproject.petshome.config.AWSProperties;
 import com.itproject.petshome.config.ApplicationProperties;
 import de.codecentric.boot.admin.server.config.EnableAdminServer;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
@@ -23,7 +24,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @OpenAPIDefinition(info = @Info(title = "Pet's home API", version = "1.0"))
 @ConfigurationPropertiesScan("com.itproject.petshome.config")
 @EnableCaching
-@EnableConfigurationProperties(ApplicationProperties.class)
+@EnableConfigurationProperties({ApplicationProperties.class, AWSProperties.class})
 @EnableAdminServer
 public class PetshomeApplication {
 	private RedisTemplate redisTemplate;
