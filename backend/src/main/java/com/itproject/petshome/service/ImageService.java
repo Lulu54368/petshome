@@ -4,6 +4,8 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.itproject.petshome.config.AWSProperties;
 import com.itproject.petshome.exception.PetCreationFailure;
+import com.itproject.petshome.model.Image;
+import com.itproject.petshome.repository.ImageRepository;
 import com.sun.xml.bind.v2.TODO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,12 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.*;
-import java.util.function.Supplier;
-
 import static org.apache.http.entity.ContentType.*;
 @Data
 @AllArgsConstructor
@@ -26,6 +23,8 @@ import static org.apache.http.entity.ContentType.*;
 public class ImageService {
     private AmazonS3 s3Client;
     private static final Logger logger = LoggerFactory.getLogger(ImageService.class);
+    ImageRepository imageRepository;
+
     private void isImage(MultipartFile file) {
         if (!Arrays.asList(
                 IMAGE_JPEG.getMimeType(),
@@ -57,6 +56,9 @@ public class ImageService {
             s3Client
                     .putObject(path, filename,
                             new BufferedInputStream(file.getInputStream()), objectMetadata);
+            Image imageToSave = new Image();
+            imageToSave.setUrl(path+filename);
+            imageRepository.save(imageToSave);
 
         } catch (Exception e){
             logger.info(e.toString());

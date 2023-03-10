@@ -10,6 +10,7 @@ import com.itproject.petshome.exception.PetCreationFailure;
 import com.itproject.petshome.exception.PetNotFound;
 import com.itproject.petshome.mapper.ImageMappper;
 import com.itproject.petshome.mapper.PetMapper;
+import com.itproject.petshome.model.Image;
 import com.itproject.petshome.model.Pet;
 import com.itproject.petshome.model.enums.*;
 import com.itproject.petshome.repository.PetRepository;
@@ -28,6 +29,9 @@ import java.io.ByteArrayInputStream;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.stream.Collectors;
 
 
@@ -49,22 +53,36 @@ public class PetService {
         List<MultipartFile> images = input.getImages();
         if(images.size()==0) throw new DataNotValidException();
         String folder_name = "pet_image_" + pet.getNickname()+"_"+ UUID.randomUUID() + "/";
-        String path = awsProperties.getBucketName()+"/petshome/";
-
+        String path = awsProperties.getBucketName()+"/petshome";
+        ThreadPoolExecutor executor =
+                (ThreadPoolExecutor) Executors.newFixedThreadPool(images.size());
         images
                 .parallelStream()
-                .forEach(image->{
-                    String filePath = path+folder_name;
-                    logger.info(filePath);
+                .map(image->{
+                    return new Runnable() {
+                        @Override
+                        public void run() {
+                            String filePath = path+folder_name;
+                            logger.info(filePath);
+                            try {
+                                imageService.uploadPetImage(image, filePath);
+                            } catch (PetCreationFailure e) {
+                                logger.info(e.toString());
+                                throw new RuntimeException(e);
+                            }
+                        }
+                    };
+                })
+                .map(task-> CompletableFuture.runAsync(() -> {
                     try {
-                        imageService.uploadPetImage(image, filePath);
-                    } catch (PetCreationFailure e) {
+                        task.run();
+                    } catch (Throwable e) {
                         logger.info(e.toString());
-                        //throw new RuntimeException(e);
                     }
-                });
+                }, executor))
+                .collect(Collectors.toList());
+        logger.info(pet.toString());
         petRepository.save(pet);
-
         return petMapper.toDto(pet);
 
     }
