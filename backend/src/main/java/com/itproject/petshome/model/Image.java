@@ -19,11 +19,11 @@ public class Image {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "image", unique = false, nullable = false, length = 100000)
-    private byte[] image;
+    @Column(name = "url", unique = true, nullable = true, length = 100000)
+    private String url;
 
     @ManyToOne( fetch = FetchType.LAZY)
-    @JoinColumn(name="image_collection")
-    private ImageCollection imageCollection;
+    @JoinColumn(name="pet")
+    private Pet pet;
 
 }

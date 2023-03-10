@@ -4,9 +4,9 @@ package com.itproject.petshome.model;
 import com.itproject.petshome.model.enums.*;
 import lombok.Getter;
 import lombok.Setter;
-
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -22,8 +22,8 @@ public class Pet {
     private Adopted adopted = Adopted.NO;
     @Column(name = "category", nullable = false)
     private Category category;
-    @OneToOne(mappedBy = "pet", cascade = CascadeType.ALL)
-    private ImageCollection imageCollection=new ImageCollection();
+    @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL)
+    private List<Image> image;
     @Column(name = "nickname")
     private String nickname;
     @Column(name = "detail")

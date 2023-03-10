@@ -14,10 +14,18 @@ import com.itproject.petshome.service.AdoptionService;
 import com.itproject.petshome.service.PetService;
 import com.itproject.petshome.service.UserService;
 import com.itproject.petshome.utils.JwtTokenUtil;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+
+import org.springframework.http.HttpHeaders;
+
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -48,11 +56,17 @@ public class AdminController {
 
 
 
-
+   @ApiResponse(content =@Content(mediaType = "multipart/form-data") )
     @Operation(summary = "add pets")
-    @PostMapping("/pets")
-    public PetDTO addPet(@RequestBody @Valid PetInput input) throws DataNotValidException, PetCreationFailure {
-        return this.petService.addPet(input);
+    @PostMapping(value = "/pets", consumes = "multipart/form-data", produces ="multipart/form-data")
+    public ResponseEntity<PetDTO> addPet( @ModelAttribute @Valid PetInput input)
+           throws DataNotValidException, PetCreationFailure {
+       HttpHeaders headers = new HttpHeaders();
+       headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+       return ResponseEntity
+               .ok()
+               .headers(headers)
+               .body(petService.addPet(input));
     }
 
 

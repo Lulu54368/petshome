@@ -1,15 +1,11 @@
 package com.itproject.petshome.dto;
 
-import com.itproject.petshome.model.ImageCollection;
 import com.itproject.petshome.model.enums.*;
 import com.itproject.petshome.model.enums.Color;
 import io.micrometer.core.lang.Nullable;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.awt.*;
 import java.util.Set;
 
 @Data
@@ -20,8 +16,7 @@ public class PetDTO {
     private Adopted adopted;
     @NotNull
     private Category category;
-    @NotNull
-    private ImageCollectionDTO imageCollectionDTO;
+
     @Nullable
     private  String nickname;
     private String detail;

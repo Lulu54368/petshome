@@ -21,7 +21,7 @@ public class PetOutput {
     @NotNull
     private Category category;
     private ImageOutputDTO cover;
-    private ImageCollectionDTO imageCollectionDTO;
+
     @Nullable
     private  String nickname;
     private String detail;
