@@ -16,7 +16,6 @@ public class PetDTO {
     private Adopted adopted;
     @NotNull
     private Category category;
-
     @Nullable
     private  String nickname;
     private String detail;

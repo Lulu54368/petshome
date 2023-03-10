@@ -58,11 +58,11 @@ public class AdminController {
 
    @ApiResponse(content =@Content(mediaType = "multipart/form-data") )
     @Operation(summary = "add pets")
-    @PostMapping(value = "/pets", consumes = "multipart/form-data", produces ="multipart/form-data")
+    @PostMapping(value = "/pets", consumes = "multipart/form-data")
     public ResponseEntity<PetDTO> addPet( @ModelAttribute @Valid PetInput input)
            throws DataNotValidException, PetCreationFailure {
        HttpHeaders headers = new HttpHeaders();
-       headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+       headers.setContentType(MediaType.valueOf(MediaType.APPLICATION_JSON_VALUE));
        return ResponseEntity
                .ok()
                .headers(headers)
