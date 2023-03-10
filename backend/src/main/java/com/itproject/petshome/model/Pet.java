@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -23,7 +24,7 @@ public class Pet {
     @Column(name = "category", nullable = false)
     private Category category;
     @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL)
-    private List<Image> image;
+    private List<Image> imageList = new LinkedList<>();
     @Column(name = "nickname")
     private String nickname;
     @Column(name = "detail")
@@ -48,6 +49,14 @@ public class Pet {
     @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     Set<UserAdoptPet> userAdoptPets = new HashSet<>();
 
+    public synchronized Pet addImage(String url){
+        Image image = new Image();
+        image.setUrl(url);
+        image.setPet(this);
+        imageList.add(image);
+        return this;
+
+    }
 
 
 

@@ -56,9 +56,6 @@ public class ImageService {
             s3Client
                     .putObject(path, filename,
                             new BufferedInputStream(file.getInputStream()), objectMetadata);
-            Image imageToSave = new Image();
-            imageToSave.setUrl(path+filename);
-            imageRepository.save(imageToSave);
 
         } catch (Exception e){
             logger.info(e.toString());
