@@ -19,11 +19,14 @@ public class Image {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "url", unique = true, nullable = true, length = 100000)
-    private String url;
-
+    @Column(name = "filepath", nullable = false, length = 100000)
+    private String filePath;
+    @Column(name = "filename", unique = true,nullable = false )
+    private String filename;
     @ManyToOne( fetch = FetchType.LAZY)
     @JoinColumn(name="pet")
     private Pet pet;
+
+
 
 }

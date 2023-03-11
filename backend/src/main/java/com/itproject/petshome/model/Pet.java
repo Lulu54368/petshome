@@ -4,6 +4,9 @@ package com.itproject.petshome.model;
 import com.itproject.petshome.model.enums.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -15,6 +18,7 @@ import java.util.Set;
 @Getter
 @Setter
 public class Pet {
+    private  static Logger logger = LoggerFactory.getLogger(Pet.class);
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
@@ -49,11 +53,12 @@ public class Pet {
     @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     Set<UserAdoptPet> userAdoptPets = new HashSet<>();
 
-    public synchronized Pet addImage(String url){
+    public synchronized Pet addImage(String path, String filename){
         Image image = new Image();
-        image.setUrl(url);
+        image.setFilename(filename);
+        image.setFilePath(path);
         image.setPet(this);
-        imageList.add(image);
+        this.imageList.add(image);
         return this;
 
     }

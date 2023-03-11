@@ -5,8 +5,13 @@ import com.itproject.petshome.model.enums.Color;
 import io.micrometer.core.lang.Nullable;
 import lombok.Data;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 
 @Data
 public class PetDTO {
@@ -21,7 +26,7 @@ public class PetDTO {
     private String detail;
     private City city;
     private Country country;
-    @NotNull
+    @NotEmpty
     Set<AdoptionApplicationDTO> adoptionApplicationDTOs;
     @NotNull
     Set<UserAdoptPetDTO> userAdoptPetDTOS;
@@ -35,5 +40,6 @@ public class PetDTO {
     private String character;
 
     private Immunization immunization;
+    private List<CompletableFuture<byte[]>> images = new LinkedList<>();
 
 }

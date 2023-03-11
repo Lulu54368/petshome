@@ -2,6 +2,7 @@ package com.itproject.petshome.service;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.util.IOUtils;
 import com.itproject.petshome.config.AWSProperties;
 import com.itproject.petshome.exception.PetCreationFailure;
 import com.itproject.petshome.model.Image;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedInputStream;
+import java.io.IOException;
 import java.util.*;
 import static org.apache.http.entity.ContentType.*;
 @Data
@@ -47,7 +49,7 @@ public class ImageService {
         }
     }
 
-    void uploadPetImage(MultipartFile file, String path) throws PetCreationFailure {
+    String uploadPetImage(MultipartFile file, String path) throws PetCreationFailure {
         isFileEmpty(file);
         isImage(file);
         ObjectMetadata objectMetadata = extractMetadata(file);
@@ -57,11 +59,18 @@ public class ImageService {
                     .putObject(path, filename,
                             new BufferedInputStream(file.getInputStream()), objectMetadata);
 
-        } catch (Exception e){
+        } catch (Exception e) {
             logger.info(e.toString());
             //TODO: exception handling
-            //throw new PetCreationFailure();
+            throw new PetCreationFailure();
         }
+        return filename;
 
+    }
+
+    public byte[] download(String filePath, String key) throws IOException {
+        return IOUtils.toByteArray(s3Client
+                .getObject(filePath, key)
+                .getObjectContent());
     }
 }
