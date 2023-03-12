@@ -16,6 +16,7 @@ import com.itproject.petshome.repository.PetRepository;
 import com.itproject.petshome.repository.PetRepositoryCustom;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.joda.time.field.MillisDurationField;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
@@ -33,6 +34,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.stream.Collectors;
+
+import static reactor.core.publisher.Mono.delay;
 
 
 @AllArgsConstructor
@@ -133,7 +136,12 @@ public class PetService {
                         .findByParameters(category, adopted, color, sex, character, age, immunization, page)
                         .stream()
                         .map(pet -> {
-                                    PetOutput petOutput = petMapper.toOutput(pet);
+                            try {
+                                Thread.sleep(MillisDurationField.INSTANCE.getMillis(1000));
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                            PetOutput petOutput = petMapper.toOutput(pet);
                                     petOutput.setCover(pet.getImageList().size() > 0 ? getPetImage(pet.getImageList().get(0))
                                             : null);
                                     return petOutput;
