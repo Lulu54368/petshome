@@ -49,15 +49,5 @@ public class PetController {
                 .subscribeOn(Schedulers.parallel());
     }
 
-    public Flux<PetOutput> getResponseBody(String url, Map<String, String> params) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(url);
-        for (Map.Entry<String, String> entry : params.entrySet()) {
-            uriBuilder.queryParam(entry.getKey(), entry.getValue());
-        }
-        URI uri = uriBuilder.build().encode().toUri();
-        return webClient.get()
-                .uri(uri)
-                .retrieve()
-                .bodyToFlux(PetOutput.class);
-    }
+
 }
