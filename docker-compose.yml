@@ -32,6 +32,8 @@ services:
       MYSQL_HOST: 'mysql'
       MYSQL_PWD: 'password'
       Redis_Host: 'redis'
+      AWS_S3_ACCESS_KEY: ${AWS_S3_ACCESS_KEY}
+      AWS_S3_SECRET_KEY: ${AWS_S3_SECRET_KEY}
 
     depends_on:
       - mysql
