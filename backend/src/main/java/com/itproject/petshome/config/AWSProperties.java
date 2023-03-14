@@ -11,13 +11,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Data
 public class AWSProperties {
 
-    Dotenv dotenv = Dotenv
-            .configure()
-            .directory("backend/")
-            .load();
     @Value("${aws.s3.bucket.name}")
     private String bucketName;
-    private String s3_access_key = dotenv.get("AWS_S3_ACCESS_KEY");
-
-    private String s3_secret_key = dotenv.get("AWS_S3_SECRET_KEY");
+    @Value("${aws.s3.access.key}")
+    private String s3_access_key;
+    @Value("${aws.s3.secret.key}")
+    private String s3_secret_key;
 }
