@@ -1,5 +1,6 @@
 package com.itproject.petshome.service;
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.itproject.petshome.config.AWSProperties;
 import com.itproject.petshome.dto.PetDTO;
 import com.itproject.petshome.dto.input.PetInput;
@@ -26,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import reactor.core.publisher.Flux;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -56,7 +58,7 @@ public class PetService {
         List<MultipartFile> images = input.getImages();
         if(images.size()==0) throw new DataNotValidException();
         String folder_name = "pet_image_" + pet.getNickname()+"_"+ UUID.randomUUID() + "/";
-        String path = awsProperties.getBucketName()+"/petshome/";
+        String path = "petshome/";
         ThreadPoolExecutor executor =
                 (ThreadPoolExecutor) Executors.newFixedThreadPool(Math.min(images.size(), 10));
         images
@@ -66,13 +68,16 @@ public class PetService {
                         String filename;
                         String filePath = path+folder_name;
                         try {
-                            filename = imageService.uploadPetImage(image, filePath);
+
+                            filename =
+                                    imageService.uploadPetImage(image, filePath, awsProperties.getBucketName());
+
 
                         } catch (PetCreationFailure e) {
                             throw new RuntimeException(e);
                         }
                         if(filename != null)
-                            pet.addImage(filePath,filename);
+                            pet.addImage(folder_name, filename);
                     } catch (Throwable e) {
                         logger.debug(e.toString());
                     }
@@ -86,13 +91,13 @@ public class PetService {
         return petDTO;
     }
     private  List<CompletableFuture<byte[]>> getPetImageList(Pet pet){
-        return pet.getImageList()
+        List<CompletableFuture<byte[]>> result = pet.getImageList()
                 .parallelStream()
                 .map(image->{
                     return CompletableFuture.supplyAsync(
                             ()->{
                                 try {
-                                    return imageService.download(image.getFilePath(), image.getFilename());
+                                    return imageService.download(awsProperties.getBucketName(), image.getFilename());
                                 } catch (IOException e) {
                                     throw new RuntimeException(e);
                                 }
@@ -101,6 +106,7 @@ public class PetService {
                     );
                 })
                 .collect(Collectors.toList());
+        return result;
     }
 
 
