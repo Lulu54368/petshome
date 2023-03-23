@@ -18,7 +18,7 @@ public class PetOutput {
     private Adopted adopted;
     @NotNull
     private Category category;
-    private CompletableFuture<byte[]> cover;
+    private String cover;
 
     @Nullable
     private  String nickname;

@@ -39,14 +39,13 @@ public class PetController {
     }
 
     @Operation(summary = "view lost pets")
-    @GetMapping(name ="/", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @GetMapping(name ="/", produces = MediaType.APPLICATION_JSON_VALUE)
     public Flux<PetOutput> viewPets(@RequestParam Integer page, @RequestParam Optional<Category> category,
                                     @RequestParam Optional<Adopted> adopted, @RequestParam Optional<Color> color,
                                     @RequestParam Optional<Sex> sex, @RequestParam Optional<Character> character,
                                     @RequestParam Optional<Integer> age,
                                     @RequestParam Optional<Immunization> immunization) {
-        return this.petService.viewLostPet(category, adopted, color, sex, character, age, immunization, page)
-                .subscribeOn(Schedulers.parallel());
+        return this.petService.viewLostPet(category, adopted, color, sex, character, age, immunization, page);
     }
 
 

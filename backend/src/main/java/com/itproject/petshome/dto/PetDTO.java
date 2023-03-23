@@ -40,6 +40,6 @@ public class PetDTO {
     private String character;
 
     private Immunization immunization;
-    private List<CompletableFuture<byte[]>> images = new LinkedList<>();
+    private List<String> images = new LinkedList<>();
 
 }

@@ -20,6 +20,7 @@ import software.amazon.awssdk.services.s3.model.CompletedPart;
 import software.amazon.awssdk.services.s3.model.UploadPartResponse;
 
 import javax.imageio.stream.ImageInputStream;
+import javax.management.RuntimeErrorException;
 import java.io.*;
 import java.nio.ByteBuffer;
 import java.util.*;
@@ -156,5 +157,16 @@ public class ImageService {
         return IOUtils.toByteArray(s3Client
                 .getObject(filePath, key)
                 .getObjectContent());
+    }
+
+    public void deleteImage(String filePath, String bucketName) {
+        try {
+            s3Client.deleteObject(new DeleteObjectRequest(bucketName, filePath));
+            logger.info("image "+ filePath+ " deleted successfully");
+        } catch (Exception e) {
+            logger.error("Error deleting object: " + e.getMessage());
+
+        }
+
     }
 }

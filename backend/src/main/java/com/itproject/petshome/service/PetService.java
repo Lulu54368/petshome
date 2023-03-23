@@ -29,6 +29,7 @@ import reactor.core.publisher.Flux;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -84,27 +85,16 @@ public class PetService {
                 }, executor)
                         .join())
                 .collect(Collectors.toList());
-        List<CompletableFuture<byte[]>> imageList = getPetImageList(pet);
+        List<String> imageList = getPetImageList(pet);
         petRepository.save(pet);
         PetDTO petDTO = petMapper.toDto(pet);
         petDTO.setImages(imageList);
         return petDTO;
     }
-    private  List<CompletableFuture<byte[]>> getPetImageList(Pet pet){
-        List<CompletableFuture<byte[]>> result = pet.getImageList()
+    private List<String> getPetImageList(Pet pet){
+        List<String> result = pet.getImageList()
                 .parallelStream()
-                .map(image->{
-                    return CompletableFuture.supplyAsync(
-                            ()->{
-                                try {
-                                    return imageService.download(awsProperties.getBucketName(), image.getFilename());
-                                } catch (IOException e) {
-                                    throw new RuntimeException(e);
-                                }
-                            }
-
-                    );
-                })
+                .map(image->image.getFilename())
                 .collect(Collectors.toList());
         return result;
     }
@@ -126,6 +116,17 @@ public class PetService {
         Pet pet = petRepository
                 .findById(petId)
                 .orElseThrow(PetNotFound::new);
+        List<Image> images = imageRepository.findByPet(pet);
+        ThreadPoolExecutor executor =
+                (ThreadPoolExecutor) Executors.newFixedThreadPool(Math.min(images.size(), 10));
+        //TODO: exception throw scenario
+        images
+                .parallelStream()
+                .map(image-> CompletableFuture.runAsync(() -> {
+                    imageService.deleteImage(image.getFilePath(), awsProperties.getBucketName());
+                    }, executor)
+                        .join())
+                .collect(Collectors.toList());
 
         petRepository.delete(pet);
         return petMapper.toDto(pet);
@@ -143,7 +144,7 @@ public class PetService {
                         .stream()
                         .map(pet -> {
                             PetOutput petOutput = petMapper.toOutput(pet);
-                                    petOutput.setCover(pet.getImageList().size() > 0 ? getPetImage(pet.getImageList().get(0))
+                                    petOutput.setCover(pet.getImageList().size() > 0 ? pet.getImageList().get(0).getFilename()
                                             : null);
                                     return petOutput;
                                 }
@@ -152,21 +153,6 @@ public class PetService {
 
     }
 
-    private CompletableFuture<byte[]> getPetImage(Image image) {
-
-        return CompletableFuture.supplyAsync(
-                ()->{
-                    try {
-                        return imageService.download(image.getFilePath(), image.getFilename());
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-
-                );
-
-
-    }
 
     public PetDTO viewPet(Long petId) throws PetNotFound {
         Pet pet = petRepository

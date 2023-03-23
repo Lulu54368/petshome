@@ -1,8 +1,10 @@
 /volumes
 /target
-/.idea
+/.idea/*
 src/main/java/com/itproject/petshome/config/BasicSecurityConfig.java
 .env
 certbot
 /nginx
 *.xml
+/backend/.idea
+
