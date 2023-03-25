@@ -27,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import reactor.core.publisher.Flux;
 
+import javax.validation.Valid;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.time.Duration;
@@ -54,10 +55,10 @@ public class PetService {
     private ImageService imageService;
     private ImageRepository imageRepository;
     @Transactional
-    public PetDTO addPet(PetInput input) throws DataNotValidException, PetCreationFailure {
+    public PetDTO addPet(@Valid PetInput  input) throws DataNotValidException, PetCreationFailure {
         Pet pet = petMapper.toEntity(input);
         List<MultipartFile> images = input.getImages();
-        if(images.size()==0) throw new DataNotValidException();
+        if(images == null ||images.size()==0) throw new DataNotValidException();
         String folder_name = "pet_image_" + pet.getNickname()+"_"+ UUID.randomUUID() + "/";
         String path = "petshome/";
         ThreadPoolExecutor executor =
@@ -120,14 +121,15 @@ public class PetService {
         ThreadPoolExecutor executor =
                 (ThreadPoolExecutor) Executors.newFixedThreadPool(Math.min(images.size(), 10));
         //TODO: exception throw scenario
-        images
-                .parallelStream()
-                .map(image-> CompletableFuture.runAsync(() -> {
-                    imageService.deleteImage(image.getFilePath(), awsProperties.getBucketName());
-                    }, executor)
-                        .join())
-                .collect(Collectors.toList());
-
+        if(images != null && images.size()!= 0){
+            images
+                    .parallelStream()
+                    .map(image-> CompletableFuture.runAsync(() -> {
+                                imageService.deleteImage(image.getFilePath(), awsProperties.getBucketName());
+                            }, executor)
+                            .join())
+                    .collect(Collectors.toList());
+        }
         petRepository.delete(pet);
         return petMapper.toDto(pet);
     }

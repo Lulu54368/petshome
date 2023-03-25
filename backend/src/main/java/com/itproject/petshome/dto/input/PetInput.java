@@ -17,6 +17,7 @@ public class PetInput {
     private String nickname;
     @NotNull
     private String detail;
+    @NotEmpty
     @NotNull
     private List<MultipartFile> images;
     private Color color = Color.UNDEFINED;
