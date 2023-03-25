@@ -30,4 +30,5 @@ jobs:
             docker-compose build backend
             docker-compose up frontend
             docker-compose up backend
+            docker-compose build frontend
         

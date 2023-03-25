@@ -118,10 +118,10 @@ public class PetService {
                 .findById(petId)
                 .orElseThrow(PetNotFound::new);
         List<Image> images = imageRepository.findByPet(pet);
-        ThreadPoolExecutor executor =
-                (ThreadPoolExecutor) Executors.newFixedThreadPool(Math.min(images.size(), 10));
         //TODO: exception throw scenario
         if(images != null && images.size()!= 0){
+            ThreadPoolExecutor executor =
+                    (ThreadPoolExecutor) Executors.newFixedThreadPool(Math.min(images.size(), 10));
             images
                     .parallelStream()
                     .map(image-> CompletableFuture.runAsync(() -> {
