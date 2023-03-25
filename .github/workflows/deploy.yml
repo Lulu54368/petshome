@@ -26,6 +26,8 @@ jobs:
           script: |
             cd petshome
             git pull
-            docker-compose down --rmi all
-            docker-compose up --build
+            docker-compose build frontend
+            docker-compose build backend
+            docker-compose up frontend
+            docker-compose up backend
         
