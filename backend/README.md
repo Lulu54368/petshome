@@ -31,3 +31,4 @@ We used the following technology for the development of our backend
 
 https://www.cnblogs.com/masonlee/p/12004638.html
 https://pentacent.medium.com/nginx-and-lets-encrypt-with-docker-in-less-than-5-minutes-b4b8a60d3a71
+https://medium.com/javarevisited/how-to-enable-https-in-spring-boot-application-78b77ba1d242
