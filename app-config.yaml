@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  allowed-origins: localhost:3000
+  backend-port: '8080'
+  mysql-host: mysql
+  mysql-user: root
+  mysql-database: peteshome
+  bucket-name: aws-logs-654012835466-ap-southeast-2
+
+

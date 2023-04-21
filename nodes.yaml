@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Node
+metadata:
+  name: petshome-backend
+spec:
+  taints:
+  - key: node.kubernetes.io/unschedulable
+    effect: NoSchedule
+  unschedulable: true
+  podCIDR: 10.244.2.0/24
+  podCIDRs:
+  - 10.244.2.0/24
+  providerID: minikube://petshome-backend

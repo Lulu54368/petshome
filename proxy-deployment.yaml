@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.28.0 (HEAD)
+  labels:
+    io.kompose.service: proxy
+  name: proxy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: proxy
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.28.0 (HEAD)
+      labels:
+        io.kompose.network/it-project-backend-default: "true"
+        io.kompose.service: proxy
+    spec:
+      containers:
+        - args:
+            - /bin/sh
+            - -c
+            - while :; do sleep 6h & wait $()$(){!}; nginx -s reload; done & nginx -g "daemon off;"
+          image: nginx:1.17
+          name: proxy
+          ports:
+            - containerPort: 80
+            - containerPort: 443
+          resources: {}
+          volumeMounts:
+            - mountPath: /etc/nginx/conf.d
+              name: proxy-claim0
+      restartPolicy: Always
+      volumes:
+        - name: proxy-claim0
+          persistentVolumeClaim:
+            claimName: proxy-claim0
+status: {}

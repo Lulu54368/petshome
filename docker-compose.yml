@@ -24,11 +24,11 @@ services:
       context: ./backend
       dockerfile: ./Dockerfile
     ports:
-      - "${PORT-8080}:${PORT-8080}"
+      - "8080:8080"
 
     environment:
       ALLOWED_ORIGINS: ${ALLOWED_ORIGIN}
-      PORT: ${PORT-8080}
+      PORT: '8080'
       MYSQL_HOST: 'mysql'
       MYSQL_PWD: 'password'
       Redis_Host: 'redis'
@@ -69,19 +69,8 @@ services:
       REACT_APP_AWS_S3_BUCKET_NAME: ${AWS_S3_BUCKET_NAME}
       REACT_APP_AWS_S3_SECRET_KEY: ${AWS_S3_SECRET_KEY}
       REACT_APP_AWS_REGION: ${AWS_ORIGIN}
-      REACT_APP_BASE_URL: "https://localhost:8048"
+      REACT_APP_BASE_URL: ${BASE_URL:-"http://localhost:8080"}
       REACT_APP_HOME: ${REACT_APP_HOME:-"http://localhost:3000/"}
-    
-  certbot:
-    image: certbot/certbot
-    container_name: certbot
-    restart: unless-stopped
-    volumes: 
-      - ./certbot/conf:/etc/letsencrypt
-      - ./certbot/www:/var/www/certbot
-      - /etc/live/petshome.cute-lulu.com/fullchain.pem:/petshome.cute-lulu.com/fullchain.pem
-      - /etc/live/petshome.cute-lulu.com/privkey.pem:/petshome.cute-lulu.com/privkey.pem
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
 volumes:
     data:
       external: true

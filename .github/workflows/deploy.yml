@@ -28,7 +28,7 @@ jobs:
             git pull
             docker-compose build frontend
             docker-compose build backend
-            docker-compose up frontend
+            docker-compose up --force-recreate --build -d frontend
             docker-compose up backend
-            docker-compose build frontend
+            
         

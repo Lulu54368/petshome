@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.28.0 (HEAD)
+  labels:
+    io.kompose.service: backend
+  name: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: backend
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.28.0 (HEAD)
+      labels:
+        io.kompose.network/it-project-backend-default: "true"
+        io.kompose.service: backend
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: petshome-backend
+      containers:
+        - env:
+            - name: ALLOWED_ORIGINS
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: allowed-origins
+            - name: AWS_S3_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: aws-s3-access-key
+            - name: AWS_S3_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: aws-s3-secret-key
+            - name: BUCKET_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: bucket-name
+            - name: MYSQL_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: mysql-host
+            - name: MYSQL_PWD
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: mysql-password
+            
+            - name: PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: backend-port
+            - name: Redis_Host
+              value: redis
+          image: backend
+          name: pets-home-backend
+          ports:
+            - containerPort: 8080
+          resources: {}
+      restartPolicy: Always
+status: {}

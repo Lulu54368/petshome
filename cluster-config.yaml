@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Config
+
+clusters:
+- name: petshome
+  cluster:
+    server: https://cute-lulu.petshome.com
+    certificate-authority: isrg-root-ocsp-x1.pem
+
+users:
+- name: petshome
+  user:
+    client-certificate: petshome.cute-lulu.com.crt.pem
+    client-key: petshome.cute-lulu.com.private.pem
+
+contexts:
+- name: petshome
+  context:
+    cluster: petshome
+    user: petshome
+
+current-context: petshome
