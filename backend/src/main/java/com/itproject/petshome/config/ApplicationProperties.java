@@ -22,28 +22,4 @@ public class ApplicationProperties {
 
     private String jwtSigningKey;
 
-    
-    public String getAllowedOrigins() {
-        return allowedOrigins;
-    }
-
-    public void setAllowedOrigins(String allowedOrigins) {
-        this.allowedOrigins = allowedOrigins;
-    }
-
-    public Integer getAccessTokenValiditySeconds() {
-        return accessTokenValiditySeconds;
-    }
-
-    public void setAccessTokenValiditySeconds(Integer accessTokenValiditySeconds) {
-        this.accessTokenValiditySeconds = accessTokenValiditySeconds;
-    }
-
-    public String getJwtSigningKey() {
-        return jwtSigningKey;
-    }
-
-    public void setJwtSigningKey(String jwtSigningKey) {
-        this.jwtSigningKey = jwtSigningKey;
-    }
 }
