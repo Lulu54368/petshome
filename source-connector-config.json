@@ -1,0 +1,16 @@
+
+
+  {
+    "name": "mysql-source-connector",
+    "config": {
+      "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
+      "tasks.max": 1,
+      "connection.url": "jdbc:mysql://localhost:3307/pets_home",
+      "connection.user": "root",
+      "connection.password": "password",
+      "topic.prefix": "mysql-",
+      "mode": "incrementing",
+      "incrementing.column.name": "id"
+    }
+  }
+

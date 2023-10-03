@@ -43,4 +43,4 @@ https://medium.com/@jan_5421/how-to-add-an-elasticsearch-kafka-connector-to-a-lo
 
 Register the MySQL Connector by sending an HTTP POST request to the Connect REST API:
 curl -i -X POST -H "Accept: application/json" -H "Content-Type: application/json" \
-  --data @/config/mysql-connector-config.json http://localhost:8085/connectors
+  --data @./source-connector-config.json http://localhost:8083/connectors
