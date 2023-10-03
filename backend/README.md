@@ -32,3 +32,10 @@ We used the following technology for the development of our backend
 https://www.cnblogs.com/masonlee/p/12004638.html
 https://pentacent.medium.com/nginx-and-lets-encrypt-with-docker-in-less-than-5-minutes-b4b8a60d3a71
 https://medium.com/javarevisited/how-to-enable-https-in-spring-boot-application-78b77ba1d242
+
+kafka & cdc sync
+https://medium.com/dana-engineering/streaming-data-changes-in-mysql-into-elasticsearch-using-debezium-kafka-and-confluent-jdbc-sink-8890ad221ccf
+
+https://medium.com/@jan_5421/how-to-add-an-elasticsearch-kafka-connector-to-a-local-docker-container-f495fe25ef72
+
+
