@@ -1,3 +1,4 @@
+
 services:
   mysql:
     container_name: mysql
@@ -5,62 +6,55 @@ services:
     restart: always
     command: --default-authentication-plugin=mysql_native_password
     ports:
-      - "3307:3306"
+      - 3307:3306
     environment:
-      MYSQL_DATABASE: 'pets_home'
+      MYSQL_DATABASE: pets_home
       MYSQL_USER: root
       MYSQL_PASSWORD: password
       MYSQL_ROOT_PASSWORD: password
-      MYSQL_HOST: 'mysql'
-
+      MYSQL_HOST: mysql
     volumes:
       - data:/volumes/database
-
     expose:
-      - '3306'
+      - "3306"
   backend:
     container_name: pets_home_backend
     build:
       context: ./backend
       dockerfile: ./Dockerfile
     ports:
-      - "8080:8080"
-
+      - 8080:8080
     environment:
       ALLOWED_ORIGINS: ${ALLOWED_ORIGIN}
-      PORT: '8080'
-      MYSQL_HOST: 'mysql'
-      MYSQL_PWD: 'password'
-      Redis_Host: 'redis'
+      PORT: "8080"
+      MYSQL_HOST: mysql
+      MYSQL_PWD: password
+      Redis_Host: redis
       AWS_S3_ACCESS_KEY: ${AWS_S3_ACCESS_KEY}
       AWS_S3_SECRET_KEY: ${AWS_S3_SECRET_KEY}
       BUCKET_NAME: ${AWS_S3_BUCKET_NAME}
-
     depends_on:
       - mysql
       - redis
-  
   proxy:
     image: nginx:1.17
     restart: unless-stopped
     ports:
-      - "80:80"
-      - "443:443"
+      - 80:80
+      - 443:443
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d
-    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
-
+    command: /bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done &
+      nginx -g "daemon off;"'
   redis:
     container_name: redis
     image: redis:latest
-
     ports:
       - 6379:6379
-
   frontend:
     container_name: pets_home_frontend
     image: react
-    build: 
+    build:
       context: ./frontend
     ports:
       - 3000:3000
@@ -71,18 +65,10 @@ services:
       REACT_APP_AWS_REGION: ${AWS_ORIGIN}
       REACT_APP_BASE_URL: ${BASE_URL:-"http://localhost:8080"}
       REACT_APP_HOME: ${REACT_APP_HOME:-"http://localhost:3000/"}
-
-
-  zookeeper:
-    image: confluentinc/cp-zookeeper:latest
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_TICK_TIME: 2000
-    ports:
-      - 22181:2181
-  
-  kafka:
-    image: confluentinc/cp-kafka:latest
+  broker:
+    image: confluentinc/cp-kafka
+    hostname: broker
+    container_name: broker
     depends_on:
       - zookeeper
     ports:
@@ -90,23 +76,105 @@ services:
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:9092,PLAINTEXT_HOST://localhost:29092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-  kafka-schema-registry:
-    image: confluentinc/cp-schema-registry
-    container_name: schema-registry
-    depends_on:
-      - kafka
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+  kafka-connect:
+    image: confluentinc/cp-kafka-connect
+    container_name: kafka-connect
     ports:
-      - "8081:8081"
+      - 8083:8083
+    depends_on:
+      - zookeeper
+      - broker
+      - elasticsearch
+    volumes:
+      - ./connect-plugins:/connect-plugins
     environment:
-      SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: "zookeeper:2181"
-      SCHEMA_REGISTRY_HOST_NAME: schema-registry
-      SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
-      SCHEMA_REGISTRY_DEBUG: "true"
+      CONNECT_BOOTSTRAP_SERVERS: broker:9092
+      CONNECT_REST_PORT: 8083
+      CONNECT_GROUP_ID: connect
+      CONNECT_CONFIG_STORAGE_TOPIC: connect-config
+      CONNECT_OFFSET_STORAGE_TOPIC: connect-offsets
+      CONNECT_STATUS_STORAGE_TOPIC: connect-status
+      CONNECT_REPLICATION_FACTOR: 1
+      CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: 1
+      CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: 1
+      CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: 1
+      CONNECT_KEY_CONVERTER: org.apache.kafka.connect.storage.StringConverter
+      CONNECT_KEY_CONVERTER_SCHEMAS_ENABLE: "false"
+      CONNECT_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      CONNECT_VALUE_CONVERTER_SCHEMAS_ENABLE: "false"
+      CONNECT_INTERNAL_KEY_CONVERTER: org.apache.kafka.connect.storage.StringConverter
+      CONNECT_INTERNAL_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      CONNECT_PRODUCER_INTERCEPTOR_CLASSES: io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor
+      CONNECT_CONSUMER_INTERCEPTOR_CLASSES: io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor
+      CONNECT_REST_ADVERTISED_HOST_NAME: connect
+      CONNECT_ZOOKEEPER_CONNECT: zookeeper:2181
+      CONNECT_PLUGIN_PATH: /connect-plugins
+      CONNECT_LOG4J_ROOT_LOGLEVEL: INFO
+      CONNECT_LOG4J_LOGGERS: org.reflections=ERROR
+      CLASSPATH: /usr/share/java/monitoring-interceptors/monitoring-interceptors-3.3.0.jar
+  elasticsearch:
+    container_name: elastic
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.10.2
+    ports:
+      - 9200:9200
+      - 9300:9300
+    environment:
+      - xpack.security.enabled=false
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - cluster.routing.allocation.disk.threshold_enabled=false
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+  kibana:
+    container_name: kibana
+    image: docker.elastic.co/kibana/kibana:7.10.2
+    ports:
+      - 5601:5601
+    depends_on:
+      - elasticsearch
+    environment:
+      ELASTICSEARCH_HOSTS: '["http://elastic:9200"]'
+  ksqldb-server:
+    image: confluentinc/ksqldb-server:0.27.2
+    hostname: ksqldb-server
+    container_name: ksqldb-server
+    depends_on:
+      - broker
+    ports:
+      - 8088:8088
+    environment:
+      KSQL_LISTENERS: http://0.0.0.0:8088
+      KSQL_BOOTSTRAP_SERVERS: broker:9092
+      KSQL_KSQL_LOGGING_PROCESSING_STREAM_AUTO_CREATE: "true"
+      KSQL_KSQL_LOGGING_PROCESSING_TOPIC_AUTO_CREATE: "true"
+  ksqldb-cli:
+    image: confluentinc/ksqldb-cli
+    container_name: ksqldb-cli
+    depends_on:
+      - broker
+      - ksqldb-server
+    entrypoint: /bin/sh
+    tty: true
+  zookeeper:
+    image: confluentinc/cp-zookeeper
+    hostname: zookeeper
+    container_name: zookeeper
+    ports:
+      - 2181:2181
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
 volumes:
-    data:
-      external: true
+  data:
+    external: true
 

@@ -23,12 +23,12 @@ jobs:
           USERNAME: ${{ secrets.USERNAME }}
           PORT: ${{ secrets.PORT }}
           KEY: ${{ secrets.SSHKEY }}
-          script: |
-            cd petshome
-            git pull
-            docker-compose build frontend
-            docker-compose build backend
-            docker-compose up --force-recreate --build -d frontend
-            docker-compose up backend
+          # script: |
+          #  cd petshome
+          #  git pull
+          #  docker-compose build frontend
+          #  docker-compose build backend
+          #  docker-compose up --force-recreate --build -d frontend
+          #  docker-compose up backend
             
         
