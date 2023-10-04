@@ -38,7 +38,9 @@ https://medium.com/dana-engineering/streaming-data-changes-in-mysql-into-elastic
 
 https://medium.com/@jan_5421/how-to-add-an-elasticsearch-kafka-connector-to-a-local-docker-container-f495fe25ef72
 
-
+https://www.baeldung.com/spring-kafka
+https://www.baeldung.com/kafka-connectors-guide
+https://contactsunny.medium.com/simple-apache-kafka-producer-and-consumer-using-spring-boot-41be672f4e2b
 
 
 Register the MySQL Connector by sending an HTTP POST request to the Connect REST API:

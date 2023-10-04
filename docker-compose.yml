@@ -91,26 +91,32 @@ services:
       - zookeeper
       - broker
       - elasticsearch
+      - mysql
+      - schema-registry
     volumes:
       - ./connect-plugins:/connect-plugins
+      - ./connect-avro.properties:/config/connect-avro.properties
     environment:
       CONNECT_BOOTSTRAP_SERVERS: broker:9092
       CONNECT_REST_PORT: 8083
-      CONNECT_GROUP_ID: "quickstart-avro"
-      CONNECT_CONFIG_STORAGE_TOPIC: "quickstart-avro-config"
-      CONNECT_OFFSET_STORAGE_TOPIC: "quickstart-avro-offsets"
-      CONNECT_STATUS_STORAGE_TOPIC: "quickstart-avro-status"
+      CONNECT_GROUP_ID: "petshome-avro"
+      CONNECT_CONFIG_STORAGE_TOPIC: "petshome-avro-config"
+      CONNECT_OFFSET_STORAGE_TOPIC: "petshome-avro-offsets"
+      CONNECT_STATUS_STORAGE_TOPIC: "petshome-avro-status"
       CONNECT_REPLICATION_FACTOR: 1
       CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: 1
       CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: 1
       CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: 1
-      CONNECT_KEY_CONVERTER: org.apache.kafka.connect.storage.StringConverter
-      CONNECT_KEY_CONVERTER_SCHEMAS_ENABLE: "false"
-      CONNECT_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
-      CONNECT_VALUE_CONVERTER_SCHEMAS_ENABLE: "false"
-      CONNECT_INTERNAL_KEY_CONVERTER: org.apache.kafka.connect.storage.StringConverter
-      CONNECT_INTERNAL_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
-      CONNECT_PRODUCER_INTERCEPTOR_CLASSES: io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor
+      CONNECT_KEY_CONVERTER: io.confluent.connect.avro.AvroConverter
+      CONNECT_KEY_CONVERTER_SCHEMAS_ENABLE: "true"
+      CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL: "http://schema_registry:8081"
+      CONNECT_VALUE_CONVERTER: io.confluent.connect.avro.AvroConverter
+      CONNECT_VALUE_CONVERTER_SCHEMAS_ENABLE: "true"
+      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: "http://schema_registry:8081"
+      CONNECT_INTERNAL_KEY_CONVERTER: io.confluent.connect.avro.AvroConverter
+      CONNECT_INTERNAL_KEY_CONVERTER_SCHEMA_REGISTRY_URL: "http://schema_registry:8081"
+      CONNECT_INTERNAL_VALUE_CONVERTER: "io.confluent.connect.avro.AvroConverter"
+      CONNECT_INTERNAL_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: "http://schema_registry:8081"
       CONNECT_CONSUMER_INTERCEPTOR_CLASSES: io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor
       CONNECT_REST_ADVERTISED_HOST_NAME: connect
       CONNECT_ZOOKEEPER_CONNECT: zookeeper:2181
@@ -174,14 +180,16 @@ services:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
   schema-registry:
-    image: confluentinc/cp-schema-registry:6.2.1
+    image: confluentinc/cp-schema-registry:latest
+    container_name: schema-registry
     depends_on:
       - broker
     ports:
       - "8081:8081"
     environment:
-      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: "kafka:9092"
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: "broker:9092"
       SCHEMA_REGISTRY_LISTENERS: "http://0.0.0.0:8081"
+      SCHEMA_REGISTRY_HOST_NAME: "schema_registry"
 
 volumes:
   data:
