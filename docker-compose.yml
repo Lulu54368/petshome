@@ -132,6 +132,8 @@ services:
       - 9300:9300
     environment:
       - xpack.security.enabled=false
+      - xpack.security.transport.ssl.enabled= false
+      - xpack.security.http.ssl.enabled= false
       - discovery.type=single-node
       - bootstrap.memory_lock=true
       - ES_JAVA_OPTS=-Xms512m -Xmx512m
@@ -160,6 +162,7 @@ services:
     environment:
       KSQL_LISTENERS: http://0.0.0.0:8088
       KSQL_BOOTSTRAP_SERVERS: broker:9092
+      KSQL_SCHEMA_REGISTRY_URL: http://schema_registry:8081
       KSQL_KSQL_LOGGING_PROCESSING_STREAM_AUTO_CREATE: "true"
       KSQL_KSQL_LOGGING_PROCESSING_TOPIC_AUTO_CREATE: "true"
   ksqldb-cli:

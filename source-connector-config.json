@@ -9,8 +9,10 @@
       "connection.user": "root",
       "connection.password": "password",
       "topic.prefix": "mysql-",
-      "mode": "incrementing",
-      "incrementing.column.name": "id"
+      "mode":"bulk",
+      "incrementing.column.name": "id",
+      "table.whitelist": "pet"
+      
     }
   }
 
